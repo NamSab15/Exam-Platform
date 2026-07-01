@@ -26,7 +26,7 @@ const btnPrimary = [
 ].join(" ");
 
 const btnSecondary = [
-  "bg-background text-muted-foreground border border-border rounded-sm font-medium",
+  "bg-background text-muted-foreground border border-border rounded-md font-medium",
   "text-[14px] leading-[16px] tracking-[0.01em]",
   "px-6 py-2 hover:bg-muted transition-colors duration-200",
   "cursor-pointer",
@@ -91,7 +91,7 @@ function SummaryCard({
 }) {
   const router = useRouter();
   return (
-    <div className="border border-border rounded-sm p-5">
+    <div className="border border-border rounded-md p-5">
       <div className="flex items-center justify-between mb-3">
         <h3 className="text-foreground font-semibold text-[16px] leading-[24px]">
           {title}

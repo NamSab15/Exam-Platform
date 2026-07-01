@@ -19,11 +19,11 @@ import OnboardingStepper from "../OnboardingStepper";
    tokens defined in globals.css. */
 
 const inputBase = [
-  "w-full bg-background border border-border rounded-sm",
+  "w-full bg-background border border-border rounded-md",
   "text-[16px] leading-[24px] text-foreground",
   "py-2 px-3 transition-all duration-200",
   "outline-none focus:border-primary",
-  "focus-visible:ring-2 focus-visible:ring-ring/50",
+  "focus-visible:ring-2 focus-visible:ring-primary/20",
 ].join(" ");
 
 const btnPrimary = [
@@ -35,7 +35,7 @@ const btnPrimary = [
 ].join(" ");
 
 const btnSecondary = [
-  "bg-background text-muted-foreground border border-border rounded-sm font-medium",
+  "bg-background text-muted-foreground border border-border rounded-md font-medium",
   "text-[14px] leading-[16px] tracking-[0.01em]",
   "px-6 py-2 hover:bg-muted transition-colors duration-200",
   "cursor-pointer",
@@ -162,7 +162,7 @@ export default function OnboardingStep3Page({ onNext }: { onNext?: () => void } 
         </div>
 
         {/* ── Main form card ───────────────────────────────── */}
-        <div className="bg-background border border-border p-6 mt-4">
+        <div className="bg-background border border-border rounded-md p-6 mt-4">
           <h2 className="font-semibold text-[20px] leading-[28px] text-foreground mb-6">
             Step 3 — Timezone &amp; Notifications
           </h2>

@@ -7,15 +7,15 @@ import { useState } from "react";
    tokens defined in globals.css. */
 
 const inputBase = [
-  "w-full bg-background border border-border rounded-sm",
+  "w-full bg-background border border-border rounded-md",
   "text-[16px] leading-[24px] text-foreground",
   "py-2 px-4 transition-all duration-200",
   "outline-none focus:border-primary",
-  "focus-visible:ring-2 focus-visible:ring-ring/50",
+  "focus-visible:ring-2 focus-visible:ring-primary/20",
 ].join(" ");
 
 const btnPrimary = [
-  "w-full bg-primary text-primary-foreground rounded-sm",
+  "w-full bg-primary text-primary-foreground rounded-md",
   "font-medium text-[14px] leading-[16px] tracking-[0.01em]",
   "py-2 px-4 transition-colors duration-200",
   "hover:bg-primary/80 cursor-pointer",
@@ -26,7 +26,7 @@ const btnPrimary = [
 const btnSSO = [
   "flex-1 bg-background border border-border text-foreground",
   "font-medium text-[14px] leading-[16px] tracking-[0.01em]",
-  "py-2 px-4 rounded-sm",
+  "py-2 px-4 rounded-md",
   "hover:bg-accent transition-colors duration-200",
   "cursor-pointer",
 ].join(" ");
@@ -49,7 +49,7 @@ export default function LoginPage({ onNext }: { onNext?: () => void } = {}) {
   return (
     <main className="min-h-screen flex flex-col justify-center items-center bg-background text-foreground antialiased p-4 md:p-0">
       {/* ── Card ────────────────────────────────────────────── */}
-      <div className="w-full max-w-[400px] bg-background border border-border p-8 flex flex-col gap-5">
+      <div className="w-full max-w-[400px] bg-background border border-border rounded-md p-8 flex flex-col gap-5">
         {/* Brand + heading */}
         <div className="flex flex-col items-center gap-1">
           <div className="bg-primary text-primary-foreground px-5 py-1 rounded-full font-medium text-[14px] leading-[16px] tracking-widest uppercase mb-4">

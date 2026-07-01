@@ -7,11 +7,11 @@ import { useState, useMemo } from "react";
    tokens defined in globals.css. */
 
 const inputBase = [
-  "w-full bg-background border border-border rounded-sm",
+  "w-full bg-background border border-border rounded-md",
   "text-[16px] leading-[24px] text-foreground",
   "px-3 py-2 transition-all duration-200",
   "outline-none focus:border-primary",
-  "focus-visible:ring-2 focus-visible:ring-ring/50",
+  "focus-visible:ring-2 focus-visible:ring-primary/20",
 ].join(" ");
 
 const btnPrimary = [
@@ -151,7 +151,7 @@ export default function ResetPasswordPage({ onNext }: { onNext?: () => void } = 
             </div>
 
             {/* ── Checklist panel ───────────────────────────── */}
-            <div className="bg-muted border border-border rounded p-4">
+            <div className="bg-muted border border-border rounded-md p-4">
               <ul className="space-y-2 mb-3">
                 {PASSWORD_RULES.map((rule, i) => {
                   const met = ruleResults[i];
@@ -180,7 +180,7 @@ export default function ResetPasswordPage({ onNext }: { onNext?: () => void } = 
             </div>
 
             {/* ── MFA notice ────────────────────────────────── */}
-            <div className="border border-dashed border-[var(--warning)] bg-[#FCF9F2] rounded p-3 text-center">
+            <div className="border border-dashed border-[var(--warning)] bg-[#FCF9F2] rounded-md p-3 text-center">
               <p className="text-[14px] leading-[20px] text-[var(--warning)]">
                 <span className="font-medium">If role requires MFA:</span> MFA
                 enrollment shown next.

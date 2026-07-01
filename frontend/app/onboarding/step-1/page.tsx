@@ -8,11 +8,11 @@ import OnboardingStepper from "../OnboardingStepper";
    tokens defined in globals.css. */
 
 const inputBase = [
-  "w-full bg-background border border-border rounded-sm",
+  "w-full bg-background border border-border rounded-md",
   "text-[16px] leading-[24px] text-foreground",
   "py-2 px-3 transition-all duration-200",
   "outline-none focus:border-primary",
-  "focus-visible:ring-2 focus-visible:ring-ring/50",
+  "focus-visible:ring-2 focus-visible:ring-primary/20",
 ].join(" ");
 
 const btnPrimary = [
@@ -25,7 +25,7 @@ const btnPrimary = [
 ].join(" ");
 
 const btnSecondary = [
-  "bg-background text-muted-foreground border border-border rounded-sm",
+  "bg-background text-muted-foreground border border-border rounded-md",
   "font-medium text-[14px] leading-[16px] tracking-[0.01em]",
   "py-2 px-6 transition-colors duration-200",
   "hover:bg-muted cursor-pointer",
@@ -82,7 +82,7 @@ export default function OnboardingStep1Page({ onNext }: { onNext?: () => void } 
         </div>
 
         {/* ── Main form card ───────────────────────────────── */}
-        <div className="bg-background border border-border p-6 mt-4">
+        <div className="bg-background border border-border rounded-md p-6 mt-4">
           <h2 className="font-semibold text-[20px] leading-[28px] text-foreground mb-6">
             Step 1 — Organisation details
           </h2>
@@ -181,7 +181,7 @@ export default function OnboardingStep1Page({ onNext }: { onNext?: () => void } 
             </div>
 
             {/* Note box */}
-            <div className="border border-dashed border-border bg-muted p-4 rounded-sm">
+            <div className="border border-dashed border-border bg-muted p-4 rounded-md">
               <div className="flex items-start gap-2">
                 <span className="material-symbols-outlined text-muted-foreground text-[20px] mt-px">
                   info
