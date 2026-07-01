@@ -161,3 +161,52 @@ This build covers Must Have requirements from BRD Section 4.3 only:
 - Result Release
 
 Should Have items (exam duplication, IP whitelisting, geo-restriction, per-candidate manual release override, human proctor assignment) are out of scope for this phase.
+---
+
+# Team 1 — Accounts & Setup (Frontend)
+
+Frontend prototype for the **Accounts & Setup** module. Implements a complete, multi-screen tenant onboarding and user management flow.
+
+## Screens
+
+All screens are located under `frontend/app/`:
+
+| Route | Screen | Description |
+|---|---|---|
+| `/login` | Sign In | Email/password auth + Google/Microsoft SSO + SAML notice |
+| `/reset-password` | Set Password | First-login password reset with live validation rules |
+| `/onboarding/step-1` | Org Details | Organisation name, tenant slug, plan tier, contact email |
+| `/onboarding/step-2` | Branding | Logo upload (drag & drop), colour picker, display name, tagline |
+| `/onboarding/step-3` | Timezone & Notifications | Timezone, date format, notification toggles, sender email |
+| `/onboarding/step-4` | Invite Users | Dynamic row builder (up to 10), CSV bulk import shortcut |
+| `/onboarding/step-5` | Review & Confirm | Summary cards with edit links, success banner |
+| `/users` | User Management | Data table with filters, bulk CSV import with validation preview |
+| `/demo` | Demo Flow | All screens linked — primary buttons auto-advance |
+| `/onboarding/preview` | Preview | All onboarding steps rendered on one page |
+
+## Demo Mode (`/demo`)
+
+Visit `/demo` to run the full presentation flow. Clicking primary action buttons (Sign in → Set password → Next → Complete setup) automatically advances to the next screen. Each page accepts an optional `onNext` prop — when visited standalone, buttons behave normally.
+
+## Design System
+
+All styling is driven by `frontend/styles/tokens.css`:
+
+- **Brand colours**: Tranquil Velvet (`#6C1D5F`), Emerald, CTA Orange
+- **Semantic aliases**: `--color-primary`, `--color-error`, `--color-success`, `--color-warning`
+- **Typography**: Inter, 6-step size scale (11px–28px)
+- **Spacing**: 4px base, 8 levels (4px–48px)
+- **Tenant-overridable**: `--color-tenant-primary` and `--tenant-logo-url` (BRD §4.1.1)
+
+Tokens are mapped to Tailwind v4 utilities via `globals.css @theme`.
+
+## Running the Frontend
+
+```bash
+cd frontend
+pnpm install
+pnpm dev
+```
+
+Open [http://localhost:3000/demo](http://localhost:3000/demo) to see the full flow.
+
