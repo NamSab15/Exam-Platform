@@ -18,11 +18,11 @@ import OnboardingStepper from "../OnboardingStepper";
    tokens defined in globals.css. */
 
 const inputBase = [
-  "w-full bg-background border border-border rounded-sm",
+  "w-full bg-background border border-border rounded-md",
   "text-[16px] leading-[24px] text-foreground",
   "py-2 px-3 transition-all duration-200",
   "outline-none focus:border-primary",
-  "focus-visible:ring-2 focus-visible:ring-ring/50",
+  "focus-visible:ring-2 focus-visible:ring-primary/20",
 ].join(" ");
 
 const btnPrimary = [
@@ -34,7 +34,7 @@ const btnPrimary = [
 ].join(" ");
 
 const btnSecondary = [
-  "bg-background text-muted-foreground border border-border rounded-sm font-medium",
+  "bg-background text-muted-foreground border border-border rounded-md font-medium",
   "text-[14px] leading-[16px] tracking-[0.01em]",
   "px-6 py-2 hover:bg-muted transition-colors duration-200",
   "cursor-pointer",
@@ -240,7 +240,7 @@ function StepOne({
         >
           Tenant slug
         </label>
-        <div className="flex border border-border rounded-sm overflow-hidden focus-within:border-primary focus-within:ring-2 focus-within:ring-ring/50 transition-all duration-200">
+        <div className="flex border border-border rounded-md overflow-hidden focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20 transition-all duration-200">
           <span className="text-muted-foreground text-[14px] bg-muted px-3 py-2 border-r border-border shrink-0 flex items-center">
             xebia-platform.io/
           </span>
@@ -611,7 +611,7 @@ function StepThree({
         <label className="block font-medium text-[14px] leading-[16px] tracking-[0.01em] text-muted-foreground mb-2">
           Email notifications
         </label>
-        <div className="border border-border rounded-sm">
+        <div className="border border-border rounded-md">
           {/* Exam reminders */}
           <div className="flex items-center justify-between py-3 px-4 border-b border-border">
             <div>

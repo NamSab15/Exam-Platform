@@ -1,7 +1,6 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
-@import "../styles/tokens.css";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -100,7 +99,82 @@
   --spacing-7: var(--space-7);
   --spacing-8: var(--space-8);
 }
+
 :root {
+  /* ── Brand: Main Colours ───────────────────────────────────── */
+  --color-tranquil-velvet: #6C1D5F;
+  --color-tranquil-velvet-dark: #4A1E47;
+  --color-white: #FFFFFF;
+
+  /* ── Brand: Secondary ──────────────────────────────────────── */
+  --color-bright-tr-velvet: #84117C;
+
+  /* ── Brand: Neutrals ───────────────────────────────────────── */
+  --color-neutral-white: #FFFFFF;
+  --color-neutral-light-grey: #DEDEDE;
+  --color-neutral-dark-grey: #5A5A5A;
+  --color-neutral-black: #000000;
+
+  /* ── Brand: Link / CTA ─────────────────────────────────────── */
+  --color-emerald: #01AC9F;
+  --color-cta-orange: #FF6200;
+
+  /* ── Semantic aliases (what components should actually use) ── */
+  --color-primary: var(--color-tranquil-velvet);
+  --color-primary-hover: var(--color-tranquil-velvet-dark);
+  --color-text-heading: #2C2C2A;
+  --color-text-body: var(--color-neutral-dark-grey);
+  --color-text-muted: #888780;
+  --color-border: var(--color-neutral-light-grey);
+  --color-background: var(--color-neutral-white);
+  --color-surface-hover: #F9F9F9;   /* table header bg, hover tint */
+  --color-border-light: #D5C1CC;    /* subtle divider, login card outline */
+  --color-input-hover-bg: #FEF0F6;  /* SSO button hover, soft purple tint */
+  --color-error-container: #FFDAD6; /* CSV validation error row bg */
+  --color-error: #BA1A1A;           /* inline error text, e.g. account-locked */
+
+  --color-success: var(--color-emerald);
+  --color-success-text: #3B6D11;   /* muted green used on status pills */
+  --color-danger: #A32D2D;          /* muted red — never bright/alarming */
+  --color-warning: #854F0B;         /* muted amber — used for MFA-style notices */
+  --color-warning-border: #D4B263;  /* MFA notice dashed border */
+  --color-warning-bg: #FCF9F2;      /* MFA notice background tint */
+  --color-warning-text: #8C6D1F;    /* MFA notice body text */
+  --color-check-unchecked: #83727C; /* password-rule icon when not yet met */
+
+  /* ── Tenant-overridable tokens (BRD §4.1.1) ─────────────────── */
+  --color-tenant-primary: var(--color-tranquil-velvet);
+  --tenant-logo-url: none;
+
+  /* ── Typography ────────────────────────────────────────────── */
+  --font-family-base: var(--font-inter, 'Inter'), -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+  --font-size-xs: 0.6875rem;   /* 11px — footnotes, captions */
+  --font-size-sm: 0.8125rem;   /* 13px — labels, helper text */
+  --font-size-base: 0.9375rem; /* 15px — body text */
+  --font-size-md: 1rem;        /* 16px — input text */
+  --font-size-lg: 1.25rem;     /* 20px — section/page headings */
+  --font-size-xl: 1.75rem;     /* 28px — rarely used, large headings */
+
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-bold: 700;
+
+  /* ── Spacing scale (4px base step) ─────────────────────────── */
+  --space-1: 0.25rem;  /* 4px */
+  --space-2: 0.5rem;   /* 8px */
+  --space-3: 0.75rem;  /* 12px */
+  --space-4: 1rem;     /* 16px */
+  --space-5: 1.5rem;   /* 24px */
+  --space-6: 2rem;     /* 32px */
+  --space-7: 2.5rem;   /* 40px */
+  --space-8: 3rem;     /* 48px */
+
+  /* ── Radius ────────────────────────────────────────────────── */
+  --radius-sm: 4px;
+  --radius-md: 6px;   /* standard button/input radius across all screens */
+  --radius-lg: 8px;
+
   /* DESIGN TOKENS */
 
   --radius: 0.5rem;

@@ -25,10 +25,10 @@ const btnSecondary = [
 ].join(" ");
 
 const inputBase = [
-  "border border-border rounded-sm py-2 px-3",
+  "border border-border rounded-md py-2 px-3",
   "text-[14px] outline-none bg-background text-foreground",
   "transition-all focus:border-primary",
-  "focus-visible:ring-2 focus-visible:ring-ring/50",
+  "focus-visible:ring-2 focus-visible:ring-primary/20",
 ].join(" ");
 
 /* ── Sample data (static for now) ───────────────────────────── */
