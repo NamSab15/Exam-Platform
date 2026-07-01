@@ -1,65 +1,71 @@
-import Image from "next/image";
+/**
+ * Root Page — Demo Presentation Flow
+ * Route: /
+ *
+ * Renders the complete Accounts & Setup flow starting from the
+ * Sign In screen. Clicking the primary action button on each
+ * screen automatically advances to the next screen.
+ */
+
+"use client";
+
+import { useState } from "react";
+import dynamic from "next/dynamic";
+
+// Import all existing screen components
+import LoginPage from "./login/page";
+import ResetPasswordPage from "./reset-password/page";
+import OnboardingStep1 from "./onboarding/step-1/page";
+import OnboardingStep2 from "./onboarding/step-2/page";
+import OnboardingStep3 from "./onboarding/step-3/page";
+import OnboardingStep4 from "./onboarding/step-4/page";
+import OnboardingStep5 from "./onboarding/step-5/page";
+
+// Users page is a server component that exports `metadata` — dynamic
+// import avoids the "metadata in client component" build error.
+const UsersPage = dynamic(() => import("./users/page"), { ssr: false });
+
+/* ── Screen registry ────────────────────────────────────────── */
+
+type Screen =
+  | "login"
+  | "reset-password"
+  | "onboarding-1"
+  | "onboarding-2"
+  | "onboarding-3"
+  | "onboarding-4"
+  | "onboarding-5"
+  | "users";
+
+/* ── Page component ─────────────────────────────────────────── */
 
 export default function Home() {
+  const [screen, setScreen] = useState<Screen>("login");
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+    <>
+      {screen === "login" && (
+        <LoginPage onNext={() => setScreen("reset-password")} />
+      )}
+      {screen === "reset-password" && (
+        <ResetPasswordPage onNext={() => setScreen("onboarding-1")} />
+      )}
+      {screen === "onboarding-1" && (
+        <OnboardingStep1 onNext={() => setScreen("onboarding-2")} />
+      )}
+      {screen === "onboarding-2" && (
+        <OnboardingStep2 onNext={() => setScreen("onboarding-3")} />
+      )}
+      {screen === "onboarding-3" && (
+        <OnboardingStep3 onNext={() => setScreen("onboarding-4")} />
+      )}
+      {screen === "onboarding-4" && (
+        <OnboardingStep4 onNext={() => setScreen("onboarding-5")} />
+      )}
+      {screen === "onboarding-5" && (
+        <OnboardingStep5 onNext={() => setScreen("users")} />
+      )}
+      {screen === "users" && <UsersPage />}
+    </>
   );
 }
