@@ -14,29 +14,29 @@ import { useRouter } from "next/navigation";
 import OnboardingStepper from "../OnboardingStepper";
 
 /* ── Shared style constants ─────────────────────────────────────
-   Every colour / radius / spacing references a design-token variable
-   through the Tailwind theme (see globals.css @theme). */
+   Every colour / radius / spacing references the design-project
+   tokens defined in globals.css. */
 
 const inputBase = [
   "w-full bg-background border border-border rounded-sm",
-  "text-[16px] leading-[24px] text-heading",
+  "text-[16px] leading-[24px] text-foreground",
   "py-2 px-3 transition-all duration-200",
   "outline-none focus:border-primary",
-  "focus:shadow-[0_0_0_2px_rgba(108,29,95,0.2)]",
+  "focus-visible:ring-2 focus-visible:ring-ring/50",
 ].join(" ");
 
 const btnPrimary = [
-  "bg-primary text-white rounded-md font-medium",
+  "bg-primary text-primary-foreground rounded-md font-medium",
   "text-[14px] leading-[16px] tracking-[0.01em]",
-  "px-4 py-2 hover:bg-primary-hover transition-colors duration-200",
+  "px-4 py-2 hover:bg-primary/80 transition-colors duration-200",
   "border-none outline-none cursor-pointer",
   "flex items-center gap-2",
 ].join(" ");
 
 const btnSecondary = [
-  "bg-background text-body border border-border rounded-sm font-medium",
+  "bg-background text-muted-foreground border border-border rounded-sm font-medium",
   "text-[14px] leading-[16px] tracking-[0.01em]",
-  "px-6 py-2 hover:bg-surface-hover transition-colors duration-200",
+  "px-6 py-2 hover:bg-muted transition-colors duration-200",
   "cursor-pointer",
 ].join(" ");
 
@@ -105,14 +105,14 @@ export default function OnboardingStep2Page({ onNext }: { onNext?: () => void } 
   }
 
   return (
-    <main className="min-h-screen bg-background flex justify-center py-8 md:py-12 px-4 md:px-12">
+    <main className="min-h-screen bg-background flex justify-center py-8 md:py-12 px-4 md:px-12 text-foreground">
       <div className="w-full max-w-[800px] flex flex-col">
         {/* ── Header ───────────────────────────────────────── */}
         <header className="mb-8">
-          <h1 className="font-semibold text-[32px] leading-[40px] tracking-[-0.02em] text-heading mb-1">
+          <h1 className="font-semibold text-[32px] leading-[40px] tracking-[-0.02em] text-foreground mb-1">
             Set up your organisation&apos;s branding
           </h1>
-          <p className="text-[14px] leading-[20px] text-body">
+          <p className="text-[14px] leading-[20px] text-muted-foreground">
             These settings control how the platform appears to your candidates.
           </p>
         </header>
@@ -124,7 +124,7 @@ export default function OnboardingStep2Page({ onNext }: { onNext?: () => void } 
 
         {/* ── Main form card ───────────────────────────────── */}
         <div className="bg-background border border-border p-6 mt-4">
-          <h2 className="font-semibold text-[20px] leading-[28px] text-heading mb-6">
+          <h2 className="font-semibold text-[20px] leading-[28px] text-foreground mb-6">
             Step 2 — Branding
           </h2>
 
@@ -134,7 +134,7 @@ export default function OnboardingStep2Page({ onNext }: { onNext?: () => void } 
           >
             {/* Logo upload */}
             <div>
-              <label className="block font-medium text-[14px] leading-[16px] tracking-[0.01em] text-body mb-2">
+              <label className="block font-medium text-[14px] leading-[16px] tracking-[0.01em] text-muted-foreground mb-2">
                 Logo
               </label>
 
@@ -146,17 +146,17 @@ export default function OnboardingStep2Page({ onNext }: { onNext?: () => void } 
                     className="max-h-16 object-contain"
                   />
                   <div className="flex-1">
-                    <p className="text-[14px] text-heading font-medium truncate">
+                    <p className="text-[14px] text-foreground font-medium truncate">
                       {logoFile?.name}
                     </p>
-                    <p className="text-[12px] text-muted">
+                    <p className="text-[12px] text-muted-foreground">
                       {logoFile && `${(logoFile.size / 1024).toFixed(1)} KB`}
                     </p>
                   </div>
                   <button
                     type="button"
                     onClick={removeLogo}
-                    className="text-error hover:opacity-80 transition-opacity cursor-pointer bg-transparent border-none p-1"
+                    className="text-destructive hover:opacity-80 transition-opacity cursor-pointer bg-transparent border-none p-1"
                     aria-label="Remove logo"
                   >
                     <span className="material-symbols-outlined text-[20px]">
@@ -166,7 +166,7 @@ export default function OnboardingStep2Page({ onNext }: { onNext?: () => void } 
                 </div>
               ) : (
                 <div
-                  className="border-dashed border-2 border-border rounded-md p-8 flex flex-col items-center justify-center text-center cursor-pointer hover:bg-surface-hover transition-colors"
+                  className="border-dashed border-2 border-border rounded-md p-8 flex flex-col items-center justify-center text-center cursor-pointer hover:bg-muted transition-colors"
                   onClick={() => fileInputRef.current?.click()}
                   onDrop={handleDrop}
                   onDragOver={(e) => e.preventDefault()}
@@ -180,10 +180,10 @@ export default function OnboardingStep2Page({ onNext }: { onNext?: () => void } 
                   <span className="material-symbols-outlined text-border text-4xl mb-2">
                     upload
                   </span>
-                  <p className="text-heading font-medium text-[14px]">
+                  <p className="text-foreground font-medium text-[14px]">
                     Drag &amp; drop your logo or click to browse
                   </p>
-                  <p className="text-[12px] text-muted mt-1">
+                  <p className="text-[12px] text-muted-foreground mt-1">
                     PNG, SVG — max 2 MB
                   </p>
                 </div>
@@ -200,10 +200,10 @@ export default function OnboardingStep2Page({ onNext }: { onNext?: () => void } 
 
             {/* Primary brand colour */}
             <div>
-              <label className="block font-medium text-[14px] leading-[16px] tracking-[0.01em] text-body mb-2">
+              <label className="block font-medium text-[14px] leading-[16px] tracking-[0.01em] text-muted-foreground mb-2">
                 Primary brand colour
               </label>
-              <p className="text-[14px] leading-[20px] text-muted mb-2">
+              <p className="text-[14px] leading-[20px] text-muted-foreground mb-2">
                 Used for buttons and highlights on the candidate-facing portal.
               </p>
               <div className="flex items-center gap-3">
@@ -229,12 +229,12 @@ export default function OnboardingStep2Page({ onNext }: { onNext?: () => void } 
             {/* Display name */}
             <div>
               <label
-                className="block font-medium text-[14px] leading-[16px] tracking-[0.01em] text-body mb-2"
+                className="block font-medium text-[14px] leading-[16px] tracking-[0.01em] text-muted-foreground mb-2"
                 htmlFor="display_name"
               >
                 Display name
               </label>
-              <p className="text-[14px] leading-[20px] text-muted mb-2">
+              <p className="text-[14px] leading-[20px] text-muted-foreground mb-2">
                 Shown on the exam portal and in candidate emails. This is your
                 public-facing name, separate from the organisation slug.
               </p>
@@ -252,7 +252,7 @@ export default function OnboardingStep2Page({ onNext }: { onNext?: () => void } 
             {/* Tagline (optional) */}
             <div>
               <label
-                className="block font-medium text-[14px] leading-[16px] tracking-[0.01em] text-body mb-2"
+                className="block font-medium text-[14px] leading-[16px] tracking-[0.01em] text-muted-foreground mb-2"
                 htmlFor="tagline"
               >
                 Tagline (optional)
@@ -267,7 +267,7 @@ export default function OnboardingStep2Page({ onNext }: { onNext?: () => void } 
                 value={tagline}
                 onChange={(e) => setTagline(e.target.value)}
               />
-              <p className="text-[12px] leading-[16px] text-muted mt-1">
+              <p className="text-[12px] text-muted-foreground mt-1">
                 {tagline.length} / 80
               </p>
             </div>

@@ -4,8 +4,7 @@
  * Reusable across all five onboarding steps.  Pass `currentStep` (1–5)
  * and the component renders the correct active / completed / upcoming states.
  *
- * Design source: Stitch screen "Tenant Onboarding Step 1" (Desktop 2560×2048).
- * All colours / spacing / radii reference tokens.css via the Tailwind theme.
+ * All colours / spacing / radii reference the design-project tokens in globals.css.
  */
 
 interface OnboardingStepperProps {
@@ -60,8 +59,8 @@ export default function OnboardingStepper({
                   "font-medium text-[14px] leading-[16px] tracking-[0.01em]",
                   "transition-colors duration-200",
                   isActive || isCompleted
-                    ? "bg-primary text-white"
-                    : "border border-border bg-background text-body",
+                    ? "bg-primary text-primary-foreground"
+                    : "border border-border bg-background text-muted-foreground",
                 ].join(" ")}
               >
                 {isCompleted ? (
@@ -79,7 +78,7 @@ export default function OnboardingStepper({
                 className={[
                   "absolute -bottom-6 left-1/2 -translate-x-1/2 whitespace-nowrap",
                   "font-semibold text-[12px] leading-[16px]",
-                  isActive || isCompleted ? "text-heading" : "text-body",
+                  isActive || isCompleted ? "text-foreground" : "text-muted-foreground",
                 ].join(" ")}
               >
                 {label}
