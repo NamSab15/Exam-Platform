@@ -4,31 +4,31 @@ import { useState } from "react";
 import OnboardingStepper from "../OnboardingStepper";
 
 /* ── Shared style constants ─────────────────────────────────────
-   Every colour / radius / spacing references a design-token variable
-   through the Tailwind theme (see globals.css @theme). */
+   Every colour / radius / spacing references the design-project
+   tokens defined in globals.css. */
 
 const inputBase = [
   "w-full bg-background border border-border rounded-sm",
-  "text-[16px] leading-[24px] text-heading",
+  "text-[16px] leading-[24px] text-foreground",
   "py-2 px-3 transition-all duration-200",
   "outline-none focus:border-primary",
-  "focus:shadow-[0_0_0_2px_rgba(108,29,95,0.2)]",
+  "focus-visible:ring-2 focus-visible:ring-ring/50",
 ].join(" ");
 
 const btnPrimary = [
-  "bg-primary text-white rounded-md",
+  "bg-primary text-primary-foreground rounded-md",
   "font-medium text-[14px] leading-[16px] tracking-[0.01em]",
   "py-2 px-6 transition-colors duration-200",
-  "hover:bg-primary-hover cursor-pointer",
+  "hover:bg-primary/80 cursor-pointer",
   "border-none outline-none",
   "flex items-center gap-2",
 ].join(" ");
 
 const btnSecondary = [
-  "bg-background text-body border border-border rounded-sm",
+  "bg-background text-muted-foreground border border-border rounded-sm",
   "font-medium text-[14px] leading-[16px] tracking-[0.01em]",
   "py-2 px-6 transition-colors duration-200",
-  "hover:bg-surface-hover cursor-pointer",
+  "hover:bg-muted cursor-pointer",
 ].join(" ");
 
 /* ── Plan tiers ─────────────────────────────────────────────── */
@@ -64,14 +64,14 @@ export default function OnboardingStep1Page({ onNext }: { onNext?: () => void } 
   }
 
   return (
-    <main className="min-h-screen bg-background flex justify-center py-8 md:py-12 px-4 md:px-12">
+    <main className="min-h-screen bg-background flex justify-center py-8 md:py-12 px-4 md:px-12 text-foreground">
       <div className="w-full max-w-[800px] flex flex-col">
         {/* ── Header ───────────────────────────────────────── */}
         <header className="mb-8">
-          <h1 className="font-semibold text-[32px] leading-[40px] tracking-[-0.02em] text-heading mb-1">
+          <h1 className="font-semibold text-[32px] leading-[40px] tracking-[-0.02em] text-foreground mb-1">
             Welcome — let&apos;s set up your organisation
           </h1>
-          <p className="text-[14px] leading-[20px] text-body">
+          <p className="text-[14px] leading-[20px] text-muted-foreground">
             Shown once, right after a tenant admin&apos;s first login.
           </p>
         </header>
@@ -83,7 +83,7 @@ export default function OnboardingStep1Page({ onNext }: { onNext?: () => void } 
 
         {/* ── Main form card ───────────────────────────────── */}
         <div className="bg-background border border-border p-6 mt-4">
-          <h2 className="font-semibold text-[20px] leading-[28px] text-heading mb-6">
+          <h2 className="font-semibold text-[20px] leading-[28px] text-foreground mb-6">
             Step 1 — Organisation details
           </h2>
 
@@ -94,7 +94,7 @@ export default function OnboardingStep1Page({ onNext }: { onNext?: () => void } 
             {/* Organisation name */}
             <div>
               <label
-                className="block font-medium text-[14px] leading-[16px] tracking-[0.01em] text-body mb-2"
+                className="block font-medium text-[14px] leading-[16px] tracking-[0.01em] text-muted-foreground mb-2"
                 htmlFor="org_name"
               >
                 Organisation name
@@ -113,7 +113,7 @@ export default function OnboardingStep1Page({ onNext }: { onNext?: () => void } 
             {/* Tenant slug */}
             <div>
               <label
-                className="block font-medium text-[14px] leading-[16px] tracking-[0.01em] text-body mb-2"
+                className="block font-medium text-[14px] leading-[16px] tracking-[0.01em] text-muted-foreground mb-2"
                 htmlFor="tenant_slug"
               >
                 Tenant slug (used in URLs)
@@ -127,14 +127,14 @@ export default function OnboardingStep1Page({ onNext }: { onNext?: () => void } 
                 value={tenantSlug}
                 onChange={(e) => setTenantSlug(e.target.value)}
               />
-              <p className="text-[14px] leading-[20px] text-body">
+              <p className="text-[14px] leading-[20px] text-muted-foreground">
                 must be unique, lowercase, no spaces
               </p>
             </div>
 
             {/* Plan tier selector */}
             <div>
-              <label className="block font-medium text-[14px] leading-[16px] tracking-[0.01em] text-body mb-2">
+              <label className="block font-medium text-[14px] leading-[16px] tracking-[0.01em] text-muted-foreground mb-2">
                 Plan tier
               </label>
               <div className="flex flex-col sm:flex-row gap-2">
@@ -150,8 +150,8 @@ export default function OnboardingStep1Page({ onNext }: { onNext?: () => void } 
                         "font-medium text-[14px] leading-[16px] tracking-[0.01em]",
                         "transition-colors duration-200 cursor-pointer",
                         isSelected
-                          ? "bg-surface-hover text-heading border-heading"
-                          : "bg-background text-body border-border hover:bg-surface-hover",
+                          ? "bg-muted text-foreground border-foreground"
+                          : "bg-background text-muted-foreground border-border hover:bg-muted",
                       ].join(" ")}
                     >
                       {tier}
@@ -164,7 +164,7 @@ export default function OnboardingStep1Page({ onNext }: { onNext?: () => void } 
             {/* Primary contact email */}
             <div>
               <label
-                className="block font-medium text-[14px] leading-[16px] tracking-[0.01em] text-body mb-2"
+                className="block font-medium text-[14px] leading-[16px] tracking-[0.01em] text-muted-foreground mb-2"
                 htmlFor="contact_email"
               >
                 Primary contact email
@@ -181,16 +181,16 @@ export default function OnboardingStep1Page({ onNext }: { onNext?: () => void } 
             </div>
 
             {/* Note box */}
-            <div className="border border-dashed border-border bg-surface-hover p-4 rounded-sm">
+            <div className="border border-dashed border-border bg-muted p-4 rounded-sm">
               <div className="flex items-start gap-2">
-                <span className="material-symbols-outlined text-body text-[20px] mt-px">
+                <span className="material-symbols-outlined text-muted-foreground text-[20px] mt-px">
                   info
                 </span>
                 <div>
-                  <p className="font-medium text-[14px] leading-[16px] tracking-[0.01em] text-heading mb-1">
+                  <p className="font-medium text-[14px] leading-[16px] tracking-[0.01em] text-foreground mb-1">
                     Note: tenant isolation key created here
                   </p>
-                  <p className="text-[14px] leading-[20px] text-body">
+                  <p className="text-[14px] leading-[20px] text-muted-foreground">
                     This ID is attached to every record going forward.
                   </p>
                 </div>

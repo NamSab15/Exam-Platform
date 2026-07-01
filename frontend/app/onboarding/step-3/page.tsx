@@ -15,29 +15,29 @@ import { useRouter } from "next/navigation";
 import OnboardingStepper from "../OnboardingStepper";
 
 /* ── Shared style constants ─────────────────────────────────────
-   Every colour / radius / spacing references a design-token variable
-   through the Tailwind theme (see globals.css @theme). */
+   Every colour / radius / spacing references the design-project
+   tokens defined in globals.css. */
 
 const inputBase = [
   "w-full bg-background border border-border rounded-sm",
-  "text-[16px] leading-[24px] text-heading",
+  "text-[16px] leading-[24px] text-foreground",
   "py-2 px-3 transition-all duration-200",
   "outline-none focus:border-primary",
-  "focus:shadow-[0_0_0_2px_rgba(108,29,95,0.2)]",
+  "focus-visible:ring-2 focus-visible:ring-ring/50",
 ].join(" ");
 
 const btnPrimary = [
-  "bg-primary text-white rounded-md font-medium",
+  "bg-primary text-primary-foreground rounded-md font-medium",
   "text-[14px] leading-[16px] tracking-[0.01em]",
-  "px-4 py-2 hover:bg-primary-hover transition-colors duration-200",
+  "px-4 py-2 hover:bg-primary/80 transition-colors duration-200",
   "border-none outline-none cursor-pointer",
   "flex items-center gap-2",
 ].join(" ");
 
 const btnSecondary = [
-  "bg-background text-body border border-border rounded-sm font-medium",
+  "bg-background text-muted-foreground border border-border rounded-sm font-medium",
   "text-[14px] leading-[16px] tracking-[0.01em]",
-  "px-6 py-2 hover:bg-surface-hover transition-colors duration-200",
+  "px-6 py-2 hover:bg-muted transition-colors duration-200",
   "cursor-pointer",
 ].join(" ");
 
@@ -77,10 +77,10 @@ function Toggle({
   return (
     <div className="flex items-center justify-between gap-4 py-3">
       <div className="flex-1">
-        <p className="text-[14px] leading-[20px] text-heading font-medium">
+        <p className="text-[14px] leading-[20px] text-foreground font-medium">
           {label}
         </p>
-        <p className="text-[14px] leading-[20px] text-body">{description}</p>
+        <p className="text-[14px] leading-[20px] text-muted-foreground">{description}</p>
       </div>
       <button
         type="button"
@@ -143,14 +143,14 @@ export default function OnboardingStep3Page({ onNext }: { onNext?: () => void } 
   }
 
   return (
-    <main className="min-h-screen bg-background flex justify-center py-8 md:py-12 px-4 md:px-12">
+    <main className="min-h-screen bg-background flex justify-center py-8 md:py-12 px-4 md:px-12 text-foreground">
       <div className="w-full max-w-[800px] flex flex-col">
         {/* ── Header ───────────────────────────────────────── */}
         <header className="mb-8">
-          <h1 className="font-semibold text-[32px] leading-[40px] tracking-[-0.02em] text-heading mb-1">
+          <h1 className="font-semibold text-[32px] leading-[40px] tracking-[-0.02em] text-foreground mb-1">
             Configure timezone and notifications
           </h1>
-          <p className="text-[14px] leading-[20px] text-body">
+          <p className="text-[14px] leading-[20px] text-muted-foreground">
             These settings apply to all exams in your organisation unless
             overridden at the exam level.
           </p>
@@ -163,7 +163,7 @@ export default function OnboardingStep3Page({ onNext }: { onNext?: () => void } 
 
         {/* ── Main form card ───────────────────────────────── */}
         <div className="bg-background border border-border p-6 mt-4">
-          <h2 className="font-semibold text-[20px] leading-[28px] text-heading mb-6">
+          <h2 className="font-semibold text-[20px] leading-[28px] text-foreground mb-6">
             Step 3 — Timezone &amp; Notifications
           </h2>
 
@@ -174,12 +174,12 @@ export default function OnboardingStep3Page({ onNext }: { onNext?: () => void } 
             {/* Timezone selector */}
             <div>
               <label
-                className="block font-medium text-[14px] leading-[16px] tracking-[0.01em] text-body mb-2"
+                className="block font-medium text-[14px] leading-[16px] tracking-[0.01em] text-muted-foreground mb-2"
                 htmlFor="timezone"
               >
                 Organisation timezone
               </label>
-              <p className="text-[14px] leading-[20px] text-muted mb-2">
+              <p className="text-[14px] leading-[20px] text-muted-foreground mb-2">
                 All exam scheduling times will be stored in UTC and displayed to
                 candidates in this timezone.
               </p>
@@ -199,7 +199,7 @@ export default function OnboardingStep3Page({ onNext }: { onNext?: () => void } 
 
             {/* Date format radio group */}
             <div>
-              <label className="block font-medium text-[14px] leading-[16px] tracking-[0.01em] text-body mb-2">
+              <label className="block font-medium text-[14px] leading-[16px] tracking-[0.01em] text-muted-foreground mb-2">
                 Date display format
               </label>
               <div className="flex flex-col gap-1">
@@ -215,8 +215,8 @@ export default function OnboardingStep3Page({ onNext }: { onNext?: () => void } 
                         "transition-colors duration-200 cursor-pointer",
                         "border-none bg-transparent outline-none text-left w-full",
                         isSelected
-                          ? "bg-surface-hover"
-                          : "hover:bg-surface-hover",
+                          ? "bg-muted"
+                          : "hover:bg-muted",
                       ].join(" ")}
                     >
                       {/* Radio circle */}
@@ -230,7 +230,7 @@ export default function OnboardingStep3Page({ onNext }: { onNext?: () => void } 
                           <span className="w-2 h-2 rounded-full bg-primary" />
                         )}
                       </span>
-                      <span className="text-heading text-[14px] leading-[20px]">
+                      <span className="text-foreground text-[14px] leading-[20px]">
                         {fmt}
                       </span>
                     </button>
@@ -242,12 +242,12 @@ export default function OnboardingStep3Page({ onNext }: { onNext?: () => void } 
             {/* Notification email */}
             <div>
               <label
-                className="block font-medium text-[14px] leading-[16px] tracking-[0.01em] text-body mb-2"
+                className="block font-medium text-[14px] leading-[16px] tracking-[0.01em] text-muted-foreground mb-2"
                 htmlFor="notif_email"
               >
                 Notification sender address
               </label>
-              <p className="text-[14px] leading-[20px] text-muted mb-2">
+              <p className="text-[14px] leading-[20px] text-muted-foreground mb-2">
                 System emails (exam invites, results, certificates) will be sent
                 from this address.
               </p>
@@ -265,12 +265,12 @@ export default function OnboardingStep3Page({ onNext }: { onNext?: () => void } 
             {/* Default candidate instructions */}
             <div>
               <label
-                className="block font-medium text-[14px] leading-[16px] tracking-[0.01em] text-body mb-2"
+                className="block font-medium text-[14px] leading-[16px] tracking-[0.01em] text-muted-foreground mb-2"
                 htmlFor="default_instructions"
               >
                 Default candidate instructions
               </label>
-              <p className="text-[14px] leading-[20px] text-muted mb-2">
+              <p className="text-[14px] leading-[20px] text-muted-foreground mb-2">
                 Pre-filled on every new exam. Exam creators can override this
                 per exam.
               </p>
@@ -286,7 +286,7 @@ export default function OnboardingStep3Page({ onNext }: { onNext?: () => void } 
 
             {/* Notification toggles */}
             <div>
-              <label className="block font-medium text-[14px] leading-[16px] tracking-[0.01em] text-body mb-2">
+              <label className="block font-medium text-[14px] leading-[16px] tracking-[0.01em] text-muted-foreground mb-2">
                 Email notifications
               </label>
               <div className="border border-border rounded-sm divide-y divide-border">

@@ -7,28 +7,28 @@ export const metadata: Metadata = {
 
 /* ── Shared style constants ─────────────────────────────────────
    Keeps JSX clean while staying token-driven.
-   Every colour / radius / spacing references a design-token variable
-   through the Tailwind theme (see globals.css @theme). */
+   Every colour / radius / spacing references the design-project
+   tokens defined in globals.css. */
 
 const btnPrimary = [
-  "bg-primary text-white rounded-md py-2 px-4",
+  "bg-primary text-primary-foreground rounded-md py-2 px-4",
   "font-medium text-[14px] leading-[20px]",
-  "transition-colors hover:bg-primary-hover",
+  "transition-colors hover:bg-primary/80",
   "border-none outline-none cursor-pointer",
 ].join(" ");
 
 const btnSecondary = [
-  "bg-background text-heading border border-border rounded-md py-2 px-4",
+  "bg-background text-foreground border border-border rounded-md py-2 px-4",
   "font-medium text-[14px] leading-[20px]",
-  "transition-colors hover:bg-surface-hover hover:border-primary",
+  "transition-colors hover:bg-muted hover:border-primary",
   "cursor-pointer",
 ].join(" ");
 
 const inputBase = [
   "border border-border rounded-sm py-2 px-3",
-  "text-[14px] outline-none bg-background",
+  "text-[14px] outline-none bg-background text-foreground",
   "transition-all focus:border-primary",
-  "focus:shadow-[0_0_0_2px_rgba(108,29,95,0.2)]",
+  "focus-visible:ring-2 focus-visible:ring-ring/50",
 ].join(" ");
 
 /* ── Sample data (static for now) ───────────────────────────── */
@@ -64,16 +64,16 @@ const csvPreviewRows = [
 
 export default function UsersPage() {
   return (
-    <main className="min-h-screen bg-background p-8 flex justify-center">
+    <main className="min-h-screen bg-background p-8 flex justify-center text-foreground">
       <div className="w-full max-w-[1280px] flex flex-col gap-5">
 
         {/* ── Header ───────────────────────────────────────── */}
         <section className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
           <div>
-            <h1 className="text-heading font-semibold text-[32px] leading-[40px] tracking-[-0.02em]">
+            <h1 className="text-foreground font-semibold text-[32px] leading-[40px] tracking-[-0.02em]">
               Users
             </h1>
-            <p className="text-body text-[14px] leading-[20px] mt-1">
+            <p className="text-muted-foreground text-[14px] leading-[20px] mt-1">
               northbridge-university · 247 users
             </p>
           </div>
@@ -91,7 +91,7 @@ export default function UsersPage() {
         {/* ── Filter row ───────────────────────────────────── */}
         <section className="flex flex-col sm:flex-row gap-4 w-full">
           <div className="relative flex-1 max-w-md">
-            <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-body text-[18px]">
+            <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground text-[18px]">
               search
             </span>
             <input
@@ -101,14 +101,14 @@ export default function UsersPage() {
             />
           </div>
 
-          <select className={`${inputBase} text-heading min-w-[150px] cursor-pointer`}>
+          <select className={`${inputBase} text-foreground min-w-[150px] cursor-pointer`}>
             <option>Role: All</option>
             <option>Exam Creator</option>
             <option>Candidate</option>
             <option>Proctor</option>
           </select>
 
-          <select className={`${inputBase} text-heading min-w-[150px] cursor-pointer`}>
+          <select className={`${inputBase} text-foreground min-w-[150px] cursor-pointer`}>
             <option>Status: All</option>
             <option>Active</option>
             <option>Deactivated</option>
@@ -120,7 +120,7 @@ export default function UsersPage() {
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse">
               <thead>
-                <tr className="bg-surface-hover border-b border-border text-[12px] leading-[16px] font-semibold text-body uppercase tracking-wider">
+                <tr className="bg-muted border-b border-border text-[12px] leading-[16px] font-semibold text-muted-foreground uppercase tracking-wider">
                   <th className="p-4 w-12">
                     <input
                       type="checkbox"
@@ -135,7 +135,7 @@ export default function UsersPage() {
                 </tr>
               </thead>
 
-              <tbody className="text-[14px] leading-[20px] text-heading">
+              <tbody className="text-[14px] leading-[20px] text-foreground">
                 {users.map((user) => {
                   const isActive = user.status === "Active";
                   return (
@@ -143,8 +143,8 @@ export default function UsersPage() {
                       key={user.email}
                       className={[
                         "border-b border-border border-l-2 border-l-transparent",
-                        "transition-colors hover:bg-surface-hover hover:border-l-primary",
-                        !isActive && "bg-surface-hover/30",
+                        "transition-colors hover:bg-muted hover:border-l-primary",
+                        !isActive && "bg-muted/30",
                       ]
                         .filter(Boolean)
                         .join(" ")}
@@ -155,40 +155,40 @@ export default function UsersPage() {
                           className="rounded border-border accent-primary"
                         />
                       </td>
-                      <td className={`p-4 font-medium ${!isActive ? "text-body" : ""}`}>
+                      <td className={`p-4 font-medium ${!isActive ? "text-muted-foreground" : ""}`}>
                         {user.name}
                       </td>
-                      <td className={`p-4 text-body ${!isActive ? "opacity-70" : ""}`}>
+                      <td className={`p-4 text-muted-foreground ${!isActive ? "opacity-70" : ""}`}>
                         {user.email}
                       </td>
-                      <td className={`p-4 ${!isActive ? "text-body opacity-70" : ""}`}>
+                      <td className={`p-4 ${!isActive ? "text-muted-foreground opacity-70" : ""}`}>
                         {user.role}
                       </td>
                       <td className="p-4">
                         <span
                           className={`flex items-center gap-1 ${
-                            isActive ? "text-success-text" : "text-danger"
+                            isActive ? "text-green-700 font-semibold" : "text-destructive"
                           }`}
                         >
                           <span
                             className={`w-2 h-2 rounded-full ${
-                              isActive ? "bg-success-text" : "bg-danger"
+                              isActive ? "bg-green-700" : "bg-destructive"
                             }`}
                           />
                           {user.status}
                         </span>
                       </td>
                       <td className="p-4 text-right">
-                        <button className="text-body hover:text-primary transition-colors text-[12px] font-medium">
+                        <button className="text-muted-foreground hover:text-primary transition-colors text-[12px] font-medium">
                           Edit
                         </button>
                         <span className="text-border mx-1">·</span>
                         {isActive ? (
-                          <button className="text-body hover:text-danger transition-colors text-[12px] font-medium">
+                          <button className="text-muted-foreground hover:text-destructive transition-colors text-[12px] font-medium">
                             Deactivate
                           </button>
                         ) : (
-                          <button className="text-body hover:text-success-text transition-colors text-[12px] font-medium">
+                          <button className="text-muted-foreground hover:text-green-700 transition-colors text-[12px] font-medium">
                             Reactivate
                           </button>
                         )}
@@ -210,39 +210,39 @@ export default function UsersPage() {
           </div>
         </section>
 
-        <p className="text-body text-xs px-1">
+        <p className="text-muted-foreground text-xs px-1">
           Deactivated users keep their data &amp; audit history — never deleted.
         </p>
 
         {/* ── Bulk import panel ────────────────────────────── */}
         <section className="mt-4 mb-8">
-          <h2 className="text-heading text-lg font-medium mb-4">
+          <h2 className="text-foreground text-lg font-medium mb-4">
             Bulk import panel
           </h2>
 
           <div className="border border-dashed border-border rounded-md p-6 bg-background">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
               {/* Dropzone */}
-              <div className="border border-dashed border-border rounded-md p-8 flex flex-col items-center justify-center text-center bg-surface-hover/50 hover:bg-surface-hover transition-colors cursor-pointer min-h-[160px]">
+              <div className="border border-dashed border-border rounded-md p-8 flex flex-col items-center justify-center text-center bg-muted/50 hover:bg-muted transition-colors cursor-pointer min-h-[160px]">
                 <span className="material-symbols-outlined text-border text-4xl mb-2">
                   upload_file
                 </span>
-                <p className="text-heading font-medium text-md">
+                <p className="text-foreground font-medium text-md">
                   Drag CSV file here
                 </p>
-                <p className="text-body text-[14px] mt-1">or click to browse</p>
+                <p className="text-muted-foreground text-[14px] mt-1">or click to browse</p>
               </div>
 
               {/* Instructions */}
               <div className="flex flex-col justify-center">
-                <h3 className="text-heading text-[14px] font-medium mb-2">
+                <h3 className="text-foreground text-[14px] font-medium mb-2">
                   Required columns
                 </h3>
                 <div className="flex gap-2 flex-wrap mb-4">
                   {["name", "email", "role"].map((col) => (
                     <span
                       key={col}
-                      className="bg-surface-hover border border-border rounded px-2 py-1 font-mono text-xs text-body"
+                      className="bg-muted border border-border rounded px-2 py-1 font-mono text-xs text-muted-foreground"
                     >
                       {col}
                     </span>
@@ -261,8 +261,8 @@ export default function UsersPage() {
             </div>
 
             {/* CSV preview */}
-            <div className="bg-surface-hover border border-border rounded-lg overflow-hidden mb-6">
-              <div className="p-3 border-b border-border bg-background text-[14px] font-medium text-heading">
+            <div className="bg-muted border border-border rounded-lg overflow-hidden mb-6">
+              <div className="p-3 border-b border-border bg-background text-[14px] font-medium text-foreground">
                 Preview before confirming
               </div>
               <div className="p-4 font-mono text-xs flex flex-col gap-2 overflow-x-auto whitespace-nowrap">
@@ -270,7 +270,7 @@ export default function UsersPage() {
                   row.error ? (
                     <div
                       key={row.line}
-                      className="flex gap-4 text-danger bg-error-container/20 p-2 rounded border border-error-container"
+                      className="flex gap-4 text-destructive bg-destructive/10 p-2 rounded border border-destructive/20"
                     >
                       <span className="w-6 text-center opacity-50">
                         {row.line}
@@ -283,7 +283,7 @@ export default function UsersPage() {
                   ) : (
                     <div
                       key={row.line}
-                      className="flex gap-4 text-body p-2 rounded hover:bg-background transition-colors"
+                      className="flex gap-4 text-muted-foreground p-2 rounded hover:bg-background transition-colors"
                     >
                       <span className="w-6 text-center text-border">
                         {row.line}
@@ -291,7 +291,7 @@ export default function UsersPage() {
                       <span className="w-32 truncate">{row.name}</span>
                       <span className="w-48 truncate">{row.email}</span>
                       <span className="w-24">{row.role}</span>
-                      <span className="text-success-text">
+                      <span className="text-green-700">
                         <span className="material-symbols-outlined text-[14px] align-middle">
                           check_circle
                         </span>
@@ -304,7 +304,7 @@ export default function UsersPage() {
 
             {/* Footer actions */}
             <div className="flex flex-col sm:flex-row justify-between items-center gap-4 border-t border-border pt-6">
-              <p className="text-danger text-[14px] leading-[20px] font-medium flex items-center gap-2">
+              <p className="text-destructive text-[14px] leading-[20px] font-medium flex items-center gap-2">
                 <span className="material-symbols-outlined text-[18px]">
                   error
                 </span>

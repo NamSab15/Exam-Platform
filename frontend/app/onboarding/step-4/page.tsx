@@ -14,29 +14,29 @@ import { useRouter } from "next/navigation";
 import OnboardingStepper from "../OnboardingStepper";
 
 /* ── Shared style constants ─────────────────────────────────────
-   Every colour / radius / spacing references a design-token variable
-   through the Tailwind theme (see globals.css @theme). */
+   Every colour / radius / spacing references the design-project
+   tokens defined in globals.css. */
 
 const inputBase = [
   "w-full bg-background border border-border rounded-sm",
-  "text-[16px] leading-[24px] text-heading",
+  "text-[16px] leading-[24px] text-foreground",
   "py-2 px-3 transition-all duration-200",
   "outline-none focus:border-primary",
-  "focus:shadow-[0_0_0_2px_rgba(108,29,95,0.2)]",
+  "focus-visible:ring-2 focus-visible:ring-ring/50",
 ].join(" ");
 
 const btnPrimary = [
-  "bg-primary text-white rounded-md font-medium",
+  "bg-primary text-primary-foreground rounded-md font-medium",
   "text-[14px] leading-[16px] tracking-[0.01em]",
-  "px-4 py-2 hover:bg-primary-hover transition-colors duration-200",
+  "px-4 py-2 hover:bg-primary/80 transition-colors duration-200",
   "border-none outline-none cursor-pointer",
   "flex items-center gap-2",
 ].join(" ");
 
 const btnSecondary = [
-  "bg-background text-body border border-border rounded-sm font-medium",
+  "bg-background text-muted-foreground border border-border rounded-sm font-medium",
   "text-[14px] leading-[16px] tracking-[0.01em]",
-  "px-6 py-2 hover:bg-surface-hover transition-colors duration-200",
+  "px-6 py-2 hover:bg-muted transition-colors duration-200",
   "cursor-pointer",
 ].join(" ");
 
@@ -104,14 +104,14 @@ export default function OnboardingStep4Page({ onNext }: { onNext?: () => void } 
   }
 
   return (
-    <main className="min-h-screen bg-background flex justify-center py-8 md:py-12 px-4 md:px-12">
+    <main className="min-h-screen bg-background flex justify-center py-8 md:py-12 px-4 md:px-12 text-foreground">
       <div className="w-full max-w-[800px] flex flex-col">
         {/* ── Header ───────────────────────────────────────── */}
         <header className="mb-8">
-          <h1 className="font-semibold text-[32px] leading-[40px] tracking-[-0.02em] text-heading mb-1">
+          <h1 className="font-semibold text-[32px] leading-[40px] tracking-[-0.02em] text-foreground mb-1">
             Invite your team
           </h1>
-          <p className="text-[14px] leading-[20px] text-body">
+          <p className="text-[14px] leading-[20px] text-muted-foreground">
             Add users to your organisation. You can always invite more later
             from the Users page.
           </p>
@@ -124,7 +124,7 @@ export default function OnboardingStep4Page({ onNext }: { onNext?: () => void } 
 
         {/* ── Main form card ───────────────────────────────── */}
         <div className="bg-background border border-border p-6 mt-4">
-          <h2 className="font-semibold text-[20px] leading-[28px] text-heading mb-6">
+          <h2 className="font-semibold text-[20px] leading-[28px] text-foreground mb-6">
             Step 4 — Invite users
           </h2>
 
@@ -135,7 +135,7 @@ export default function OnboardingStep4Page({ onNext }: { onNext?: () => void } 
             {/* Invite row builder */}
             <div className="flex flex-col gap-3">
               {/* Column labels */}
-              <div className="hidden sm:flex gap-3 text-[12px] leading-[16px] font-semibold text-body">
+              <div className="hidden sm:flex gap-3 text-[12px] leading-[16px] font-semibold text-muted-foreground">
                 <span className="flex-1">Full name</span>
                 <span className="flex-1">Email address</span>
                 <span className="w-44">Role</span>
@@ -174,7 +174,7 @@ export default function OnboardingStep4Page({ onNext }: { onNext?: () => void } 
                     type="button"
                     onClick={() => removeRow(row.id)}
                     className={[
-                      "text-error hover:text-danger transition-colors cursor-pointer",
+                      "text-destructive hover:opacity-80 transition-colors cursor-pointer",
                       "bg-transparent border-none p-1 self-center",
                       idx === 0 ? "invisible" : "",
                     ].join(" ")}
@@ -200,7 +200,7 @@ export default function OnboardingStep4Page({ onNext }: { onNext?: () => void } 
                   Add another person
                 </button>
               ) : (
-                <p className="text-muted text-[14px] leading-[20px] mt-1">
+                <p className="text-muted-foreground text-[14px] leading-[20px] mt-1">
                   Maximum of 10 invites at once. Add more after setup.
                 </p>
               )}
@@ -209,7 +209,7 @@ export default function OnboardingStep4Page({ onNext }: { onNext?: () => void } 
             {/* Divider */}
             <div className="flex items-center gap-4">
               <div className="h-px bg-border flex-1" />
-              <span className="text-muted text-[14px] font-medium">or</span>
+              <span className="text-muted-foreground text-[14px] font-medium">or</span>
               <div className="h-px bg-border flex-1" />
             </div>
 
@@ -225,20 +225,18 @@ export default function OnboardingStep4Page({ onNext }: { onNext?: () => void } 
                 </span>
                 Bulk import via CSV
               </button>
-              <p className="text-[14px] leading-[20px] text-muted mt-2">
+              <p className="text-[14px] leading-[20px] text-muted-foreground mt-2">
                 Use the Users page after setup to import hundreds of users at
                 once.
               </p>
             </div>
 
             {/* Info box */}
-            {/* no token — add to tokens.css if reused */}
-            <div className="bg-[#FFF8E1] border border-[#F9A825] rounded-md p-3 flex gap-2 items-start">
-              {/* no token — add to tokens.css if reused */}
-              <span className="material-symbols-outlined text-[#F9A825] text-[20px] mt-px shrink-0">
+            <div className="bg-amber-50 border border-amber-300 rounded-md p-3 flex gap-2 items-start">
+              <span className="material-symbols-outlined text-amber-600 text-[20px] mt-px shrink-0">
                 info
               </span>
-              <p className="text-[14px] leading-[20px] text-heading">
+              <p className="text-[14px] leading-[20px] text-foreground">
                 Invitations will be sent by email once you complete setup in the
                 final step. Invited users will be asked to set their password on
                 first login.

@@ -14,21 +14,21 @@ import { useRouter } from "next/navigation";
 import OnboardingStepper from "../OnboardingStepper";
 
 /* ── Shared style constants ─────────────────────────────────────
-   Every colour / radius / spacing references a design-token variable
-   through the Tailwind theme (see globals.css @theme). */
+   Every colour / radius / spacing references the design-project
+   tokens defined in globals.css. */
 
 const btnPrimary = [
-  "bg-primary text-white rounded-md font-medium",
+  "bg-primary text-primary-foreground rounded-md font-medium",
   "text-[14px] leading-[16px] tracking-[0.01em]",
-  "px-4 py-2 hover:bg-primary-hover transition-colors duration-200",
+  "px-4 py-2 hover:bg-primary/80 transition-colors duration-200",
   "border-none outline-none cursor-pointer",
   "flex items-center gap-2",
 ].join(" ");
 
 const btnSecondary = [
-  "bg-background text-body border border-border rounded-sm font-medium",
+  "bg-background text-muted-foreground border border-border rounded-sm font-medium",
   "text-[14px] leading-[16px] tracking-[0.01em]",
-  "px-6 py-2 hover:bg-surface-hover transition-colors duration-200",
+  "px-6 py-2 hover:bg-muted transition-colors duration-200",
   "cursor-pointer",
 ].join(" ");
 
@@ -68,10 +68,10 @@ function SummaryRow({
 }) {
   return (
     <div className="flex flex-col sm:flex-row sm:items-start gap-1 sm:gap-4 py-2">
-      <span className="text-muted text-[14px] leading-[20px] shrink-0 sm:w-40">
+      <span className="text-muted-foreground text-[14px] leading-[20px] shrink-0 sm:w-40">
         {label}
       </span>
-      <span className="text-heading text-[14px] leading-[20px]">
+      <span className="text-foreground text-[14px] leading-[20px]">
         {children}
       </span>
     </div>
@@ -93,7 +93,7 @@ function SummaryCard({
   return (
     <div className="border border-border rounded-sm p-5">
       <div className="flex items-center justify-between mb-3">
-        <h3 className="text-heading font-semibold text-[16px] leading-[24px]">
+        <h3 className="text-foreground font-semibold text-[16px] leading-[24px]">
           {title}
         </h3>
         <button
@@ -129,14 +129,14 @@ export default function OnboardingStep5Page({ onNext }: { onNext?: () => void } 
   }
 
   return (
-    <main className="min-h-screen bg-background flex justify-center py-8 md:py-12 px-4 md:px-12">
+    <main className="min-h-screen bg-background flex justify-center py-8 md:py-12 px-4 md:px-12 text-foreground">
       <div className="w-full max-w-[800px] flex flex-col">
         {/* ── Header ───────────────────────────────────────── */}
         <header className="mb-8">
-          <h1 className="font-semibold text-[32px] leading-[40px] tracking-[-0.02em] text-heading mb-1">
+          <h1 className="font-semibold text-[32px] leading-[40px] tracking-[-0.02em] text-foreground mb-1">
             Review your setup
           </h1>
-          <p className="text-[14px] leading-[20px] text-body">
+          <p className="text-[14px] leading-[20px] text-muted-foreground">
             Check everything before we create your organisation. You can change
             these settings later from the admin panel.
           </p>
@@ -160,12 +160,12 @@ export default function OnboardingStep5Page({ onNext }: { onNext?: () => void } 
             </SummaryRow>
             <SummaryRow label="Tenant slug">
               <span>{PLACEHOLDER.slug}</span>
-              <span className="block text-muted text-[12px] leading-[16px] mt-0.5">
+              <span className="block text-muted-foreground text-[12px] leading-[16px] mt-0.5">
                 (your unique isolation key — cannot be changed after setup)
               </span>
             </SummaryRow>
             <SummaryRow label="Plan tier">
-              <span className="bg-surface-hover text-heading rounded-full px-3 py-1 text-[14px] font-medium inline-block">
+              <span className="bg-muted text-foreground rounded-full px-3 py-1 text-[14px] font-medium inline-block">
                 {PLACEHOLDER.planTier}
               </span>
             </SummaryRow>
@@ -178,7 +178,7 @@ export default function OnboardingStep5Page({ onNext }: { onNext?: () => void } 
           <SummaryCard title="Branding" editHref="/onboarding/step-2">
             {/* TODO: replace with context/API data */}
             <SummaryRow label="Logo">
-              <div className="w-16 h-16 bg-surface-hover rounded border border-border flex items-center justify-center text-muted text-[12px]">
+              <div className="w-16 h-16 bg-muted rounded border border-border flex items-center justify-center text-muted-foreground text-[12px]">
                 No logo
               </div>
             </SummaryRow>
@@ -215,10 +215,9 @@ export default function OnboardingStep5Page({ onNext }: { onNext?: () => void } 
             <SummaryRow label="Active notifications">
               <span className="flex flex-wrap gap-1">
                 {PLACEHOLDER.enabledNotifications.map((n) => (
-                  /* no token — add to tokens.css if reused */
                   <span
                     key={n}
-                    className="bg-[#E8F5E9] text-success-text text-[12px] px-2 py-0.5 rounded-full"
+                    className="bg-green-50 text-green-700 text-[12px] px-2 py-0.5 rounded-full border border-green-200"
                   >
                     {n}
                   </span>
@@ -231,7 +230,7 @@ export default function OnboardingStep5Page({ onNext }: { onNext?: () => void } 
           <SummaryCard title="Invited Users" editHref="/onboarding/step-4">
             {/* TODO: replace with context/API data */}
             {PLACEHOLDER.invitedUsers.length === 0 ? (
-              <p className="text-muted text-[14px] leading-[20px] py-2">
+              <p className="text-muted-foreground text-[14px] leading-[20px] py-2">
                 No users invited — you can add them after setup.
               </p>
             ) : (
@@ -239,20 +238,20 @@ export default function OnboardingStep5Page({ onNext }: { onNext?: () => void } 
                 <div className="overflow-x-auto">
                   <table className="w-full text-left">
                     <thead>
-                      <tr className="text-[12px] leading-[16px] font-semibold text-body">
+                      <tr className="text-[12px] leading-[16px] font-semibold text-muted-foreground">
                         <th className="py-2 pr-4 font-medium">Name</th>
                         <th className="py-2 pr-4 font-medium">Email</th>
                         <th className="py-2 font-medium">Role</th>
                       </tr>
                     </thead>
-                    <tbody className="text-[14px] leading-[20px] text-heading">
+                    <tbody className="text-[14px] leading-[20px] text-foreground">
                       {PLACEHOLDER.invitedUsers.slice(0, 5).map((u) => (
                         <tr
                           key={u.email}
                           className="border-t border-border"
                         >
                           <td className="py-2 pr-4">{u.name}</td>
-                          <td className="py-2 pr-4 text-body">{u.email}</td>
+                          <td className="py-2 pr-4 text-muted-foreground">{u.email}</td>
                           <td className="py-2">{u.role}</td>
                         </tr>
                       ))}
@@ -260,7 +259,7 @@ export default function OnboardingStep5Page({ onNext }: { onNext?: () => void } 
                   </table>
                 </div>
                 {PLACEHOLDER.invitedUsers.length > 5 && (
-                  <p className="text-muted text-[14px] leading-[20px] pt-2">
+                  <p className="text-muted-foreground text-[14px] leading-[20px] pt-2">
                     + {PLACEHOLDER.invitedUsers.length - 5} more
                   </p>
                 )}
@@ -272,7 +271,7 @@ export default function OnboardingStep5Page({ onNext }: { onNext?: () => void } 
         {/* ── Onboarding checklist ─────────────────────────── */}
         {/* TODO: populate dynamically from previous steps */}
         <div className="border border-border rounded-md p-4 mt-6">
-          <p className="text-heading font-semibold text-[14px] leading-[20px] mb-3">
+          <p className="text-foreground font-semibold text-[14px] leading-[20px] mb-3">
             Your organisation will be set up with:
           </p>
           <ul className="flex flex-col gap-2">
@@ -283,10 +282,10 @@ export default function OnboardingStep5Page({ onNext }: { onNext?: () => void } 
               "Welcome emails queued for dispatch",
             ].map((item) => (
               <li key={item} className="flex items-center gap-2">
-                <span className="material-symbols-outlined text-success-text text-[20px]">
+                <span className="material-symbols-outlined text-green-700 text-[20px]">
                   check_circle
                 </span>
-                <span className="text-[14px] leading-[20px] text-heading">
+                <span className="text-[14px] leading-[20px] text-foreground">
                   {item}
                 </span>
               </li>
@@ -317,12 +316,11 @@ export default function OnboardingStep5Page({ onNext }: { onNext?: () => void } 
 
         {/* Success banner (shown after clicking Complete setup) */}
         {setupComplete && (
-          /* no token — add to tokens.css if reused */
-          <div className="bg-[#E8F5E9] border border-[#4CAF50] rounded-md p-4 flex gap-3 items-center mt-4">
-            <span className="material-symbols-outlined text-success-text text-[24px]">
+          <div className="bg-green-50 border border-green-500 rounded-md p-4 flex gap-3 items-center mt-4">
+            <span className="material-symbols-outlined text-green-700 text-[24px]">
               check_circle
             </span>
-            <p className="text-heading text-[14px] leading-[20px]">
+            <p className="text-foreground text-[14px] leading-[20px]">
               Your organisation has been created! Sending invite emails and
               redirecting to your dashboard…
             </p>
