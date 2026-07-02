@@ -40,6 +40,6 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# lockfiles
 package-lock.json
 
+.DS_Store
