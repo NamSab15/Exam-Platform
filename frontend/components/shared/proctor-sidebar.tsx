@@ -4,13 +4,12 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { useEffect, useState } from "react"
 import {
-  Database,
-  FileEdit,
-  Sliders,
   Settings,
   HelpCircle,
   Plus,
-  History,
+  Shield,
+  Video,
+  Activity,
   BarChart2,
   Menu,
   X,
@@ -25,44 +24,34 @@ const navLinkClass = (active: boolean) =>
       : "text-muted-foreground hover:bg-zinc-50 hover:text-foreground dark:hover:bg-zinc-900"
   )
 
-export function AdminSidebar() {
+export function ProctorSidebar() {
   const pathname = usePathname()
   const [mobileOpen, setMobileOpen] = useState(false)
 
-  const mainNavItems = [
+  const proctorNavItems = [
     {
-      name: "Question Bank",
-      href: "/question-bank",
-      icon: Database,
-      active: pathname === "/question-bank",
+      name: "Teacher Dashboard",
+      href: "/proctor/dashboard",
+      icon: Shield,
+      active: pathname === "/proctor/dashboard",
     },
     {
-      name: "Editor",
-      href: "/question-editor",
-      icon: FileEdit,
-      active: pathname === "/question-editor",
-    },
-    {
-      name: "Exam Setup",
-      href: "/exam-setup",
-      icon: Sliders,
-      active: pathname === "/exam-setup",
-    },
-  ]
-
-  const isEditorView = pathname === "/question-editor"
-  const editorNavItems = [
-    {
-      name: "Version History",
-      href: "#",
-      icon: History,
+      name: "Student Monitoring",
+      href: "/proctor/dashboard#monitoring",
+      icon: Video,
       active: false,
     },
     {
-      name: "Performance Analytics",
-      href: "#",
+      name: "Activity Logs",
+      href: "/proctor/activity-logs",
+      icon: Activity,
+      active: pathname === "/proctor/activity-logs",
+    },
+    {
+      name: "Analytics Dashboard",
+      href: "/proctor/analytics",
       icon: BarChart2,
-      active: false,
+      active: pathname === "/proctor/analytics",
     },
   ]
 
@@ -109,7 +98,7 @@ export function AdminSidebar() {
           mobileOpen ? "translate-x-0" : "max-lg:-translate-x-full",
           "lg:translate-x-0"
         )}
-        aria-label="Admin navigation"
+        aria-label="Proctor navigation"
       >
         {/* Brand Header */}
         <div className="flex items-center justify-between gap-3 px-6">
@@ -118,14 +107,14 @@ export function AdminSidebar() {
               className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary font-heading text-lg font-bold text-white select-none"
               aria-hidden="true"
             >
-              X
+              P
             </div>
             <div className="flex flex-col">
               <span className="font-heading text-lg font-bold leading-tight text-primary">
-                Exam Manager
+                Proctor Portal
               </span>
               <span className="text-[10px] font-bold uppercase leading-none tracking-wider text-muted-foreground">
-                Admin Console
+                Enterprise AI Admin
               </span>
             </div>
           </div>
@@ -143,7 +132,7 @@ export function AdminSidebar() {
         {/* Navigation */}
         <nav className="mt-8 flex flex-1 flex-col overflow-y-auto px-4" aria-label="Main navigation">
           <div className="space-y-1">
-            {mainNavItems.map((item) => {
+            {proctorNavItems.map((item) => {
               const Icon = item.icon
               return (
                 <Link
@@ -159,24 +148,6 @@ export function AdminSidebar() {
             })}
           </div>
 
-          {isEditorView && (
-            <div className="mt-6 space-y-1 border-t border-zinc-100 pt-4 dark:border-zinc-800">
-              {editorNavItems.map((item) => {
-                const Icon = item.icon
-                return (
-                  <Link
-                    key={item.name}
-                    href={item.href}
-                    className={navLinkClass(item.active)}
-                  >
-                    <Icon className="h-4 w-4 shrink-0" aria-hidden="true" />
-                    {item.name}
-                  </Link>
-                )
-              })}
-            </div>
-          )}
-
           {/* Quick Actions */}
           <div className="mt-6 px-1">
             <span className="section-label mb-3 block">Quick Actions</span>
@@ -185,7 +156,7 @@ export function AdminSidebar() {
               className="flex w-full items-center justify-center gap-2 rounded-lg bg-primary px-4 py-2.5 text-sm font-medium text-white shadow-sm transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 select-none"
             >
               <Plus className="h-4 w-4 shrink-0" aria-hidden="true" />
-              Create New Exam
+              New Examination
             </Link>
           </div>
         </nav>

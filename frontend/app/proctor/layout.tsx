@@ -1,7 +1,7 @@
 'use client'
 
 import React from "react"
-import { AdminSidebar } from "@/components/shared/admin-sidebar"
+import { ProctorSidebar } from "@/components/shared/proctor-sidebar"
 
 export default function ProctorLayout({
   children,
@@ -10,7 +10,7 @@ export default function ProctorLayout({
 }) {
   return (
     <div className="flex min-h-screen w-full bg-background">
-      <AdminSidebar />
+      <ProctorSidebar />
       <div className="flex flex-1 flex-col lg:pl-[280px]">
         {children}
       </div>
