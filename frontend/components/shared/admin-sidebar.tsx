@@ -14,6 +14,9 @@ import {
   BarChart2,
   Menu,
   X,
+  Shield,
+  Video,
+  Activity,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 
@@ -29,26 +32,55 @@ export function AdminSidebar() {
   const pathname = usePathname()
   const [mobileOpen, setMobileOpen] = useState(false)
 
-  const mainNavItems = [
-    {
-      name: "Question Bank",
-      href: "/question-bank",
-      icon: Database,
-      active: pathname === "/question-bank",
-    },
-    {
-      name: "Editor",
-      href: "/question-editor",
-      icon: FileEdit,
-      active: pathname === "/question-editor",
-    },
-    {
-      name: "Exam Setup",
-      href: "/exam-setup",
-      icon: Sliders,
-      active: pathname === "/exam-setup",
-    },
-  ]
+  const isProctorView = pathname?.startsWith("/proctor")
+
+  const mainNavItems = isProctorView
+    ? [
+        {
+          name: "Teacher Dashboard",
+          href: "/proctor/dashboard",
+          icon: Shield,
+          active: pathname === "/proctor/dashboard",
+        },
+        {
+          name: "Student Monitoring",
+          href: "/proctor/dashboard#monitoring",
+          icon: Video,
+          active: false,
+        },
+        {
+          name: "Activity Logs",
+          href: "/proctor/activity-logs",
+          icon: Activity,
+          active: pathname === "/proctor/activity-logs",
+        },
+        {
+          name: "Analytics Dashboard",
+          href: "/proctor/analytics",
+          icon: BarChart2,
+          active: pathname === "/proctor/analytics",
+        },
+      ]
+    : [
+        {
+          name: "Question Bank",
+          href: "/question-bank",
+          icon: Database,
+          active: pathname === "/question-bank",
+        },
+        {
+          name: "Editor",
+          href: "/question-editor",
+          icon: FileEdit,
+          active: pathname === "/question-editor",
+        },
+        {
+          name: "Exam Setup",
+          href: "/exam-setup",
+          icon: Sliders,
+          active: pathname === "/exam-setup",
+        },
+      ]
 
   const isEditorView = pathname === "/question-editor"
   const editorNavItems = [
@@ -122,10 +154,10 @@ export function AdminSidebar() {
             </div>
             <div className="flex flex-col">
               <span className="font-heading text-lg font-bold leading-tight text-primary">
-                Exam Manager
+                {isProctorView ? "Proctor Portal" : "Exam Manager"}
               </span>
               <span className="text-[10px] font-bold uppercase leading-none tracking-wider text-muted-foreground">
-                Admin Console
+                {isProctorView ? "Enterprise AI Admin" : "Admin Console"}
               </span>
             </div>
           </div>
@@ -180,13 +212,23 @@ export function AdminSidebar() {
           {/* Quick Actions */}
           <div className="mt-6 px-1">
             <span className="section-label mb-3 block">Quick Actions</span>
-            <Link
-              href="/exam-setup"
-              className="flex w-full items-center justify-center gap-2 rounded-lg bg-primary px-4 py-2.5 text-sm font-medium text-white shadow-sm transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 select-none"
-            >
-              <Plus className="h-4 w-4 shrink-0" aria-hidden="true" />
-              Create New Exam
-            </Link>
+            {isProctorView ? (
+              <Link
+                href="/exam-setup"
+                className="flex w-full items-center justify-center gap-2 rounded-lg bg-primary px-4 py-2.5 text-sm font-medium text-white shadow-sm transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 select-none"
+              >
+                <Plus className="h-4 w-4 shrink-0" aria-hidden="true" />
+                New Examination
+              </Link>
+            ) : (
+              <Link
+                href="/exam-setup"
+                className="flex w-full items-center justify-center gap-2 rounded-lg bg-primary px-4 py-2.5 text-sm font-medium text-white shadow-sm transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 select-none"
+              >
+                <Plus className="h-4 w-4 shrink-0" aria-hidden="true" />
+                Create New Exam
+              </Link>
+            )}
           </div>
         </nav>
 
