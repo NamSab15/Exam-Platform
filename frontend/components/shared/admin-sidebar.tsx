@@ -34,53 +34,53 @@ export function AdminSidebar() {
 
   const isProctorView = pathname?.startsWith("/proctor")
 
-  const mainNavItems = isProctorView
-    ? [
-        {
-          name: "Teacher Dashboard",
-          href: "/proctor/dashboard",
-          icon: Shield,
-          active: pathname === "/proctor/dashboard",
-        },
-        {
-          name: "Student Monitoring",
-          href: "/proctor/dashboard#monitoring",
-          icon: Video,
-          active: false,
-        },
-        {
-          name: "Activity Logs",
-          href: "/proctor/activity-logs",
-          icon: Activity,
-          active: pathname === "/proctor/activity-logs",
-        },
-        {
-          name: "Analytics Dashboard",
-          href: "/proctor/analytics",
-          icon: BarChart2,
-          active: pathname === "/proctor/analytics",
-        },
-      ]
-    : [
-        {
-          name: "Question Bank",
-          href: "/question-bank",
-          icon: Database,
-          active: pathname === "/question-bank",
-        },
-        {
-          name: "Editor",
-          href: "/question-editor",
-          icon: FileEdit,
-          active: pathname === "/question-editor",
-        },
-        {
-          name: "Exam Setup",
-          href: "/exam-setup",
-          icon: Sliders,
-          active: pathname === "/exam-setup",
-        },
-      ]
+  const managementNavItems = [
+    {
+      name: "Question Bank",
+      href: "/question-bank",
+      icon: Database,
+      active: pathname === "/question-bank",
+    },
+    {
+      name: "Editor",
+      href: "/question-editor",
+      icon: FileEdit,
+      active: pathname === "/question-editor",
+    },
+    {
+      name: "Exam Setup",
+      href: "/exam-setup",
+      icon: Sliders,
+      active: pathname === "/exam-setup",
+    },
+  ]
+
+  const proctorNavItems = [
+    {
+      name: "Teacher Dashboard",
+      href: "/proctor/dashboard",
+      icon: Shield,
+      active: pathname === "/proctor/dashboard",
+    },
+    {
+      name: "Student Monitoring",
+      href: "/proctor/dashboard#monitoring",
+      icon: Video,
+      active: false,
+    },
+    {
+      name: "Activity Logs",
+      href: "/proctor/activity-logs",
+      icon: Activity,
+      active: pathname === "/proctor/activity-logs",
+    },
+    {
+      name: "Analytics Dashboard",
+      href: "/proctor/analytics",
+      icon: BarChart2,
+      active: pathname === "/proctor/analytics",
+    },
+  ]
 
   const isEditorView = pathname === "/question-editor"
   const editorNavItems = [
@@ -174,8 +174,33 @@ export function AdminSidebar() {
 
         {/* Navigation */}
         <nav className="mt-8 flex flex-1 flex-col overflow-y-auto px-4" aria-label="Main navigation">
+          {/* Exam Management */}
           <div className="space-y-1">
-            {mainNavItems.map((item) => {
+            <span className="section-label mb-2 px-3 block text-[10px] font-bold uppercase tracking-wider text-muted-foreground select-none">
+              Exam Management
+            </span>
+            {managementNavItems.map((item) => {
+              const Icon = item.icon
+              return (
+                <Link
+                  key={item.name}
+                  href={item.href}
+                  className={navLinkClass(item.active)}
+                  aria-current={item.active ? "page" : undefined}
+                >
+                  <Icon className="h-4 w-4 shrink-0" aria-hidden="true" />
+                  {item.name}
+                </Link>
+              )
+            })}
+          </div>
+
+          {/* Proctoring Portal */}
+          <div className="mt-6 space-y-1">
+            <span className="section-label mb-2 px-3 block text-[10px] font-bold uppercase tracking-wider text-muted-foreground select-none">
+              Proctoring Portal
+            </span>
+            {proctorNavItems.map((item) => {
               const Icon = item.icon
               return (
                 <Link
@@ -212,23 +237,13 @@ export function AdminSidebar() {
           {/* Quick Actions */}
           <div className="mt-6 px-1">
             <span className="section-label mb-3 block">Quick Actions</span>
-            {isProctorView ? (
-              <Link
-                href="/exam-setup"
-                className="flex w-full items-center justify-center gap-2 rounded-lg bg-primary px-4 py-2.5 text-sm font-medium text-white shadow-sm transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 select-none"
-              >
-                <Plus className="h-4 w-4 shrink-0" aria-hidden="true" />
-                New Examination
-              </Link>
-            ) : (
-              <Link
-                href="/exam-setup"
-                className="flex w-full items-center justify-center gap-2 rounded-lg bg-primary px-4 py-2.5 text-sm font-medium text-white shadow-sm transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 select-none"
-              >
-                <Plus className="h-4 w-4 shrink-0" aria-hidden="true" />
-                Create New Exam
-              </Link>
-            )}
+            <Link
+              href="/exam-setup"
+              className="flex w-full items-center justify-center gap-2 rounded-lg bg-primary px-4 py-2.5 text-sm font-medium text-white shadow-sm transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 select-none"
+            >
+              <Plus className="h-4 w-4 shrink-0" aria-hidden="true" />
+              Create New Exam
+            </Link>
           </div>
         </nav>
 
