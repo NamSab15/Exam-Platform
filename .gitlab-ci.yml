@@ -1,24 +1,20 @@
 stages:
   - triggers
 
-# Parent-child pipeline triggers
+workflow:
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+
 trigger-frontend:
   stage: triggers
   trigger:
     include: frontend/.gitlab-ci.yml
     strategy: depend
   rules:
-    - changes:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+      changes:
         - frontend/**/*
-      when: on_success
-
-# trigger-terraform:
-#   stage: triggers
-#   trigger:
-#     include: infra/terraform/.gitlab-ci.yml
-#     strategy: depend
-#   rules:
-#     - changes:
-#         - infra/terraform/**/*
-#       when: on_success
-
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      changes:
+        - frontend/**/*
