@@ -65,7 +65,7 @@ export default function OnboardingStep4Page({ onNext }: { onNext?: () => void } 
   const router = useRouter();
 
   const [invites, setInvites] = useState<InviteRow[]>([
-    { id: Date.now(), name: "", email: "", role: "Exam Creator" },
+    { id: 1, name: "", email: "", role: "Exam Creator" },
   ]);
 
   /* ── Row management ──────────────────────────────────────── */

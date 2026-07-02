@@ -13,15 +13,13 @@ export default function ExamSetupPage() {
   const router = useRouter()
 
   return (
-    <div className="min-h-screen bg-zinc-50 dark:bg-zinc-900 text-foreground">
-      {/* Sidebar */}
+    <div className="page-shell">
       <AdminSidebar />
 
-      {/* Main offset */}
-      <div className="pl-72 flex flex-col min-h-screen">
+      <div className="page-content-offset">
         <AdminHeader />
 
-        <main className="flex-1 p-8 space-y-6 container-app">
+        <main className="page-main container-app">
           {/* Breadcrumb */}
           <div className="flex items-center gap-2 text-xs font-semibold text-muted-foreground select-none">
             <span>Dashboard</span>
@@ -39,8 +37,8 @@ export default function ExamSetupPage() {
           </div>
 
           {/* Placeholder visual Card */}
-          <Card className="shadow-none border-dashed border-2 py-16">
-            <CardContent className="flex flex-col items-center justify-center text-center max-w-md mx-auto space-y-5">
+          <Card className="border-2 border-dashed py-16">
+            <CardContent className="mx-auto flex max-w-md flex-col items-center justify-center space-y-5 p-6 text-center">
               <div className="h-16 w-16 rounded-full bg-purple-50 text-primary flex items-center justify-center dark:bg-purple-950/20">
                 <Sliders className="h-8 w-8" />
               </div>

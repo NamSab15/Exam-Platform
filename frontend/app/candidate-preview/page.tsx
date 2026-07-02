@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState, useEffect, Suspense } from "react"
-import { useRouter, useSearchParams } from "next/navigation"
+import { useSearchParams } from "next/navigation"
 import { cn } from "@/lib/utils"
 import {
   Flag,
@@ -9,11 +9,12 @@ import {
   Settings,
   ChevronLeft,
   ChevronRight,
+  ChevronDown,
+  ChevronUp,
   Play,
   Save,
   ArrowRight,
   CheckCircle,
-  FileDown,
   AlertCircle,
   X
 } from "lucide-react"
@@ -31,23 +32,34 @@ interface QuestionNavState {
 }
 
 function PreviewContent() {
-  const router = useRouter()
   const searchParams = useSearchParams()
   const questionId = searchParams.get("id")
 
-  const [questions, setQuestions] = useState<Question[]>([])
-  const [activeQuestion, setActiveQuestion] = useState<Question | null>(null)
+  const initialQuestions = getQuestions()
+  const initialTarget = initialQuestions.find((q) => q.id === questionId) || initialQuestions.find((q) => q.id === "q5") || initialQuestions[0]
+
+  const [questions] = useState<Question[]>(initialQuestions)
+  const [activeQuestion, setActiveQuestion] = useState<Question | null>(initialTarget ?? null)
   
   // Navigation states for 45 questions
-  const [questionStates, setQuestionStates] = useState<Record<number, QuestionNavState>>({})
+  const [questionStates, setQuestionStates] = useState<Record<number, QuestionNavState>>(() => {
+    const defaultStates: Record<number, QuestionNavState> = {}
+    for (let i = 1; i <= 45; i++) {
+      defaultStates[i] = {
+        answered: i < 12 && i !== 5 && i !== 8,
+        flagged: i === 5 || i === 8 || i === 12,
+      }
+    }
+    return defaultStates
+  })
   const [activeNavIndex, setActiveNavIndex] = useState(12) // Default question 12 is active
 
   // Code editor text state
-  const [codeValue, setCodeValue] = useState("")
+  const [codeValue, setCodeValue] = useState(initialTarget?.starterCode ?? "")
 
   // Clock countdown timer
   const [timerString, setTimerString] = useState("01:45:20")
-  const [timeLeftSeconds, setTimeLeftSeconds] = useState(6320) // 1 hr, 45 mins, 20 seconds
+  const [, setTimeLeftSeconds] = useState(6320) // 1 hr, 45 mins, 20 seconds
 
   // Code execution console output
   const [consoleOutput, setConsoleOutput] = useState<string | null>(null)
@@ -56,31 +68,7 @@ function PreviewContent() {
 
   // Submission Dialog
   const [isSubmitOpen, setIsSubmitOpen] = useState(false)
-
-  // Initialize navigation grid state (1 to 45)
-  useEffect(() => {
-    const defaultStates: Record<number, QuestionNavState> = {}
-    for (let i = 1; i <= 45; i++) {
-      defaultStates[i] = {
-        answered: i < 12 && i !== 5 && i !== 8, // Questions 1-4, 6-7, 9-11 answered
-        flagged: i === 5 || i === 8 || i === 12, // Questions 5, 8 flagged (12 starts flagged)
-      }
-    }
-    setQuestionStates(defaultStates)
-  }, [])
-
-  // Load question
-  useEffect(() => {
-    const data = getQuestions()
-    setQuestions(data)
-    
-    // Find loaded question or fallback to q5 (Array Transformation coding challenge)
-    const target = data.find(q => q.id === questionId) || data.find(q => q.id === 'q5') || data[0]
-    if (target) {
-      setActiveQuestion(target)
-      setCodeValue(target.starterCode)
-    }
-  }, [questionId])
+  const [isNavOpen, setIsNavOpen] = useState(false)
 
   // Timer Tick
   useEffect(() => {
@@ -197,75 +185,100 @@ function PreviewContent() {
   }
 
   return (
-    <div className="min-h-screen bg-zinc-50 dark:bg-zinc-900 text-foreground flex flex-col">
-      {/* Header with Countdown timer */}
+    <div className="page-shell flex min-h-screen flex-col">
       <AdminHeader timerCount={timerString} />
 
-      {/* Grid container with split panels */}
-      <div className="flex-1 grid grid-cols-1 lg:grid-cols-12 gap-6 p-6 items-stretch overflow-hidden">
+      <div className="container-app mx-auto flex flex-1 flex-col gap-6 px-4 py-6 sm:px-6 lg:flex-row lg:px-8 lg:py-6 xl:px-10">
         
-        {/* Left Side: Question Navigation Grid (col-span-3) */}
-        <aside className="col-span-1 lg:col-span-3 bg-white border border-border rounded-xl p-5 flex flex-col justify-between dark:bg-zinc-950">
-          <div className="space-y-4">
-            <span className="text-[10px] font-bold text-muted-foreground tracking-wider uppercase select-none block">
-              Question Navigation
-            </span>
+        {/* Question Navigation — collapsible on tablet/mobile */}
+        <aside className="w-full shrink-0 lg:w-64 xl:w-72">
+          <div className="flex flex-col rounded-xl border border-border bg-white dark:bg-zinc-950">
+            <button
+              type="button"
+              onClick={() => setIsNavOpen((prev) => !prev)}
+              className="flex items-center justify-between gap-3 p-4 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 lg:cursor-default lg:pointer-events-none"
+              aria-expanded={isNavOpen}
+              aria-controls="question-navigation-panel"
+            >
+              <span className="section-label">Question Navigation</span>
+              <span className="text-xs font-semibold text-muted-foreground lg:hidden">
+                Q{activeNavIndex} of 45
+              </span>
+              {isNavOpen ? (
+                <ChevronUp className="h-4 w-4 text-muted-foreground lg:hidden" aria-hidden="true" />
+              ) : (
+                <ChevronDown className="h-4 w-4 text-muted-foreground lg:hidden" aria-hidden="true" />
+              )}
+            </button>
 
-            {/* Navigation Grid 1 to 45 */}
-            <div className="grid grid-cols-5 gap-2 select-none">
-              {Array.from({ length: 45 }).map((_, idx) => {
-                const num = idx + 1
-                const state = questionStates[num] || { answered: false, flagged: false }
-                const isActive = num === activeNavIndex
+            <div
+              id="question-navigation-panel"
+              className={cn(
+                "flex flex-col justify-between border-t border-zinc-100 px-4 pb-4 dark:border-zinc-800",
+                "max-lg:overflow-hidden max-lg:transition-all max-lg:duration-200",
+                isNavOpen ? "max-lg:max-h-[480px] max-lg:opacity-100" : "max-lg:max-h-0 max-lg:border-t-0 max-lg:opacity-0 max-lg:pb-0",
+                "lg:max-h-none lg:opacity-100 lg:pb-5 lg:pt-2"
+              )}
+            >
+              <div className="grid grid-cols-5 gap-2 py-4 select-none sm:grid-cols-9 lg:grid-cols-5" role="list" aria-label="Question list">
+                {Array.from({ length: 45 }).map((_, idx) => {
+                  const num = idx + 1
+                  const state = questionStates[num] || { answered: false, flagged: false }
+                  const isActive = num === activeNavIndex
 
-                return (
-                  <button
-                    key={num}
-                    onClick={() => selectQuestionFromGrid(num)}
-                    className={cn(
-                      "h-9 rounded-lg border text-xs font-bold transition-all flex items-center justify-center",
-                      // Active selected style
-                      isActive
-                        ? "bg-primary border-primary text-white scale-105"
-                        : // Answered styling (light pink/purple)
-                        state.answered
-                        ? "bg-purple-100/50 border-purple-200 text-primary dark:bg-purple-950/20 dark:text-purple-300"
-                        : // Flagged styling (light orange/yellow)
-                        state.flagged
-                        ? "bg-amber-100/50 border-amber-300 text-amber-700 dark:bg-amber-950/20 dark:text-amber-300"
-                        : // Unvisited standard styling
-                          "bg-white border-border text-muted-foreground hover:bg-zinc-50 dark:bg-zinc-900"
-                    )}
-                  >
-                    {num}
-                  </button>
-                )
-              })}
-            </div>
-          </div>
+                  return (
+                    <button
+                      key={num}
+                      type="button"
+                      role="listitem"
+                      aria-label={`Question ${num}${isActive ? ", current" : ""}${state.flagged ? ", flagged" : ""}${state.answered ? ", answered" : ""}`}
+                      aria-current={isActive ? "true" : undefined}
+                      onClick={() => {
+                        selectQuestionFromGrid(num)
+                        if (window.innerWidth < 1024) setIsNavOpen(false)
+                      }}
+                      className={cn(
+                        "flex h-9 items-center justify-center rounded-lg border text-xs font-bold transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50",
+                        isActive
+                          ? "scale-105 border-primary bg-primary text-white"
+                          : state.answered
+                          ? "border-purple-200 bg-purple-100/50 text-primary dark:bg-purple-950/20 dark:text-purple-300"
+                          : state.flagged
+                          ? "border-amber-300 bg-amber-100/50 text-amber-700 dark:bg-amber-950/20 dark:text-amber-300"
+                          : "border-border bg-white text-muted-foreground hover:bg-zinc-50 dark:bg-zinc-900"
+                      )}
+                    >
+                      {num}
+                    </button>
+                  )
+                })}
+              </div>
 
-          {/* Navigation Legend */}
-          <div className="border-t border-zinc-100 pt-4 mt-6 space-y-2 text-xs font-semibold text-muted-foreground select-none dark:border-zinc-800">
-            <div className="flex items-center gap-2">
-              <span className="h-2.5 w-2.5 rounded-full bg-purple-200 dark:bg-purple-800 shrink-0" />
-              <span>Answered</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="h-2.5 w-2.5 rounded-full bg-amber-300 shrink-0" />
-              <span>Flagged</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="h-2.5 w-2.5 rounded-full bg-zinc-200 dark:bg-zinc-700 shrink-0" />
-              <span>Unvisited</span>
+              <div className="space-y-2 border-t border-zinc-100 pt-4 text-xs font-semibold text-muted-foreground select-none dark:border-zinc-800">
+                <div className="flex items-center gap-2">
+                  <span className="h-2.5 w-2.5 shrink-0 rounded-full bg-purple-200 dark:bg-purple-800" aria-hidden="true" />
+                  <span>Answered</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="h-2.5 w-2.5 shrink-0 rounded-full bg-amber-300" aria-hidden="true" />
+                  <span>Flagged</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="h-2.5 w-2.5 shrink-0 rounded-full bg-zinc-200 dark:bg-zinc-700" aria-hidden="true" />
+                  <span>Unvisited</span>
+                </div>
+              </div>
             </div>
           </div>
         </aside>
 
-        {/* Center: Question Problem Statement (col-span-5) */}
-        <div className="col-span-1 lg:col-span-5 flex flex-col gap-4 overflow-y-auto">
+        {/* Main content — stacks on mobile/tablet */}
+        <div className="flex min-w-0 flex-1 flex-col gap-6 lg:flex-row">
+          {/* Problem Statement column */}
+          <div className="flex min-w-0 flex-1 flex-col gap-4 overflow-y-auto lg:max-w-[45%]">
           {/* Question Meta Title Header */}
-          <Card className="shadow-none shrink-0">
-            <CardContent className="p-5 flex items-center justify-between gap-4">
+          <Card className="shrink-0">
+            <CardContent className="flex flex-col gap-4 p-5 sm:flex-row sm:items-center sm:justify-between">
               <div className="flex flex-col">
                 <span className="text-xs font-bold text-muted-foreground select-none">
                   Question {activeNavIndex} of 45
@@ -291,8 +304,8 @@ function PreviewContent() {
           </Card>
 
           {/* Problem Statement Card */}
-          <Card className="flex-1 shadow-none">
-            <CardContent className="p-6 space-y-6">
+          <Card className="flex-1">
+            <CardContent className="space-y-6 p-6">
               {/* Problem statement body */}
               <div className="space-y-4">
                 <h4 className="font-heading text-lg font-bold border-b border-zinc-100 pb-2 dark:border-zinc-800/60">
@@ -354,10 +367,9 @@ function PreviewContent() {
           </Card>
         </div>
 
-        {/* Right Side: Code Editor Workspace (col-span-4) */}
-        <section className="col-span-1 lg:col-span-4 flex flex-col gap-4 overflow-y-auto">
-          {/* Solution Editor Panel */}
-          <Card className="flex-1 shadow-none flex flex-col overflow-hidden min-h-[500px]">
+        {/* Code Editor column */}
+        <section className="flex min-w-0 flex-1 flex-col gap-4 lg:max-w-[55%]">
+          <Card className="flex min-h-[400px] flex-1 flex-col overflow-hidden lg:min-h-[500px]">
             <div className="bg-zinc-100 border-b border-border px-5 py-3 flex items-center justify-between text-sm select-none dark:bg-zinc-900">
               <span className="font-heading font-bold text-zinc-800 dark:text-zinc-200">
                 Solution Editor {activeQuestion.type === "Programming" ? "(JavaScript)" : "(Selection)"}
@@ -365,13 +377,15 @@ function PreviewContent() {
               
               <div className="flex items-center gap-2">
                 <button
+                  type="button"
                   onClick={() => setCodeValue(activeQuestion.starterCode)}
-                  className="p-1 rounded hover:bg-zinc-200 text-zinc-500 dark:hover:bg-zinc-800"
+                  className="toolbar-btn"
                   title="Reset to starter template"
+                  aria-label="Reset to starter template"
                 >
                   <RotateCw className="h-4 w-4" />
                 </button>
-                <button className="p-1 rounded hover:bg-zinc-200 text-zinc-500 dark:hover:bg-zinc-800" title="Editor configuration">
+                <button type="button" className="toolbar-btn" title="Editor configuration" aria-label="Editor configuration">
                   <Settings className="h-4 w-4" />
                 </button>
               </div>
@@ -382,7 +396,8 @@ function PreviewContent() {
               <textarea
                 value={codeValue}
                 onChange={(e) => setCodeValue(e.target.value)}
-                className="w-full flex-1 p-5 bg-transparent border-0 outline-none resize-none font-mono text-xs leading-relaxed focus:ring-0"
+                aria-label="Solution code editor"
+                className="w-full flex-1 resize-none border-0 bg-transparent p-5 font-mono text-xs leading-relaxed outline-none focus:ring-0"
                 style={{ tabSize: 4 }}
               />
 
@@ -392,8 +407,10 @@ function PreviewContent() {
                   <div className="flex items-center justify-between text-zinc-400 select-none pb-1.5 border-b border-zinc-850 mb-2">
                     <span className="font-semibold uppercase tracking-wider text-[9px]">Execution Output</span>
                     <button
+                      type="button"
                       onClick={() => setConsoleOutput(null)}
-                      className="p-0.5 hover:bg-zinc-800 rounded"
+                      className="rounded p-0.5 hover:bg-zinc-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
+                      aria-label="Close execution output"
                     >
                       <X className="h-3.5 w-3.5" />
                     </button>
@@ -422,37 +439,37 @@ function PreviewContent() {
           </Card>
 
           {/* Previous, Save Progress, Save & Next Question button row */}
-          <div className="grid grid-cols-3 gap-3 select-none">
+          <div className="grid grid-cols-1 gap-3 select-none sm:grid-cols-3">
             <Button
               variant="outline"
               onClick={prevQuestion}
-              className="h-10 text-xs font-bold border-border shadow-none text-zinc-700 bg-white hover:bg-zinc-50"
+              className="h-10 border-border bg-white text-xs font-bold text-zinc-700 shadow-none hover:bg-zinc-50"
             >
-              <ChevronLeft className="h-4 w-4 mr-1 shrink-0" />
+              <ChevronLeft className="mr-1 h-4 w-4 shrink-0" />
               Previous
             </Button>
             
             <Button
               onClick={saveCodeProgress}
-              className="h-10 text-xs font-bold bg-[#7f4d79] hover:bg-[#653660] text-white"
+              className="h-10 bg-[#7f4d79] text-xs font-bold text-white hover:bg-[#653660]"
             >
-              <Save className="h-4 w-4 mr-1 shrink-0" />
+              <Save className="mr-1 h-4 w-4 shrink-0" />
               Save Progress
             </Button>
 
             <Button
               onClick={nextQuestion}
-              className="h-10 text-xs font-bold bg-[#FF6200] hover:bg-[#e05600] text-white"
+              className="h-10 bg-[#FF6200] text-xs font-bold text-white hover:bg-[#e05600]"
             >
               Save & Next
-              <ChevronRight className="h-4 w-4 ml-1 shrink-0" />
+              <ChevronRight className="ml-1 h-4 w-4 shrink-0" />
             </Button>
           </div>
         </section>
+        </div>
       </div>
 
-      {/* Bottom submit final exam footer bar */}
-      <footer className="h-16 border-t border-border bg-white dark:bg-zinc-950 px-6 flex items-center justify-between gap-4 select-none">
+      <footer className="flex h-auto min-h-16 flex-col items-stretch justify-between gap-3 border-t border-border bg-white px-4 py-3 sm:flex-row sm:items-center sm:px-6 dark:bg-zinc-950 select-none">
         <div className="flex items-center gap-2 text-xs font-bold text-emerald-600">
           <CheckCircle className="h-4.5 w-4.5 shrink-0" />
           <span>All changes saved locally</span>
@@ -460,7 +477,7 @@ function PreviewContent() {
 
         <Button
           onClick={() => setIsSubmitOpen(true)}
-          className="bg-[#510047] hover:bg-[#6c1d5f] text-white gap-1.5 text-xs font-bold"
+          className="w-full gap-1.5 bg-[#510047] text-xs font-bold text-white hover:bg-[#6c1d5f] sm:w-auto"
         >
           Submit Final Exam
           <ArrowRight className="h-3.5 w-3.5" />
