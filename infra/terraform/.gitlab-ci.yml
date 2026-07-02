@@ -1,0 +1,38 @@
+stages:
+  - validate
+  - build
+  - deploy
+
+default:
+  image: hashicorp/terraform:1.6.0
+  before_script:
+    - export ARM_CLIENT_ID="$AZURE_CLIENT_ID"
+    - export ARM_CLIENT_SECRET="$AZURE_CLIENT_SECRET"
+    - export ARM_TENANT_ID="$AZURE_TENANT_ID"
+    - export ARM_SUBSCRIPTION_ID="$AZURE_SUBSCRIPTION_ID"
+    - cd infra/terraform/frontend
+    - terraform init -backend-config="storage_account_name=$TF_STATE_STORAGE_ACCOUNT"
+
+tf:validate:
+  stage: validate
+  script:
+    - terraform validate
+
+tf:plan:
+  stage: build
+  script:
+    - terraform plan -out=tfplan
+  artifacts:
+    name: "tfplan-$CI_COMMIT_REF_SLUG"
+    paths:
+      - infra/terraform/frontend/tfplan
+    expire_in: 1 week
+
+tf:apply:
+  stage: deploy
+  script:
+    - terraform apply -input=false tfplan
+  dependencies:
+    - tf:plan
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
