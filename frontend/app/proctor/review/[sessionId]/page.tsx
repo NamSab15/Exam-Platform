@@ -1,8 +1,7 @@
 'use client'
 
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, use } from "react"
 import Link from "next/link"
-import { useParams } from "next/navigation"
 import { ChevronLeft, ShieldCheck, AlertTriangle, User } from "lucide-react"
 import { AdminHeader } from "@/components/shared/admin-header"
 import { MOCK_CANDIDATES } from "@/lib/proctorMockData"
@@ -35,9 +34,12 @@ const MOCK_KEYSTROKES = [
   { timestamp: "10:35:22 AM", char: "k", timeGapMs: 115, wpm: 80, isAnomaly: false },
 ]
 
-export default function ProctorReviewPage() {
-  const params = useParams()
-  const sessionId = params.sessionId as string
+export default function ProctorReviewPage({
+  params,
+}: {
+  params: Promise<{ sessionId: string }>
+}) {
+  const { sessionId } = use(params)
 
   const candidate = MOCK_CANDIDATES.find((c) => c.id === sessionId) || null
   const [isPlaying, setIsPlaying] = useState(false)

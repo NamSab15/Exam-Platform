@@ -1,8 +1,7 @@
 'use client'
 
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, use } from "react"
 import Link from "next/link"
-import { useParams } from "next/navigation"
 import { ChevronLeft, Clock } from "lucide-react"
 import { AdminHeader } from "@/components/shared/admin-header"
 import { MOCK_CANDIDATES, CandidateSession } from "@/lib/proctorMockData"
@@ -10,9 +9,12 @@ import { LiveFeeds } from "./components/LiveFeeds"
 import { IncidentFeed } from "./components/IncidentFeed"
 import { ControlPanel } from "./components/ControlPanel"
 
-export default function ProctorSessionPage() {
-  const params = useParams()
-  const sessionId = params.sessionId as string
+export default function ProctorSessionPage({
+  params,
+}: {
+  params: Promise<{ sessionId: string }>
+}) {
+  const { sessionId } = use(params)
 
   // Fetch student session from mock data with deep copy in initializer to avoid useEffect lint warnings
   const [candidate, setCandidate] = useState<CandidateSession | null>(() => {
