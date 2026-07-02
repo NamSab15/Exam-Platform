@@ -9,7 +9,7 @@ import { cn } from "@/lib/utils"
 interface AdminHeaderProps {
   onSearchChange?: (val: string) => void;
   searchValue?: string;
-  timerCount?: string; // Optional exam timer
+  timerCount?: string;
 }
 
 export function AdminHeader({
@@ -21,6 +21,7 @@ export function AdminHeader({
 
   const isEditor = pathname === "/question-editor"
   const isCandidate = pathname === "/candidate-preview"
+  const hasSidebar = !isCandidate
 
   const navTabs = [
     { name: "Question Bank", href: "/question-bank", active: pathname === "/question-bank" },
@@ -29,32 +30,34 @@ export function AdminHeader({
   ]
 
   return (
-    <header className="sticky top-0 z-10 flex h-16 w-full items-center justify-between border-b border-border bg-white px-6 dark:bg-zinc-950">
+    <header className="sticky top-0 z-10 flex h-16 w-full items-center gap-4 border-b border-border bg-white px-4 sm:px-6 lg:px-8 dark:bg-zinc-950">
       {/* Left Brand */}
-      <div className="flex items-center gap-6">
-        <div className="flex items-center gap-2">
-          {/* SVG Xebia Brand Icon */}
-          <div className="flex h-7 w-7 items-center justify-center rounded-full bg-primary text-white font-heading font-extrabold text-sm select-none">
+      <div className={cn("flex min-w-0 items-center gap-4 sm:gap-6", hasSidebar && "pl-10 lg:pl-0")}>
+        <div className="flex min-w-0 items-center gap-2">
+          <div
+            className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-primary font-heading text-sm font-extrabold text-white select-none"
+            aria-hidden="true"
+          >
             X
           </div>
-          <span className="font-heading text-lg font-bold text-primary select-none">
+          <span className="hidden truncate font-heading text-base font-bold text-primary select-none sm:block lg:text-lg">
             Xebia Exam Platform
           </span>
         </div>
 
-        {/* Editor Page Navigation Tabs */}
         {isEditor && (
-          <nav className="hidden md:flex items-center gap-6 self-stretch ml-4">
+          <nav className="hidden items-center gap-4 self-stretch md:flex lg:gap-6" aria-label="Section navigation">
             {navTabs.map((tab) => (
               <Link
                 key={tab.name}
                 href={tab.href}
                 className={cn(
-                  "flex h-16 items-center border-b-2 px-1 text-sm font-semibold transition-colors select-none",
+                  "flex h-16 items-center border-b-2 px-1 text-sm font-semibold transition-colors select-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50",
                   tab.active
                     ? "border-primary text-primary"
                     : "border-transparent text-muted-foreground hover:text-foreground"
                 )}
+                aria-current={tab.active ? "page" : undefined}
               >
                 {tab.name}
               </Link>
@@ -63,53 +66,74 @@ export function AdminHeader({
         )}
       </div>
 
-      {/* Middle Search or Content */}
-      <div className="flex-1 max-w-md mx-6">
+      {/* Middle Search */}
+      <div className="mx-auto hidden min-w-0 flex-1 sm:block sm:max-w-lg lg:max-w-xl xl:max-w-2xl">
         {!isEditor && (
           <div className="relative">
-            <Search className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground pointer-events-none" />
+            <Search
+              className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground"
+              aria-hidden="true"
+            />
             <input
-              type="text"
-              placeholder={isCandidate ? "Search questions..." : "Search questions, creators, or topics..."}
+              type="search"
+              placeholder={
+                isCandidate
+                  ? "Search questions..."
+                  : "Search questions, creators, or topics..."
+              }
               value={searchValue}
               onChange={(e) => onSearchChange?.(e.target.value)}
-              className="w-full h-9 pl-9 pr-4 rounded-full border border-border bg-zinc-50 text-sm focus-visible:outline-none focus-visible:border-primary focus-visible:ring-1 focus-visible:ring-primary dark:bg-zinc-900"
+              aria-label="Search questions"
+              className="h-10 w-full rounded-full border border-border bg-zinc-50 pl-11 pr-4 text-sm transition-colors focus-visible:border-primary focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary dark:bg-zinc-900"
             />
           </div>
         )}
       </div>
 
       {/* Right Controls */}
-      <div className="flex items-center gap-4">
-        {/* Candidate Timer */}
-        {isCandidate && (timerCount || true) && (
-          <div className="flex items-center gap-2 rounded-full bg-rose-50 px-3 py-1 text-rose-600 dark:bg-rose-950/30 dark:text-rose-400 select-none animate-pulse">
-            <Clock className="h-4 w-4 shrink-0" />
-            <span className="font-mono text-sm font-semibold">
-              {timerCount || "01:45:20"}
-            </span>
+      <div className="flex shrink-0 items-center gap-2 sm:gap-4">
+        {isCandidate && timerCount && (
+          <div
+            className="flex items-center gap-2 rounded-full bg-rose-50 px-2.5 py-1 text-rose-600 select-none sm:px-3 dark:bg-rose-950/30 dark:text-rose-400"
+            role="timer"
+            aria-live="polite"
+            aria-label={`Time remaining: ${timerCount}`}
+          >
+            <Clock className="h-4 w-4 shrink-0" aria-hidden="true" />
+            <span className="font-mono text-xs font-semibold sm:text-sm">{timerCount}</span>
           </div>
         )}
 
-        {/* Notifications */}
-        <button className="relative rounded-full p-1.5 text-muted-foreground hover:bg-zinc-50 hover:text-foreground transition-colors dark:hover:bg-zinc-900">
+        <button
+          type="button"
+          className="relative rounded-full p-1.5 text-muted-foreground transition-colors hover:bg-zinc-50 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 dark:hover:bg-zinc-900"
+          aria-label="Notifications"
+        >
           <Bell className="h-5 w-5" />
-          {/* Bell active dot (only on Dashboard or when needed) */}
           {!isEditor && (
-            <span className="absolute right-2 top-2 h-2 w-2 rounded-full bg-rose-500 ring-2 ring-white dark:ring-zinc-950" />
+            <span
+              className="absolute right-2 top-2 h-2 w-2 rounded-full bg-rose-500 ring-2 ring-white dark:ring-zinc-950"
+              aria-hidden="true"
+            />
           )}
         </button>
 
-        {/* Help */}
-        <button className="rounded-full p-1.5 text-muted-foreground hover:bg-zinc-50 hover:text-foreground transition-colors dark:hover:bg-zinc-900">
+        <button
+          type="button"
+          className="rounded-full p-1.5 text-muted-foreground transition-colors hover:bg-zinc-50 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 dark:hover:bg-zinc-900"
+          aria-label="Help"
+        >
           <HelpCircle className="h-5 w-5" />
         </button>
 
-        {/* Profile Avatar */}
-        <div className="h-8 w-8 overflow-hidden rounded-full border border-zinc-200 select-none">
+        <div
+          className="h-8 w-8 shrink-0 overflow-hidden rounded-full border border-zinc-200 select-none"
+          role="img"
+          aria-label="User profile"
+        >
           <img
             src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=120"
-            alt="User avatar"
+            alt=""
             className="h-full w-full object-cover"
           />
         </div>

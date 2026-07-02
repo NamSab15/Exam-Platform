@@ -1,12 +1,11 @@
 'use client'
 
-import React, { useState, useEffect } from "react"
+import React, { useState } from "react"
 import { cn } from "@/lib/utils"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import {
   Plus,
-  Search,
   Database,
   Link2,
   Trash2,
@@ -23,23 +22,21 @@ import {
   CircleDot,
   Upload,
   ArrowDownToLine,
-  Filter
 } from "lucide-react"
 
-import { getQuestions, saveQuestion, duplicateQuestion, deleteQuestion, resetQuestions } from "@/lib/mockData"
-import { Question, QuestionType, QuestionDifficulty, QuestionStatus } from "@/types/question"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { DEFAULT_QUESTIONS, getQuestions, duplicateQuestion, deleteQuestion, resetQuestions } from "@/lib/mockData"
+import { Question, QuestionType, QuestionDifficulty } from "@/types/question"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Progress } from "@/components/ui/progress"
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog"
-import { Input } from "@/components/ui/input"
 import { AdminSidebar } from "@/components/shared/admin-sidebar"
 import { AdminHeader } from "@/components/shared/admin-header"
 
 export default function QuestionBankPage() {
   const router = useRouter()
-  const [questions, setQuestions] = useState<Question[]>([])
+  const [questions, setQuestions] = useState<Question[]>(DEFAULT_QUESTIONS)
   
   // Filtering States
   const [searchQuery, setSearchQuery] = useState("")
@@ -56,12 +53,13 @@ export default function QuestionBankPage() {
   const [questionToDelete, setQuestionToDelete] = useState<Question | null>(null)
   const [currentPage, setCurrentPage] = useState(1)
 
-  // Load questions
+  // Load questions from localStorage on mount
   const loadData = () => {
     setQuestions(getQuestions())
   }
 
-  useEffect(() => {
+  React.useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     loadData()
   }, [])
 
@@ -161,11 +159,6 @@ export default function QuestionBankPage() {
 
   // Helper to map QuestionType to visual badges/icons
   const renderTypeCell = (type: QuestionType, difficulty: QuestionDifficulty) => {
-    const diffVariant = 
-      difficulty === "Easy" ? "easy" : 
-      difficulty === "Medium" ? "medium" : 
-      difficulty === "Hard" ? "hard" : "expert"
-
     let TypeIcon = Code2
     let typeName = "PQ"
 
@@ -197,16 +190,13 @@ export default function QuestionBankPage() {
   }
 
   return (
-    <div className="min-h-screen bg-zinc-50 dark:bg-zinc-900 text-foreground">
-      {/* Sidebar Layout */}
+    <div className="page-shell">
       <AdminSidebar />
 
-      {/* Main Content Layout Wrapper */}
-      <div className="pl-72 flex flex-col min-h-screen">
+      <div className="page-content-offset">
         <AdminHeader searchValue={searchQuery} onSearchChange={setSearchQuery} />
 
-        {/* Content area container */}
-        <main className="flex-1 p-8 space-y-6 container-app">
+        <main className="page-main container-app">
           {/* Breadcrumb & Top Command Bar */}
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div className="flex items-center gap-2 text-xs font-semibold text-muted-foreground select-none">
@@ -257,18 +247,17 @@ export default function QuestionBankPage() {
           </div>
 
           {/* Filtering Control Panel */}
-          <Card className="shadow-none">
-            <CardContent className="p-5 flex flex-col gap-5">
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+          <Card>
+            <CardContent className="flex flex-col gap-6 p-6">
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
                 {/* Type Filter */}
                 <div className="flex flex-col gap-1.5">
-                  <span className="text-[10px] font-bold text-muted-foreground tracking-wider uppercase select-none">
-                    Type
-                  </span>
+                  <label htmlFor="filter-type" className="section-label">Type</label>
                   <select
+                    id="filter-type"
                     value={selectedType}
                     onChange={(e) => { setSelectedType(e.target.value); setCurrentPage(1); }}
-                    className="w-full h-9 px-3 rounded-lg border border-border bg-white dark:bg-zinc-800 text-sm focus-visible:outline-none focus-visible:border-primary focus-visible:ring-1 focus-visible:ring-primary"
+                    className="form-select"
                   >
                     <option value="All Types">All Types</option>
                     <option value="MCQ">MCQ (Single)</option>
@@ -279,13 +268,12 @@ export default function QuestionBankPage() {
 
                 {/* Topic / Skill Filter */}
                 <div className="flex flex-col gap-1.5">
-                  <span className="text-[10px] font-bold text-muted-foreground tracking-wider uppercase select-none">
-                    Topic / Skill
-                  </span>
+                  <label htmlFor="filter-topic" className="section-label">Topic / Skill</label>
                   <select
+                    id="filter-topic"
                     value={selectedTopic}
                     onChange={(e) => { setSelectedTopic(e.target.value); setCurrentPage(1); }}
-                    className="w-full h-9 px-3 rounded-lg border border-border bg-white dark:bg-zinc-800 text-sm focus-visible:outline-none focus-visible:border-primary focus-visible:ring-1 focus-visible:ring-primary"
+                    className="form-select"
                   >
                     <option value="All Topics">All Topics</option>
                     {allTopics.map(topic => (
@@ -296,13 +284,12 @@ export default function QuestionBankPage() {
 
                 {/* Status Filter */}
                 <div className="flex flex-col gap-1.5">
-                  <span className="text-[10px] font-bold text-muted-foreground tracking-wider uppercase select-none">
-                    Status
-                  </span>
+                  <label htmlFor="filter-status" className="section-label">Status</label>
                   <select
+                    id="filter-status"
                     value={selectedStatus}
                     onChange={(e) => { setSelectedStatus(e.target.value); setCurrentPage(1); }}
-                    className="w-full h-9 px-3 rounded-lg border border-border bg-white dark:bg-zinc-800 text-sm focus-visible:outline-none focus-visible:border-primary focus-visible:ring-1 focus-visible:ring-primary"
+                    className="form-select"
                   >
                     <option value="All Status">All Status</option>
                     <option value="Published">Published</option>
@@ -313,13 +300,12 @@ export default function QuestionBankPage() {
 
                 {/* Creator Filter */}
                 <div className="flex flex-col gap-1.5">
-                  <span className="text-[10px] font-bold text-muted-foreground tracking-wider uppercase select-none">
-                    Creator
-                  </span>
+                  <label htmlFor="filter-creator" className="section-label">Creator</label>
                   <select
+                    id="filter-creator"
                     value={selectedCreator}
                     onChange={(e) => { setSelectedCreator(e.target.value); setCurrentPage(1); }}
-                    className="w-full h-9 px-3 rounded-lg border border-border bg-white dark:bg-zinc-800 text-sm focus-visible:outline-none focus-visible:border-primary focus-visible:ring-1 focus-visible:ring-primary"
+                    className="form-select"
                   >
                     <option value="All Creators">All Creators</option>
                     {allCreators.map(creator => (
@@ -330,27 +316,26 @@ export default function QuestionBankPage() {
               </div>
 
               {/* Difficulty selector (Pills) + Clear Button Row */}
-              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-t border-zinc-100 pt-4 dark:border-zinc-800/60">
-                {/* Difficulty Pills */}
-                <div className="flex items-center gap-3">
-                  <span className="text-[10px] font-bold text-muted-foreground tracking-wider uppercase select-none">
-                    Difficulty
-                  </span>
-                  <div className="flex items-center gap-1.5">
+              <div className="flex flex-col gap-4 border-t border-zinc-100 pt-4 sm:flex-row sm:items-center sm:justify-between dark:border-zinc-800/60">
+                <div className="flex flex-wrap items-center gap-3">
+                  <span className="section-label">Difficulty</span>
+                  <div className="flex flex-wrap items-center gap-1.5" role="group" aria-label="Filter by difficulty">
                     {["Easy", "Med", "Hard", "Exp"].map((diff) => {
                       const isActive = selectedDifficulty === diff
                       return (
                         <button
                           key={diff}
+                          type="button"
+                          aria-pressed={isActive}
                           onClick={() => {
                             setSelectedDifficulty(isActive ? "" : diff)
                             setCurrentPage(1)
                           }}
                           className={cn(
-                            "h-7 px-3 text-xs font-semibold rounded-lg border transition-all select-none",
+                            "h-8 min-w-[3rem] rounded-lg border px-3 text-xs font-semibold transition-all select-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50",
                             isActive
-                              ? "bg-primary border-primary text-white"
-                              : "border-border bg-white hover:bg-zinc-50 text-muted-foreground dark:bg-zinc-800"
+                              ? "border-primary bg-primary text-white"
+                              : "border-border bg-white text-muted-foreground hover:bg-zinc-50 dark:bg-zinc-800"
                           )}
                         >
                           {diff}
@@ -360,10 +345,10 @@ export default function QuestionBankPage() {
                   </div>
                 </div>
 
-                {/* Clear all filters */}
                 <button
+                  type="button"
                   onClick={handleClearFilters}
-                  className="flex items-center gap-1.5 text-xs font-bold text-primary hover:underline select-none sm:self-center"
+                  className="flex items-center gap-1.5 text-xs font-bold text-primary transition-colors hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 select-none sm:self-center"
                 >
                   <X className="h-3.5 w-3.5" />
                   Clear All Filters
@@ -373,14 +358,10 @@ export default function QuestionBankPage() {
           </Card>
 
           {/* Main Content Grid: Split Stats & List */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-            
-            {/* Left Stats card stack */}
-            <div className="col-span-1 lg:col-span-3 flex flex-col gap-4">
-              
-              {/* Stat card 1: Total Library */}
-              <Card className="shadow-none">
-                <CardContent className="p-5 flex items-center gap-4">
+          <div className="grid grid-cols-1 items-start gap-6 xl:grid-cols-12">
+            <div className="flex flex-col gap-4 xl:col-span-3">
+              <Card>
+                <CardContent className="flex items-center gap-4 p-6">
                   <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-purple-50 text-primary dark:bg-purple-950/30">
                     <Database className="h-5 w-5" />
                   </div>
@@ -399,8 +380,8 @@ export default function QuestionBankPage() {
               </Card>
 
               {/* Stat card 2: Referenced */}
-              <Card className="shadow-none">
-                <CardContent className="p-5 flex items-center gap-4">
+              <Card>
+                <CardContent className="flex items-center gap-4 p-6">
                   <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-orange-50 text-orange-600 dark:bg-orange-950/20">
                     <Link2 className="h-5 w-5" />
                   </div>
@@ -419,13 +400,13 @@ export default function QuestionBankPage() {
               </Card>
 
               {/* Stat card 3: Status Breakdown */}
-              <Card className="shadow-none">
-                <CardHeader className="p-5 pb-2">
-                  <CardTitle className="text-sm font-bold text-zinc-900 select-none">
+              <Card>
+                <CardHeader className="p-6 pb-2">
+                  <CardTitle className="text-sm font-bold select-none">
                     Status Breakdown
                   </CardTitle>
                 </CardHeader>
-                <CardContent className="p-5 pt-0 space-y-4">
+                <CardContent className="space-y-4 p-6 pt-0">
                   {/* Published */}
                   <div className="space-y-1">
                     <div className="flex items-center justify-between text-xs select-none">
@@ -455,18 +436,19 @@ export default function QuestionBankPage() {
             </div>
 
             {/* Right List Card */}
-            <Card className="col-span-1 lg:col-span-9 shadow-none overflow-hidden">
+            <Card className="overflow-hidden xl:col-span-9">
               <div className="overflow-x-auto">
-                <table className="w-full min-w-[700px] border-collapse text-left text-sm">
+                <table className="w-full min-w-[640px] border-collapse text-left text-sm" aria-label="Question library">
                   {/* Table Header */}
                   <thead className="bg-zinc-50 dark:bg-zinc-900/50 border-b border-border select-none">
                     <tr className="text-xs font-bold text-zinc-500 uppercase tracking-wider">
-                      <th className="w-12 py-3 px-4">
+                      <th className="w-12 px-4 py-3">
                         <input
                           type="checkbox"
+                          aria-label="Select all questions on this page"
                           checked={selectedRowIds.length > 0 && selectedRowIds.length === paginatedQuestions.length}
                           onChange={handleSelectAll}
-                          className="rounded border-zinc-300 text-primary focus:ring-primary h-4 w-4 shrink-0"
+                          className="h-4 w-4 shrink-0 rounded border-zinc-300 text-primary focus-visible:ring-2 focus-visible:ring-primary/50"
                         />
                       </th>
                       <th className="py-3 px-4 w-1/2">Question & Meta</th>
@@ -481,7 +463,7 @@ export default function QuestionBankPage() {
                     {paginatedQuestions.length === 0 ? (
                       <tr>
                         <td colSpan={5} className="py-8 text-center text-muted-foreground">
-                          No questions matching your search filters. Click "Reset Mock" or clear filters to start over.
+                          No questions matching your search filters. Click Reset Mock or clear filters to start over.
                         </td>
                       </tr>
                     ) : (
@@ -501,9 +483,10 @@ export default function QuestionBankPage() {
                             <td className="py-5 px-4 align-top">
                               <input
                                 type="checkbox"
+                                aria-label={`Select ${q.title}`}
                                 checked={isSelected}
                                 onChange={() => handleSelectRow(q.id)}
-                                className="rounded border-zinc-300 text-primary focus:ring-primary h-4 w-4 shrink-0 mt-0.5"
+                                className="mt-0.5 h-4 w-4 shrink-0 rounded border-zinc-300 text-primary focus-visible:ring-2 focus-visible:ring-primary/50"
                               />
                             </td>
 
@@ -633,7 +616,7 @@ export default function QuestionBankPage() {
 
               {/* Table Footer / Pagination */}
               {filteredQuestions.length > 0 && (
-                <div className="flex flex-col sm:flex-row items-center justify-between gap-4 p-4 border-t border-border bg-white dark:bg-zinc-950 select-none">
+                <div className="flex flex-col items-center justify-between gap-4 border-t border-border bg-white p-4 sm:flex-row dark:bg-zinc-950 select-none">
                   <span className="text-xs text-muted-foreground font-medium">
                     Showing {(currentPage - 1) * itemsPerPage + 1} to{" "}
                     {Math.min(currentPage * itemsPerPage, filteredQuestions.length)} of{" "}
@@ -643,9 +626,11 @@ export default function QuestionBankPage() {
                   <div className="flex items-center gap-1">
                     {/* Previous Button */}
                     <button
+                      type="button"
                       disabled={currentPage === 1}
+                      aria-label="Previous page"
                       onClick={() => setCurrentPage(currentPage - 1)}
-                      className="flex h-8 w-8 items-center justify-center rounded-lg border border-border bg-white hover:bg-zinc-50 disabled:opacity-40 disabled:pointer-events-none transition-colors dark:bg-zinc-800"
+                      className="flex h-8 w-8 items-center justify-center rounded-lg border border-border bg-white transition-colors hover:bg-zinc-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 disabled:pointer-events-none disabled:opacity-40 dark:bg-zinc-800"
                     >
                       <ChevronLeft className="h-4 w-4" />
                     </button>
@@ -681,12 +666,15 @@ export default function QuestionBankPage() {
                       return (
                         <button
                           key={pageNum}
+                          type="button"
+                          aria-label={`Page ${pageNum}`}
+                          aria-current={isActive ? "page" : undefined}
                           onClick={() => setCurrentPage(pageNum)}
                           className={cn(
-                            "h-8 w-8 text-xs font-semibold rounded-lg flex items-center justify-center transition-colors",
+                            "flex h-8 w-8 items-center justify-center rounded-lg text-xs font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50",
                             isActive
                               ? "bg-primary text-white"
-                              : "hover:bg-zinc-50 border border-transparent hover:border-border text-muted-foreground"
+                              : "border border-transparent text-muted-foreground hover:border-border hover:bg-zinc-50"
                           )}
                         >
                           {pageNum}
@@ -696,9 +684,11 @@ export default function QuestionBankPage() {
 
                     {/* Next Button */}
                     <button
+                      type="button"
                       disabled={currentPage === totalPages}
+                      aria-label="Next page"
                       onClick={() => setCurrentPage(currentPage + 1)}
-                      className="flex h-8 w-8 items-center justify-center rounded-lg border border-border bg-white hover:bg-zinc-50 disabled:opacity-40 disabled:pointer-events-none transition-colors dark:bg-zinc-800"
+                      className="flex h-8 w-8 items-center justify-center rounded-lg border border-border bg-white transition-colors hover:bg-zinc-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 disabled:pointer-events-none disabled:opacity-40 dark:bg-zinc-800"
                     >
                       <ChevronRight className="h-4 w-4" />
                     </button>
@@ -716,8 +706,8 @@ export default function QuestionBankPage() {
           <DialogHeader>
             <DialogTitle className="text-zinc-900 dark:text-zinc-50">Delete Question</DialogTitle>
             <DialogDescription>
-              Are you sure you want to permanently delete "
-              <span className="font-semibold text-foreground">{questionToDelete?.title}</span>"? 
+              Are you sure you want to permanently delete &ldquo;
+              <span className="font-semibold text-foreground">{questionToDelete?.title}</span>&rdquo;?
               This action cannot be undone and will delete it from all associated mock exams.
             </DialogDescription>
           </DialogHeader>

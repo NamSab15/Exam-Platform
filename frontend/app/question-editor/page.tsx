@@ -10,7 +10,6 @@ import {
   Save,
   Plus,
   Trash2,
-  Edit2,
   Code2,
   CheckSquare,
   CircleDot,
@@ -22,7 +21,6 @@ import {
   Check,
   Cpu,
   Clock,
-  Sparkles,
   RefreshCw,
   X
 } from "lucide-react"
@@ -43,7 +41,47 @@ function EditorContent() {
   const questionId = searchParams.get("id")
   const isNew = searchParams.get("new") === "true"
 
-  const [question, setQuestion] = useState<Question | null>(null)
+  const createInitialQuestion = () => {
+    const questions = getQuestions()
+
+    if (isNew) {
+      return {
+        id: "new-question",
+        title: "New Custom Question",
+        version: "V1.0",
+        type: "Programming" as QuestionType,
+        difficulty: "Medium" as QuestionDifficulty,
+        status: "Draft" as QuestionStatus,
+        tags: ["General"],
+        skills: ["Logic"],
+        refCount: 0,
+        problemStatement: "Implement a function ...",
+        starterCode: "def solve():\n    pass",
+        testCases: [
+          {
+            id: "new-test-case",
+            input: "1",
+            expectedOutput: "1",
+            isPublic: true,
+            timeLimit: "1.0s",
+            memoryLimit: "256MB",
+            matchType: "Exact Match"
+          }
+        ],
+        cognitiveLevel: "Applying" as const,
+        basePoints: 10,
+        negativeMarking: 0,
+        partialMarking: false,
+        defaultGradingMode: "Exact String Match",
+        lastModified: "Just now",
+        creator: "Sarah Jenkins"
+      } as Question
+    }
+
+    return questions.find((q) => q.id === questionId) || questions.find((q) => q.id === "q4") || null
+  }
+
+  const [question, setQuestion] = useState<Question | null>(() => createInitialQuestion())
   
   // Custom states for tagging input
   const [newTopicTag, setNewTopicTag] = useState("")
@@ -54,53 +92,6 @@ function EditorContent() {
 
   // Status Banner mock timers
   const [publishTimer, setPublishTimer] = useState(14)
-
-  useEffect(() => {
-    const questions = getQuestions()
-    let loadedQuestion: Question | undefined
-
-    if (isNew) {
-      // Create empty/new question state
-      loadedQuestion = {
-        id: `q_${Date.now()}`,
-        title: "New Custom Question",
-        version: "V1.0",
-        type: "Programming",
-        difficulty: "Medium",
-        status: "Draft",
-        tags: ["General"],
-        skills: ["Logic"],
-        refCount: 0,
-        problemStatement: "Implement a function ...",
-        starterCode: "def solve():\n    pass",
-        testCases: [
-          {
-            id: `tc_${Date.now()}`,
-            input: "1",
-            expectedOutput: "1",
-            isPublic: true,
-            timeLimit: "1.0s",
-            memoryLimit: "256MB",
-            matchType: "Exact Match"
-          }
-        ],
-        cognitiveLevel: "Applying",
-        basePoints: 10,
-        negativeMarking: 0,
-        partialMarking: false,
-        defaultGradingMode: "Exact String Match",
-        lastModified: "Just now",
-        creator: "Sarah Jenkins"
-      }
-    } else {
-      // Load by ID, or fallback to the Graph Theory Dijkstra question
-      loadedQuestion = questions.find(q => q.id === questionId) || questions.find(q => q.id === 'q4')
-    }
-
-    if (loadedQuestion) {
-      setQuestion(JSON.parse(JSON.stringify(loadedQuestion))) // Deep copy
-    }
-  }, [questionId, isNew])
 
   // Timer simulation
   useEffect(() => {
@@ -119,7 +110,7 @@ function EditorContent() {
   }
 
   // Update specific question field helper
-  const updateField = (field: keyof Question, value: any) => {
+  const updateField = <K extends keyof Question>(field: K, value: Question[K]) => {
     setQuestion(prev => {
       if (!prev) return null
       return { ...prev, [field]: value }
@@ -141,7 +132,7 @@ function EditorContent() {
   }
 
   // Test Case updates
-  const updateTestCase = (index: number, field: keyof TestCase, value: any) => {
+  const updateTestCase = <K extends keyof TestCase>(index: number, field: K, value: TestCase[K]) => {
     const updatedTestCases = [...question.testCases]
     updatedTestCases[index] = { ...updatedTestCases[index], [field]: value }
     updateField("testCases", updatedTestCases)
@@ -196,24 +187,22 @@ function EditorContent() {
   }
 
   return (
-    <div className="min-h-screen bg-zinc-50 dark:bg-zinc-900 text-foreground">
-      {/* Sidebar */}
+    <div className="page-shell">
       <AdminSidebar />
 
-      {/* Main offset */}
-      <div className="pl-72 flex flex-col min-h-screen">
+      <div className="page-content-offset">
         <AdminHeader />
 
-        <main className="flex-1 p-8 space-y-6 container-app">
+        <main className="page-main container-app">
           {/* Sub Header / Control panel */}
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-zinc-200 pb-5 dark:border-zinc-800">
-            {/* Back & Title */}
+          <div className="flex flex-col gap-4 border-b border-zinc-200 pb-6 dark:border-zinc-800 md:flex-row md:items-center md:justify-between">
             <div className="flex items-start gap-4">
               <Button
                 variant="outline"
                 size="icon"
                 onClick={() => router.push("/question-bank")}
-                className="h-9 w-9 rounded-lg shadow-none shrink-0"
+                className="h-9 w-9 shrink-0 rounded-lg shadow-none"
+                aria-label="Back to question bank"
               >
                 <ArrowLeft className="h-4 w-4" />
               </Button>
@@ -249,7 +238,7 @@ function EditorContent() {
             </div>
 
             {/* Sub-Header Actions */}
-            <div className="flex items-center gap-3">
+            <div className="flex flex-wrap items-center gap-3">
               <Button
                 variant="outline"
                 size="sm"
@@ -281,24 +270,27 @@ function EditorContent() {
           </div>
 
           {/* Main Form Split Panel */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-            
-            {/* Left Main Form Column */}
-            <div className="col-span-1 lg:col-span-8 space-y-6">
-              
-              {/* Card 1: Question Type Selector */}
-              <Card className="shadow-none">
+          <div className="grid grid-cols-1 items-start gap-6 xl:grid-cols-12">
+            <div className="space-y-6 xl:col-span-8">
+              <Card>
                 <CardContent className="p-6">
-                  <span className="text-[10px] font-bold text-muted-foreground tracking-wider uppercase select-none block mb-4">
-                    Question Type
-                  </span>
-                  
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                  <span className="section-label mb-4 block">Question Type</span>
+
+                  <div className="grid grid-cols-1 gap-4 sm:grid-cols-3" role="radiogroup" aria-label="Question type">
                     {/* MCQ Type */}
                     <div
+                      role="radio"
+                      tabIndex={0}
+                      aria-checked={question.type === "MCQ"}
                       onClick={() => handleTypeChange("MCQ")}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter" || e.key === " ") {
+                          e.preventDefault()
+                          handleTypeChange("MCQ")
+                        }
+                      }}
                       className={cn(
-                        "relative flex flex-col items-center justify-center p-5 rounded-lg border-2 cursor-pointer transition-all hover:bg-zinc-50/50 dark:hover:bg-zinc-900/10 select-none",
+                        "relative flex cursor-pointer flex-col items-center justify-center rounded-lg border-2 p-5 transition-all select-none hover:bg-zinc-50/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 dark:hover:bg-zinc-900/10",
                         question.type === "MCQ"
                           ? "border-primary bg-purple-50/10"
                           : "border-border bg-white dark:bg-zinc-800"
@@ -315,9 +307,18 @@ function EditorContent() {
 
                     {/* MRQ Type */}
                     <div
+                      role="radio"
+                      tabIndex={0}
+                      aria-checked={question.type === "MRQ"}
                       onClick={() => handleTypeChange("MRQ")}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter" || e.key === " ") {
+                          e.preventDefault()
+                          handleTypeChange("MRQ")
+                        }
+                      }}
                       className={cn(
-                        "relative flex flex-col items-center justify-center p-5 rounded-lg border-2 cursor-pointer transition-all hover:bg-zinc-50/50 dark:hover:bg-zinc-900/10 select-none",
+                        "relative flex cursor-pointer flex-col items-center justify-center rounded-lg border-2 p-5 transition-all select-none hover:bg-zinc-50/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 dark:hover:bg-zinc-900/10",
                         question.type === "MRQ"
                           ? "border-primary bg-purple-50/10"
                           : "border-border bg-white dark:bg-zinc-800"
@@ -333,9 +334,18 @@ function EditorContent() {
 
                     {/* Programming Type */}
                     <div
+                      role="radio"
+                      tabIndex={0}
+                      aria-checked={question.type === "Programming"}
                       onClick={() => handleTypeChange("Programming")}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter" || e.key === " ") {
+                          e.preventDefault()
+                          handleTypeChange("Programming")
+                        }
+                      }}
                       className={cn(
-                        "relative flex flex-col items-center justify-center p-5 rounded-lg border-2 cursor-pointer transition-all hover:bg-zinc-50/50 dark:hover:bg-zinc-900/10 select-none",
+                        "relative flex cursor-pointer flex-col items-center justify-center rounded-lg border-2 p-5 transition-all select-none hover:bg-zinc-50/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 dark:hover:bg-zinc-900/10",
                         question.type === "Programming"
                           ? "border-primary bg-purple-50/10"
                           : "border-border bg-white dark:bg-zinc-800"
@@ -353,12 +363,10 @@ function EditorContent() {
               </Card>
 
               {/* Card 2: Problem Statement Editor */}
-              <Card className="shadow-none">
-                <CardContent className="p-6 space-y-4">
-                  <div className="flex items-center justify-between flex-wrap gap-2 select-none">
-                    <span className="text-[10px] font-bold text-muted-foreground tracking-wider uppercase">
-                      Problem Statement (Rich Text)
-                    </span>
+              <Card>
+                <CardContent className="space-y-4 p-6">
+                  <div className="flex flex-wrap items-center justify-between gap-2 select-none">
+                    <span className="section-label">Problem Statement (Rich Text)</span>
                     
                     <div className="flex items-center gap-4 text-xs font-semibold text-zinc-500">
                       <span className="hover:underline cursor-pointer">Formatting Guide</span>
@@ -370,23 +378,23 @@ function EditorContent() {
                   </div>
 
                   {/* Formatting Toolbar */}
-                  <div className="flex flex-wrap items-center gap-1 p-1.5 bg-zinc-50 rounded-lg border border-border dark:bg-zinc-900/60 select-none">
-                    <button className="p-1 rounded hover:bg-zinc-200 dark:hover:bg-zinc-800 text-zinc-600 dark:text-zinc-350" title="Bold"><Bold className="h-4 w-4" /></button>
-                    <button className="p-1 rounded hover:bg-zinc-200 dark:hover:bg-zinc-800 text-zinc-600 dark:text-zinc-350" title="Italic"><Italic className="h-4 w-4" /></button>
-                    <button className="p-1 rounded hover:bg-zinc-200 dark:hover:bg-zinc-800 text-zinc-600 dark:text-zinc-350 border-l border-zinc-200 pl-2 ml-1" title="Table"><TableIcon className="h-4 w-4" /></button>
-                    <button className="p-1 rounded hover:bg-zinc-200 dark:hover:bg-zinc-800 text-zinc-600 dark:text-zinc-350" title="Math Formula">
-                      <span className="text-[11px] font-bold font-serif italic">fx</span>
+                  <div className="flex flex-wrap items-center gap-1 rounded-lg border border-border bg-zinc-50 p-1.5 select-none dark:bg-zinc-900/60" role="toolbar" aria-label="Text formatting">
+                    <button type="button" className="toolbar-btn" title="Bold" aria-label="Bold"><Bold className="h-4 w-4" /></button>
+                    <button type="button" className="toolbar-btn" title="Italic" aria-label="Italic"><Italic className="h-4 w-4" /></button>
+                    <button type="button" className="toolbar-btn ml-1 border-l border-zinc-200 pl-2 dark:border-zinc-800" title="Table" aria-label="Insert table"><TableIcon className="h-4 w-4" /></button>
+                    <button type="button" className="toolbar-btn" title="Math Formula" aria-label="Insert math formula">
+                      <span className="font-serif text-[11px] font-bold italic">fx</span>
                     </button>
-                    <button className="p-1 rounded hover:bg-zinc-200 dark:hover:bg-zinc-800 text-zinc-600 dark:text-zinc-350" title="Insert Image"><ImageIcon className="h-4 w-4" /></button>
-                    <button className="p-1 rounded hover:bg-zinc-200 dark:hover:bg-zinc-800 text-zinc-600 dark:text-zinc-350" title="Bullet List"><List className="h-4 w-4" /></button>
+                    <button type="button" className="toolbar-btn" title="Insert Image" aria-label="Insert image"><ImageIcon className="h-4 w-4" /></button>
+                    <button type="button" className="toolbar-btn" title="Bullet List" aria-label="Bullet list"><List className="h-4 w-4" /></button>
                   </div>
 
-                  {/* Problem statement textarea */}
                   <textarea
                     rows={6}
                     value={question.problemStatement}
                     onChange={(e) => updateField("problemStatement", e.target.value)}
-                    className="w-full p-4 rounded-lg border border-border bg-white dark:bg-zinc-800 text-sm focus-visible:outline-none focus-visible:border-primary focus-visible:ring-1 focus-visible:ring-primary"
+                    aria-label="Problem statement"
+                    className="form-textarea min-h-[160px]"
                     placeholder="Enter your problem description, constraints, and formulas here..."
                   />
                 </CardContent>
@@ -394,12 +402,10 @@ function EditorContent() {
 
               {/* Card 3: Starter Code & Environment (only for programming) */}
               {question.type === "Programming" && (
-                <Card className="shadow-none">
-                  <CardContent className="p-6 space-y-4">
-                    <div className="flex items-center justify-between flex-wrap gap-2 select-none">
-                      <span className="text-[10px] font-bold text-muted-foreground tracking-wider uppercase">
-                        Starter Code & Environment
-                      </span>
+                <Card>
+                  <CardContent className="space-y-4 p-6">
+                    <div className="flex flex-wrap items-center justify-between gap-2 select-none">
+                      <span className="section-label">Starter Code & Environment</span>
                       <span className="text-[11px] text-muted-foreground italic">
                         Read-only code block provided to candidates
                       </span>
@@ -407,8 +413,9 @@ function EditorContent() {
 
                     <div className="flex items-center gap-3 select-none">
                       <select
-                        className="h-9 px-3 rounded-lg border border-border bg-white dark:bg-zinc-800 text-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary"
+                        className="form-select w-auto min-w-[180px]"
                         defaultValue="python"
+                        aria-label="Programming language"
                       >
                         <option value="python">Python 3.10</option>
                         <option value="javascript">JavaScript (Node v18)</option>
@@ -437,13 +444,11 @@ function EditorContent() {
 
               {/* Card 4: Test Case Management (only for Programming) */}
               {question.type === "Programming" && (
-                <Card className="shadow-none">
-                  <CardContent className="p-6 space-y-4">
-                    <div className="flex items-center justify-between flex-wrap gap-2">
-                      <div className="flex flex-col">
-                        <span className="text-[10px] font-bold text-muted-foreground tracking-wider uppercase select-none">
-                          Test Case Management
-                        </span>
+                <Card>
+                  <CardContent className="space-y-4 p-6">
+                    <div className="flex flex-wrap items-center justify-between gap-2">
+                      <div className="flex flex-col gap-1">
+                        <span className="section-label">Test Case Management</span>
                         <span className="text-xs text-muted-foreground select-none">
                           Add Public (visible) and Private (grading) test cases.
                         </span>
@@ -463,7 +468,7 @@ function EditorContent() {
                       {question.testCases.map((tc, index) => (
                         <div
                           key={tc.id}
-                          className="rounded-lg border-2 border-emerald-500 bg-white p-5 space-y-4 dark:bg-zinc-800/20"
+                          className="space-y-4 rounded-lg border-2 border-emerald-500 bg-white p-6 dark:bg-zinc-800/20"
                         >
                           <div className="flex items-center justify-between flex-wrap gap-2 select-none">
                             <div className="flex items-center gap-2">
@@ -489,9 +494,11 @@ function EditorContent() {
 
                             <div className="flex items-center gap-1.5">
                               <button
+                                type="button"
                                 onClick={() => removeTestCase(index)}
-                                className="p-1 text-zinc-400 hover:text-destructive hover:bg-destructive/10 rounded transition-colors"
+                                className="rounded p-1 text-zinc-400 transition-colors hover:bg-destructive/10 hover:text-destructive focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
                                 title="Delete Test Case"
+                                aria-label={`Delete test case ${index + 1}`}
                               >
                                 <Trash2 className="h-4 w-4" />
                               </button>
@@ -581,21 +588,16 @@ function EditorContent() {
             </div>
 
             {/* Right Metadata Sidebar Panel Column */}
-            <div className="col-span-1 lg:col-span-4 space-y-6">
-              
-              {/* Metadata Form Panel Card */}
-              <Card className="shadow-none">
-                <CardContent className="p-6 space-y-5">
-                  
-                  {/* Bloom's Cognitive Level Selector */}
+            <div className="space-y-6 xl:col-span-4">
+              <Card>
+                <CardContent className="space-y-5 p-6">
                   <div className="flex flex-col gap-1.5">
-                    <span className="text-[10px] font-bold text-muted-foreground tracking-wider uppercase select-none">
-                      Cognitive Level (Bloom's)
-                    </span>
+                    <label htmlFor="cognitive-level" className="section-label">Cognitive Level (Bloom&apos;s)</label>
                     <select
+                      id="cognitive-level"
                       value={question.cognitiveLevel}
                       onChange={(e) => updateField("cognitiveLevel", e.target.value as CognitiveLevel)}
-                      className="w-full h-9 px-3 rounded-lg border border-border bg-white dark:bg-zinc-800 text-sm focus-visible:outline-none focus-visible:border-primary focus-visible:ring-1 focus-visible:ring-primary"
+                      className="form-select"
                     >
                       <option value="Remembering">Remembering</option>
                       <option value="Understanding">Understanding</option>
@@ -608,7 +610,7 @@ function EditorContent() {
 
                   {/* Evaluation Rules */}
                   <div className="space-y-4">
-                    <span className="text-[10px] font-bold text-muted-foreground tracking-wider uppercase select-none block border-b border-zinc-100 pb-1.5 dark:border-zinc-800/60">
+                    <span className="section-label block border-b border-zinc-100 pb-1.5 dark:border-zinc-800/60">
                       Evaluation Rules
                     </span>
 
@@ -652,20 +654,20 @@ function EditorContent() {
 
                   {/* Difficulty selector */}
                   <div className="space-y-2 select-none">
-                    <span className="text-[10px] font-bold text-muted-foreground tracking-wider uppercase block">
-                      Difficulty Level
-                    </span>
-                    <div className="grid grid-cols-4 gap-1">
+                    <span className="section-label block">Difficulty Level</span>
+                    <div className="grid grid-cols-4 gap-1" role="group" aria-label="Difficulty level">
                       {["Easy", "Medium", "Hard", "Expert"].map((diff) => {
                         const isSelected = question.difficulty === diff
                         return (
                           <button
                             key={diff}
+                            type="button"
+                            aria-pressed={isSelected}
                             onClick={() => updateField("difficulty", diff as QuestionDifficulty)}
                             className={cn(
-                              "h-7 px-1 text-[10px] font-bold rounded-lg border transition-all text-center uppercase tracking-wide",
+                              "h-8 rounded-lg border px-1 text-center text-[10px] font-bold uppercase tracking-wide transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50",
                               isSelected
-                                ? "bg-primary border-primary text-white"
+                                ? "border-primary bg-primary text-white"
                                 : "border-border bg-white text-muted-foreground hover:bg-zinc-50 dark:bg-zinc-800"
                             )}
                           >
@@ -678,9 +680,7 @@ function EditorContent() {
 
                   {/* Topic tags list */}
                   <div className="space-y-2">
-                    <span className="text-[10px] font-bold text-muted-foreground tracking-wider uppercase select-none block">
-                      Topic Tags
-                    </span>
+                    <span className="section-label block">Topic Tags</span>
                     
                     <div className="flex flex-wrap items-center gap-1.5">
                       {question.tags.map(tag => (
@@ -719,9 +719,7 @@ function EditorContent() {
 
                   {/* Skill tags list */}
                   <div className="space-y-2">
-                    <span className="text-[10px] font-bold text-muted-foreground tracking-wider uppercase select-none block">
-                      Skill Tags
-                    </span>
+                    <span className="section-label block">Skill Tags</span>
                     
                     <div className="flex flex-wrap items-center gap-1.5">
                       {(question.skills || []).map(skill => (
@@ -760,13 +758,12 @@ function EditorContent() {
 
                   {/* Default Grading Mode */}
                   <div className="flex flex-col gap-1.5 border-t border-zinc-100 pt-4 dark:border-zinc-800/60">
-                    <span className="text-[10px] font-bold text-muted-foreground tracking-wider uppercase select-none">
-                      Default Grading Mode
-                    </span>
+                    <label htmlFor="grading-mode" className="section-label">Default Grading Mode</label>
                     <select
+                      id="grading-mode"
                       value={question.defaultGradingMode}
                       onChange={(e) => updateField("defaultGradingMode", e.target.value)}
-                      className="w-full h-9 px-3 rounded-lg border border-border bg-white dark:bg-zinc-800 text-sm focus-visible:outline-none focus-visible:border-primary focus-visible:ring-1 focus-visible:ring-primary"
+                      className="form-select"
                     >
                       <option value="Exact String Match">Exact String Match</option>
                       <option value="Option Matching">Option Matching</option>
@@ -779,7 +776,7 @@ function EditorContent() {
               </Card>
 
               {/* Sync status card */}
-              <div className="flex items-center gap-3 rounded-xl bg-emerald-500/10 border border-emerald-500/20 p-4 text-emerald-800 dark:bg-emerald-950/20 dark:text-emerald-400 select-none">
+              <div className="flex items-center gap-3 rounded-xl border border-emerald-500/20 bg-emerald-500/10 p-4 text-emerald-800 select-none dark:bg-emerald-950/20 dark:text-emerald-400" role="status">
                 <RefreshCw className="h-5 w-5 text-emerald-600 shrink-0 animate-spin" style={{ animationDuration: '6s' }} />
                 <div className="flex flex-col text-xs font-semibold">
                   <span>Syncing to Exam Bank</span>
