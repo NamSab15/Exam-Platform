@@ -11,7 +11,7 @@ default:
     - corepack prepare pnpm@latest-9 --activate
     - pnpm config set store-dir .pnpm-store
     - cd frontend
-    - pnpm install --frozen-lockfile
+    - pnpm install --frozen-lockfile --ignore-scripts
 
 cache:
   key:
