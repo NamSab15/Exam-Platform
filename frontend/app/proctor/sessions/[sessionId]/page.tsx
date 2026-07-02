@@ -2,8 +2,8 @@
 
 import React, { useState, useEffect } from "react"
 import Link from "next/link"
-import { useParams, useRouter } from "next/navigation"
-import { ChevronLeft, Shield, Clock, ShieldAlert } from "lucide-react"
+import { useParams } from "next/navigation"
+import { ChevronLeft, Clock } from "lucide-react"
 import { AdminHeader } from "@/components/shared/admin-header"
 import { MOCK_CANDIDATES, CandidateSession } from "@/lib/proctorMockData"
 import { LiveFeeds } from "./components/LiveFeeds"
@@ -12,19 +12,14 @@ import { ControlPanel } from "./components/ControlPanel"
 
 export default function ProctorSessionPage() {
   const params = useParams()
-  const router = useRouter()
   const sessionId = params.sessionId as string
 
-  // Fetch student session from mock data
-  const [candidate, setCandidate] = useState<CandidateSession | null>(null)
-  const [remainingTime, setRemainingTime] = useState(6125) // 01:42:05 in seconds
-
-  useEffect(() => {
+  // Fetch student session from mock data with deep copy in initializer to avoid useEffect lint warnings
+  const [candidate, setCandidate] = useState<CandidateSession | null>(() => {
     const student = MOCK_CANDIDATES.find((c) => c.id === sessionId)
-    if (student) {
-      setCandidate(JSON.parse(JSON.stringify(student)))
-    }
-  }, [sessionId])
+    return student ? JSON.parse(JSON.stringify(student)) : null
+  })
+  const [remainingTime, setRemainingTime] = useState(6125) // 01:42:05 in seconds
 
   // Countdown timer
   useEffect(() => {

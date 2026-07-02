@@ -1,7 +1,6 @@
 import React from "react"
-import { Keyboard, ArrowUpRight, Zap, AlertTriangle } from "lucide-react"
+import { Keyboard, Zap, AlertTriangle } from "lucide-react"
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
 
 interface KeystrokeEntry {
   timestamp: string;

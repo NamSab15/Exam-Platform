@@ -2,10 +2,10 @@
 
 import React, { useState, useEffect } from "react"
 import Link from "next/link"
-import { useParams, useRouter } from "next/navigation"
-import { ChevronLeft, Calendar, ShieldCheck, AlertTriangle, User } from "lucide-react"
+import { useParams } from "next/navigation"
+import { ChevronLeft, ShieldCheck, AlertTriangle, User } from "lucide-react"
 import { AdminHeader } from "@/components/shared/admin-header"
-import { MOCK_CANDIDATES, CandidateSession } from "@/lib/proctorMockData"
+import { MOCK_CANDIDATES } from "@/lib/proctorMockData"
 import { ReviewPlayer } from "./components/ReviewPlayer"
 import { KeystrokeLog } from "./components/KeystrokeLog"
 
@@ -39,18 +39,11 @@ export default function ProctorReviewPage() {
   const params = useParams()
   const sessionId = params.sessionId as string
 
-  const [candidate, setCandidate] = useState<CandidateSession | null>(null)
+  const candidate = MOCK_CANDIDATES.find((c) => c.id === sessionId) || null
   const [isPlaying, setIsPlaying] = useState(false)
   const [currentTime, setCurrentTime] = useState(0)
   const [playbackSpeed, setPlaybackSpeed] = useState(1)
   const duration = 300 // 5 minutes total recording duration
-
-  useEffect(() => {
-    const student = MOCK_CANDIDATES.find((c) => c.id === sessionId)
-    if (student) {
-      setCandidate(student)
-    }
-  }, [sessionId])
 
   // Playback timer simulation
   useEffect(() => {

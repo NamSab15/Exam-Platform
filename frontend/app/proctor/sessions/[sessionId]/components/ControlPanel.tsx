@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import { AlertCircle, ShieldAlert, CheckCircle, Volume2, Shield } from "lucide-react"
+import { ShieldAlert } from "lucide-react"
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
@@ -106,6 +106,10 @@ export function ControlPanel({
               ? "AI verification confirms candidate focus and environment stability."
               : "Warning: Multiple flags generated. Candidate integrity compromised."}
           </p>
+          <div className="mt-3 flex items-center justify-center gap-1.5 text-xs text-muted-foreground">
+            <span>Warnings Issued:</span>
+            <span className="font-semibold text-foreground">{warningsCount}</span>
+          </div>
         </CardContent>
       </Card>
 
@@ -232,7 +236,7 @@ export function ControlPanel({
               Terminate Session
             </DialogTitle>
             <DialogDescription className="text-xs text-muted-foreground">
-              Are you sure you want to terminate this candidate's session? This action is irreversible.
+              Are you sure you want to terminate this candidate&apos;s session? This action is irreversible.
             </DialogDescription>
           </DialogHeader>
           <div className="grid gap-4 py-4">

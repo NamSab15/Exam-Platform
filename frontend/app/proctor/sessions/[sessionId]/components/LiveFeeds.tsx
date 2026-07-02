@@ -1,5 +1,5 @@
 import React from "react"
-import { Mic, Videocam, VideoOff, ScreenShare, ShieldAlert } from "lucide-react"
+import { VideoOff, ScreenShare, ShieldAlert } from "lucide-react"
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 
 interface LiveFeedsProps {
@@ -64,7 +64,7 @@ export function LiveFeeds({
         <CardHeader className="px-6 py-4 border-b border-border/50 bg-muted/10 flex flex-row items-center justify-between">
           <CardTitle className="font-heading text-sm font-semibold text-primary flex items-center gap-2">
             <ScreenShare className="h-4 w-4" />
-            Screen Share
+            Screen Share {screenShareUrl && ""}
           </CardTitle>
           <span className="text-[10px] font-bold text-muted-foreground uppercase bg-accent px-2 py-0.5 rounded">
             Active
@@ -89,7 +89,7 @@ export function LiveFeeds({
               <span className="text-blue-400">const</span> dp = Array.from(&#123; length: n + 1 &#125;, () =&gt; Array(capacity + 1).fill(0));
             </div>
             <div className="pl-4 text-zinc-500 mt-1">
-              // Loop through all items and weights
+              {"// Loop through all items and weights"}
             </div>
             <div className="pl-4">
               <span className="text-purple-400">for</span> (<span className="text-blue-400">let</span> i = 1; i &lt;= n; i++) &#123;
@@ -124,7 +124,7 @@ export function LiveFeeds({
                 <ShieldAlert className="h-10 w-10 text-destructive mb-2" />
                 <h4 className="font-bold text-white text-base">Session Suspended</h4>
                 <p className="text-xs text-zinc-400 mt-1 max-w-xs">
-                  This candidate's exam screen is locked. Awaiting proctor resolution.
+                  This candidate&apos;s exam screen is locked. Awaiting proctor resolution.
                 </p>
               </div>
             )}

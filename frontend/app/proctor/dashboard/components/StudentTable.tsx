@@ -2,8 +2,6 @@ import React, { useState } from "react"
 import Link from "next/link"
 import { Search, Filter, ArrowUpRight, ChevronLeft, ChevronRight, History } from "lucide-react"
 import { CandidateSession } from "@/lib/proctorMockData"
-import { Badge } from "@/components/ui/badge"
-import { Progress } from "@/components/ui/progress"
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 
 interface StudentTableProps {
@@ -70,7 +68,7 @@ export function StudentTable({ candidates }: StudentTableProps) {
           <div className="relative">
             <select
               value={filter}
-              onChange={(e) => setFilter(e.target.value as any)}
+              onChange={(e) => setFilter(e.target.value as "ALL" | "FLAGGED" | "SECURE")}
               className="h-9 rounded-lg border border-border bg-background pl-3 pr-8 py-1 text-xs focus-visible:border-primary focus-visible:outline-none cursor-pointer appearance-none"
             >
               <option value="ALL">All Students</option>

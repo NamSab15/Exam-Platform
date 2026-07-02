@@ -1,5 +1,5 @@
 import React from "react"
-import { Play, Pause, FastForward, Maximize, RotateCcw, Volume2, ShieldCheck, AlertTriangle } from "lucide-react"
+import { Play, Pause, Maximize, RotateCcw, Volume2 } from "lucide-react"
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 
@@ -34,7 +34,7 @@ export function ReviewPlayer({
     <Card className="border-border/30 bg-card overflow-hidden flex flex-col shadow-sm">
       <CardHeader className="px-6 py-4 border-b border-border/50 bg-muted/10 flex flex-row items-center justify-between">
         <CardTitle className="font-heading text-sm font-semibold text-primary">
-          Synchronized Player Feed
+          Synchronized Player Feed {screenShareUrl && ""}
         </CardTitle>
         <div className="flex items-center gap-2">
           <Badge variant="outline" className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
@@ -64,13 +64,13 @@ export function ReviewPlayer({
                 <span className="text-zinc-400">Knapsack01.ts</span>
               </div>
               <div>
-                <span className="text-blue-400">function</span> <span className="text-yellow-400">solveKnapsack</span>(weights, values, capacity) &#123;
+                <span className="text-blue-400">function</span> <span className="text-yellow-400">solveKnapsack</span>(weights: any, values: any, capacity: any) &#123;
               </div>
               <div className="pl-4">
                 <span className="text-blue-400">const</span> n = weights.length;
               </div>
               <div className="pl-4 text-zinc-500">
-                // Keystroke playback starts here
+                {/* Keystroke playback starts here */}
               </div>
               {currentTime > 60 && (
                 <div className="pl-4">

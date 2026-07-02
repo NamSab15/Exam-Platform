@@ -2,7 +2,6 @@ import React, { useState } from "react"
 import { ActivityLogEntry } from "@/lib/proctorMockData"
 import { AlertCircle, Volume2, EyeOff, Check, ArrowUpDown } from "lucide-react"
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
 
 interface IncidentFeedProps {
   logs: ActivityLogEntry[];

@@ -1,6 +1,6 @@
 import React from "react"
 import Link from "next/link"
-import { ChevronLeft, ChevronRight, History, ArrowRight } from "lucide-react"
+import { ChevronLeft, ChevronRight } from "lucide-react"
 import { ActivityLogEntry } from "@/lib/proctorMockData"
 
 interface LogsTableProps {

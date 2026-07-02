@@ -1,9 +1,9 @@
 'use client'
 
-import React, { useState, useEffect } from "react"
+import React, { useState } from "react"
 import { Download, AlertTriangle, X } from "lucide-react"
 import { AdminHeader } from "@/components/shared/admin-header"
-import { MOCK_CANDIDATES, ActivityLogEntry } from "@/lib/proctorMockData"
+import { MOCK_CANDIDATES } from "@/lib/proctorMockData"
 import { FilterControls } from "./components/FilterControls"
 import { LogsTable } from "./components/LogsTable"
 
@@ -12,17 +12,11 @@ export default function ProctorActivityLogsPage() {
   const [examFilter, setExamFilter] = useState("ALL")
   const [liveSync, setLiveSync] = useState(true)
   const [searchQuery, setSearchQuery] = useState("")
-
-  const [allLogs, setAllLogs] = useState<ActivityLogEntry[]>([])
   const [showToast, setShowToast] = useState(true)
 
-  useEffect(() => {
-    // Flatten and aggregate logs from all candidates
-    const logs = MOCK_CANDIDATES.flatMap((c) => c.logs)
-    // Sort by timestamp descending
-    logs.sort((a, b) => b.timestamp.localeCompare(a.timestamp))
-    setAllLogs(logs)
-  }, [])
+  // Derive logs from mock data statically/synchronously
+  const allLogs = MOCK_CANDIDATES.flatMap((c) => c.logs)
+  allLogs.sort((a, b) => b.timestamp.localeCompare(a.timestamp))
 
   const filteredLogs = allLogs.filter((log) => {
     const matchesSearch =
