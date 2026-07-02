@@ -3,6 +3,10 @@ stages:
   - build
   # - deploy
 
+workflow:
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "parent_pipeline"
+
 default:
   image: node:22-alpine
   before_script:
