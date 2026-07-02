@@ -1,10 +1,13 @@
 /**
- * Root Page — Demo Presentation Flow
- * Route: /
+ * Demo / Presentation Page
+ * Route: /demo
  *
- * Renders the complete Accounts & Setup flow starting from the
- * Sign In screen. Clicking the primary action button on each
- * screen automatically advances to the next screen.
+ * Wires all existing Team 1 (Accounts & Setup) screens into
+ * a single navigable presentation. No screens are rebuilt —
+ * each is imported and rendered as-is.
+ *
+ * Note: org-settings is excluded because that page has not
+ * been built yet. Add it to the screens array when it exists.
  */
 
 "use client";
@@ -13,17 +16,17 @@ import { useState } from "react";
 import dynamic from "next/dynamic";
 
 // Import all existing screen components
-import LoginPage from "./login/page";
-import ResetPasswordPage from "./reset-password/page";
-import OnboardingStep1 from "./onboarding/step-1/page";
-import OnboardingStep2 from "./onboarding/step-2/page";
-import OnboardingStep3 from "./onboarding/step-3/page";
-import OnboardingStep4 from "./onboarding/step-4/page";
-import OnboardingStep5 from "./onboarding/step-5/page";
+import LoginPage from "../login/page";
+import ResetPasswordPage from "../reset-password/page";
+import OnboardingStep1 from "../onboarding/step-1/page";
+import OnboardingStep2 from "../onboarding/step-2/page";
+import OnboardingStep3 from "../onboarding/step-3/page";
+import OnboardingStep4 from "../onboarding/step-4/page";
+import OnboardingStep5 from "../onboarding/step-5/page";
 
 // Users page is a server component that exports `metadata` — dynamic
 // import avoids the "metadata in client component" build error.
-const UsersPage = dynamic(() => import("./users/page"), { ssr: false });
+const UsersPage = dynamic(() => import("../users/page"), { ssr: false });
 
 /* ── Screen registry ────────────────────────────────────────── */
 
@@ -39,7 +42,7 @@ type Screen =
 
 /* ── Page component ─────────────────────────────────────────── */
 
-export default function Home() {
+export default function DemoPage() {
   const [screen, setScreen] = useState<Screen>("login");
 
   return (
