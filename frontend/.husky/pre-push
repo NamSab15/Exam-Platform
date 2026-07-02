@@ -9,7 +9,7 @@ pnpm lint
 LINT_STATUS=$?
 
 if [ $LINT_STATUS -ne 0 ]; then
-  echo "❌ ESLint failed. Push aborted."
+  echo "ESLint failed. Push aborted........."
   exit 1
 fi
 
@@ -18,9 +18,9 @@ pnpm typecheck
 TSC_STATUS=$?
 
 if [ $TSC_STATUS -ne 0 ]; then
-  echo "❌ TypeScript type checking failed. Push aborted."
+  echo "TypeScript type checking failed. Push aborted........"
   exit 1
 fi
 
-echo "✅ All checks passed successfully!"
+echo "All checks passed successfully!"
 exit 0
