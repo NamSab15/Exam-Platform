@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState, useEffect, Suspense } from "react"
-import { useSearchParams } from "next/navigation"
+import { useSearchParams, useRouter } from "next/navigation"
 import { cn } from "@/lib/utils"
 import {
   Flag,
@@ -33,6 +33,7 @@ interface QuestionNavState {
 
 function PreviewContent() {
   const searchParams = useSearchParams()
+  const router = useRouter()
   const questionId = searchParams.get("id")
 
   const initialQuestions = getQuestions()
