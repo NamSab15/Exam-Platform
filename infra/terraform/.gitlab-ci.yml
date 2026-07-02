@@ -1,7 +1,7 @@
 stages:
   - validate
   - build
-  - deploy
+  # - deploy
 
 default:
   image: hashicorp/terraform:1.6.0
@@ -28,11 +28,12 @@ tf:plan:
       - infra/terraform/frontend/tfplan
     expire_in: 1 week
 
-tf:apply:
-  stage: deploy
-  script:
-    - terraform apply -input=false tfplan
-  dependencies:
-    - tf:plan
-  rules:
-    - if: $CI_COMMIT_BRANCH == "main"
+# tf:apply:
+#   stage: deploy
+#   script:
+#     - terraform apply -input=false tfplan
+#   dependencies:
+#     - tf:plan
+#   rules:
+#     - if: $CI_COMMIT_BRANCH == "main"
+
