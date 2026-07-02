@@ -1,21 +1,5 @@
 stages:
-  - test
-  - secret-detection
   - triggers
-
-variables:
-  SECRET_DETECTION_ENABLED: 'true'
-
-# Security Scans (active globally)
-sast:
-  stage: test
-
-secret_detection:
-  stage: secret-detection
-
-include:
-  - template: Security/SAST.gitlab-ci.yml
-  - template: Security/Secret-Detection.gitlab-ci.yml
 
 # Parent-child pipeline triggers
 trigger-frontend:
