@@ -11,6 +11,7 @@
 "use client";
 
 import { useState, useRef } from "react";
+import Image from "next/image";
 import OnboardingStepper from "../OnboardingStepper";
 import Image from "next/image";
 
@@ -353,7 +354,10 @@ function StepTwo({
             <Image
               src={data.logoPreviewUrl}
               alt="Logo preview"
+              width={128}
+              height={64}
               className="max-h-16 object-contain rounded"
+              unoptimized
             />
             <span className="flex-1 text-[14px] text-foreground font-medium truncate">
               Uploaded logo
@@ -883,7 +887,10 @@ function StepFive({
               <Image
                 src={data.logoPreviewUrl}
                 alt="Logo"
+                width={64}
+                height={32}
                 className="h-8 rounded"
+                unoptimized
               />
             ) : (
               <span className="text-muted-foreground text-[12px]">No logo uploaded</span>

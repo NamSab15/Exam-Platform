@@ -9,6 +9,8 @@
 
 "use client";
 
+import Image from "next/image";
+
 import { useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import OnboardingStepper from "../OnboardingStepper";
@@ -144,7 +146,10 @@ export default function OnboardingStep2Page({ onNext }: { onNext?: () => void } 
                   <Image
                     src={logoPreviewUrl}
                     alt="Logo preview"
+                    width={128}
+                    height={64}
                     className="max-h-16 object-contain"
+                    unoptimized
                   />
                   <div className="flex-1">
                     <p className="text-[14px] text-foreground font-medium truncate">

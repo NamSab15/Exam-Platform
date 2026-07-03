@@ -9,7 +9,7 @@
 
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import OnboardingStepper from "../OnboardingStepper";
 
@@ -63,6 +63,7 @@ const MAX_INVITES = 10;
 
 export default function OnboardingStep4Page({ onNext }: { onNext?: () => void } = {}) {
   const router = useRouter();
+  const nextId = useRef(1);
 
   const [invites, setInvites] = useState<InviteRow[]>([
     { id: 1, name: "", email: "", role: "Exam Creator" },
@@ -74,7 +75,7 @@ export default function OnboardingStep4Page({ onNext }: { onNext?: () => void } 
     if (invites.length >= MAX_INVITES) return;
     setInvites((prev) => [
       ...prev,
-      { id: Date.now(), name: "", email: "", role: "Exam Creator" },
+      { id: nextId.current++, name: "", email: "", role: "Exam Creator" },
     ]);
   }
 
