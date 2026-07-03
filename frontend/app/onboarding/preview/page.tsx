@@ -12,6 +12,7 @@
 
 import { useState, useRef } from "react";
 import OnboardingStepper from "../OnboardingStepper";
+import Image from "next/image";
 
 /* ── Shared style constants ─────────────────────────────────────
    Every colour / radius / spacing references the design-project
@@ -349,7 +350,7 @@ function StepTwo({
 
         {data.logoPreviewUrl ? (
           <div className="flex items-center gap-4 border border-border rounded-md p-4">
-            <img
+            <Image
               src={data.logoPreviewUrl}
               alt="Logo preview"
               className="max-h-16 object-contain rounded"
@@ -879,7 +880,7 @@ function StepFive({
           label="Logo"
           value={
             data.logoPreviewUrl ? (
-              <img
+              <Image
                 src={data.logoPreviewUrl}
                 alt="Logo"
                 className="h-8 rounded"
