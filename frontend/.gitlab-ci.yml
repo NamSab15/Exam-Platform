@@ -53,7 +53,9 @@ frontend:deploy:
     DOCKER_TLS_VERIFY: 1
     DOCKER_CERT_PATH: "/certs/client"
   before_script:
-    - apk add --no-cache docker-cli
+    - curl -fsSL https://download.docker.com/linux/static/stable/x86_64/docker-24.0.5.tgz | tar -xz -C /tmp
+    - mv /tmp/docker/docker /usr/local/bin/
+    - rm -rf /tmp/docker
   cache: {}
   script:
     - az login --service-principal -u "$AZURE_CLIENT_ID" -p "$AZURE_CLIENT_SECRET" --tenant "$AZURE_TENANT_ID"
