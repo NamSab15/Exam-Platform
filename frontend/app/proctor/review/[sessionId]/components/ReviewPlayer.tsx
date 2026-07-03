@@ -2,6 +2,7 @@ import React from "react"
 import { Play, Pause, Maximize, RotateCcw, Volume2 } from "lucide-react"
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
+import Image from "next/image"
 
 interface ReviewPlayerProps {
   candidateName: string;
@@ -47,11 +48,13 @@ export function ReviewPlayer({
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {/* Webcam player */}
           <div className="relative aspect-video bg-zinc-950 rounded-lg overflow-hidden border border-border/30">
-            <img
-              src={webcamUrl}
-              alt={`${candidateName} webcam recording`}
-              className="w-full h-full object-cover opacity-75"
-            />
+            {webcamUrl && (
+              <Image
+                src={webcamUrl} // Make sure webcamUrl is not undefined
+                alt={`${candidateName} webcam recording`}
+                className="w-full h-full object-cover opacity-75"
+              />
+            )}
             <div className="absolute top-3 left-3 bg-black/50 px-2 py-0.5 rounded text-[9px] font-bold text-white uppercase tracking-wider">
               Webcam Feed
             </div>
