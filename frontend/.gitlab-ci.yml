@@ -30,11 +30,15 @@ frontend:lint:
   stage: validate
   script:
     - pnpm lint
+  rules:
+    - if: $CI_COMMIT_BRANCH != $CI_DEFAULT_BRANCH
 
 frontend:typecheck:
   stage: validate
   script:
     - pnpm exec tsc --noEmit
+  rules:
+    - if: $CI_COMMIT_BRANCH != $CI_DEFAULT_BRANCH
 
 frontend:build:
   stage: build
@@ -53,9 +57,8 @@ frontend:deploy:
     DOCKER_TLS_VERIFY: 1
     DOCKER_CERT_PATH: "/certs/client"
   before_script:
-    - curl -fsSL https://download.docker.com/linux/static/stable/x86_64/docker-24.0.5.tgz | tar -xz -C /tmp
-    - mv /tmp/docker/docker /usr/local/bin/
-    - rm -rf /tmp/docker
+    - python3 -c "import urllib.request, tarfile, shutil, os; urllib.request.urlretrieve('https://download.docker.com/linux/static/stable/x86_64/docker-24.0.5.tgz', 'docker.tgz'); t = tarfile.open('docker.tgz'); t.extract('docker/docker', path='/tmp'); t.close(); os.chmod('/tmp/docker/docker', 0o755); shutil.move('/tmp/docker/docker', '/usr/local/bin/docker')"
+    - rm -f docker.tgz
   cache: {}
   script:
     - az login --service-principal -u "$AZURE_CLIENT_ID" -p "$AZURE_CLIENT_SECRET" --tenant "$AZURE_TENANT_ID"
