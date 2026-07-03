@@ -32,6 +32,8 @@ tf:validate:
   stage: validate
   script:
     - terraform validate
+  rules:
+    - if: $CI_COMMIT_BRANCH != $CI_DEFAULT_BRANCH
 
 tf:plan:
   stage: build
