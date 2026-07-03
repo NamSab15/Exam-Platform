@@ -2,7 +2,7 @@
 
 import React from "react"
 import { useRouter } from "next/navigation"
-import { Sliders, Calendar, ArrowRight, ArrowLeft } from "lucide-react"
+import { Sliders, ArrowRight, ArrowLeft } from "lucide-react"
 
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
