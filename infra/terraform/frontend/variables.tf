@@ -10,14 +10,20 @@ variable "location" {
   default     = "eastasia"
 }
 
-variable "swa_name" {
+variable "acr_name" {
   type        = string
-  description = "The name of the Azure Static Web App resource"
-  default     = "swa-xebia-exam-frontend"
+  description = "The name of the Azure Container Registry (must be globally unique, alphanumeric only)"
+  default     = "acrxebiaexamshared"
 }
 
-variable "swa_sku_tier" {
+variable "container_app_environment_name" {
   type        = string
-  description = "The SKU tier for the Static Web App"
-  default     = "Free" # Free tier has $0/month cost
+  description = "The name of the Azure Container App Environment"
+  default     = "cae-xebia-exam-shared"
+}
+
+variable "container_app_name" {
+  type        = string
+  description = "The name of the Azure Container App"
+  default     = "ca-xebia-exam-frontend"
 }

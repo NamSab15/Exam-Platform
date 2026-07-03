@@ -1,38 +1,78 @@
-# stages:
-#   - validate
-#   - build
-#   # - deploy
-# 
-# default:
-#   image: hashicorp/terraform:1.6.0
-#   before_script:
-#     - export ARM_CLIENT_ID="$AZURE_CLIENT_ID"
-#     - export ARM_CLIENT_SECRET="$AZURE_CLIENT_SECRET"
-#     - export ARM_TENANT_ID="$AZURE_TENANT_ID"
-#     - export ARM_SUBSCRIPTION_ID="$AZURE_SUBSCRIPTION_ID"
-#     - cd infra/terraform/frontend
-#     - terraform init -backend-config="storage_account_name=$TF_STATE_STORAGE_ACCOUNT"
-# 
-# tf:validate:
-#   stage: validate
-#   script:
-#     - terraform validate
-# 
-# tf:plan:
-#   stage: build
-#   script:
-#     - terraform plan -out=tfplan
-#   artifacts:
-#     name: "tfplan-$CI_COMMIT_REF_SLUG"
-#     paths:
-#       - infra/terraform/frontend/tfplan
-#     expire_in: 1 week
-# 
-# # tf:apply:
-# #   stage: deploy
-# #   script:
-# #     - terraform apply -input=false tfplan
-# #   dependencies:
-# #     - tf:plan
-# #   rules:
-# #     - if: $CI_COMMIT_BRANCH == "main"
+stages:
+  - validate
+  - build
+  - deploy
+
+workflow:
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "parent_pipeline"
+
+variables:
+  TF_PLUGIN_CACHE_DIR: "$CI_PROJECT_DIR/.terraform.d/plugin-cache"
+
+cache:
+  key: terraform-plugins
+  paths:
+    - .terraform.d/plugin-cache
+
+default:
+  image:
+    name: hashicorp/terraform:1.9.0
+    entrypoint: [""]
+  before_script:
+    - export ARM_CLIENT_ID="$AZURE_CLIENT_ID"
+    - export ARM_CLIENT_SECRET="$AZURE_CLIENT_SECRET"
+    - export ARM_TENANT_ID="$AZURE_TENANT_ID"
+    - export ARM_SUBSCRIPTION_ID="$AZURE_SUBSCRIPTION_ID"
+    - mkdir -p "$TF_PLUGIN_CACHE_DIR"
+    - cd infra/terraform/frontend
+    - terraform init -backend-config="storage_account_name=$TF_STATE_STORAGE_ACCOUNT"
+
+tf:validate:
+  stage: validate
+  script:
+    - terraform validate
+
+tf:plan:
+  stage: build
+  script:
+    - terraform plan -out=tfplan
+    - terraform show -no-color tfplan > tfplan.txt
+    - |
+      if [ -n "$CI_MERGE_REQUEST_IID" ] && [ -n "$GITLAB_TOKEN" ]; then
+        echo "Installing curl and jq to post MR comment..."
+        apk add --no-cache curl jq
+        echo "Project ID: $CI_PROJECT_ID"
+        echo "MR IID: $CI_MERGE_REQUEST_IID"
+        echo "Token Length: ${#GITLAB_TOKEN} chars"
+        echo -e "### Terraform Plan for \`$CI_COMMIT_REF_NAME\`\n\n<details><summary>Click to expand plan details</summary>\n\n\`\`\`hcl\n$(cat tfplan.txt)\n\`\`\`\n\n</details>" > mr_comment.txt
+        jq -n --arg body "$(cat mr_comment.txt)" '{body: $body}' > payload.json
+        echo "=== API Diagnostics ==="
+        echo "1. Testing GET Project details..."
+        curl -o /dev/null -s -w "HTTP Status: %{http_code}\n" --header "PRIVATE-TOKEN: $GITLAB_TOKEN" "$CI_API_V4_URL/projects/$CI_PROJECT_ID"
+        echo "2. Testing GET MR details..."
+        curl -o /dev/null -s -w "HTTP Status: %{http_code}\n" --header "PRIVATE-TOKEN: $GITLAB_TOKEN" "$CI_API_V4_URL/projects/$CI_PROJECT_ID/merge_requests/$CI_MERGE_REQUEST_IID"
+        echo "=== Sending POST request to GitLab API ==="
+        curl -i --request POST \
+          --header "PRIVATE-TOKEN: $GITLAB_TOKEN" \
+          --header "Content-Type: application/json" \
+          --data @payload.json \
+          "$CI_API_V4_URL/projects/$CI_PROJECT_ID/merge_requests/$CI_MERGE_REQUEST_IID/notes"
+      else
+        echo "Skipping MR comment posting (Not an MR or GITLAB_TOKEN is not configured)"
+      fi
+  artifacts:
+    name: "tfplan-$CI_COMMIT_REF_SLUG"
+    paths:
+      - infra/terraform/frontend/tfplan
+      - infra/terraform/frontend/tfplan.txt
+    expire_in: 1 week
+
+tf:apply:
+  stage: deploy
+  script:
+    - terraform apply -input=false tfplan
+  dependencies:
+    - tf:plan
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
