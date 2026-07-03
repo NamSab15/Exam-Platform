@@ -21,8 +21,10 @@ cache:
   key:
     files:
       - frontend/pnpm-lock.yaml
+    prefix: $CI_COMMIT_REF_SLUG
   paths:
     - frontend/.pnpm-store/
+    - frontend/.next/cache/
 
 frontend:lint:
   stage: validate
@@ -38,6 +40,8 @@ frontend:build:
   stage: build
   script:
     - pnpm build
+  rules:
+    - if: $CI_COMMIT_BRANCH != $CI_DEFAULT_BRANCH
 
 frontend:deploy:
   stage: deploy
