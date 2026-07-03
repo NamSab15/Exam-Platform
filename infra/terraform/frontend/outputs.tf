@@ -9,7 +9,7 @@ output "acr_name" {
 }
 
 output "container_app_fqdn" {
-  value       = azurerm_container_app.frontend.fqdn
+  value       = azurerm_container_app.frontend.ingress[0].fqdn
   description = "The fully qualified domain name of the Container App"
 }
 
