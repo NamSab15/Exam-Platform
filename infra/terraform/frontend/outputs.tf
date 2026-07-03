@@ -1,15 +1,24 @@
-output "swa_default_hostname" {
-  value       = azurerm_static_web_app.frontend.default_host_name
-  description = "The default host name of the Azure Static Web App"
+output "acr_login_server" {
+  value       = azurerm_container_registry.acr.login_server
+  description = "The login server for the Azure Container Registry"
 }
 
-output "swa_api_key" {
-  value       = azurerm_static_web_app.frontend.api_key
-  description = "The API key (deployment token) for the Static Web App"
-  sensitive   = true
+output "acr_name" {
+  value       = azurerm_container_registry.acr.name
+  description = "The name of the Azure Container Registry"
+}
+
+output "container_app_fqdn" {
+  value       = azurerm_container_app.frontend.fqdn
+  description = "The fully qualified domain name of the Container App"
+}
+
+output "container_app_name" {
+  value       = azurerm_container_app.frontend.name
+  description = "The name of the Container App"
 }
 
 output "resource_group_name" {
   value       = azurerm_resource_group.app.name
-  description = "The name of the resource group containing the Static Web App"
+  description = "The name of the resource group containing the application resources"
 }
