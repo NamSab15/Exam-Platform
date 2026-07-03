@@ -9,7 +9,7 @@ workflow:
 
 default:
   image:
-    name: hashicorp/terraform:1.6.0
+    name: hashicorp/terraform:1.9.0
     entrypoint: [""]
   before_script:
     - export ARM_CLIENT_ID="$AZURE_CLIENT_ID"
