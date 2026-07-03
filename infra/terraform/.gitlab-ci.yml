@@ -8,7 +8,9 @@ workflow:
     - if: $CI_PIPELINE_SOURCE == "parent_pipeline"
 
 default:
-  image: hashicorp/terraform:1.6.0
+  image:
+    name: hashicorp/terraform:1.6.0
+    entrypoint: [""]
   before_script:
     - export ARM_CLIENT_ID="$AZURE_CLIENT_ID"
     - export ARM_CLIENT_SECRET="$AZURE_CLIENT_SECRET"
