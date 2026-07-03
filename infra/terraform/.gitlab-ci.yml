@@ -45,9 +45,14 @@ tf:plan:
         echo "Project ID: $CI_PROJECT_ID"
         echo "MR IID: $CI_MERGE_REQUEST_IID"
         echo "Token Length: ${#GITLAB_TOKEN} chars"
-        echo -e "### Terraform Plan for \`$CI_COMMIT_REF_NAME\`\n\n<details><summary>Click to expand plan details</summary>\n\n\`\`\`hcl\n$(cat tfplan.txt)\n\`\`\`\n\n</details>" > mr_comment.txt
+        echo -e "### 📄 Terraform Plan for \`$CI_COMMIT_REF_NAME\`\n\n<details><summary>Click to expand plan details</summary>\n\n\`\`\`hcl\n$(cat tfplan.txt)\n\`\`\`\n\n</details>" > mr_comment.txt
         jq -n --arg body "$(cat mr_comment.txt)" '{body: $body}' > payload.json
-        echo "Sending POST request to GitLab API..."
+        echo "=== API Diagnostics ==="
+        echo "1. Testing GET Project details..."
+        curl -o /dev/null -s -w "HTTP Status: %{http_code}\n" --header "PRIVATE-TOKEN: $GITLAB_TOKEN" "$CI_API_V4_URL/projects/$CI_PROJECT_ID"
+        echo "2. Testing GET MR details..."
+        curl -o /dev/null -s -w "HTTP Status: %{http_code}\n" --header "PRIVATE-TOKEN: $GITLAB_TOKEN" "$CI_API_V4_URL/projects/$CI_PROJECT_ID/merge_requests/$CI_MERGE_REQUEST_IID"
+        echo "=== Sending POST request to GitLab API ==="
         curl -i --request POST \
           --header "PRIVATE-TOKEN: $GITLAB_TOKEN" \
           --header "Content-Type: application/json" \
