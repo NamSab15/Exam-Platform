@@ -42,13 +42,20 @@ frontend:build:
 frontend:deploy:
   stage: deploy
   image: mcr.microsoft.com/azure-cli:latest
-  before_script: []
+  services:
+    - docker:24.0.5-dind
+  variables:
+    DOCKER_HOST: tcp://docker:2376
+    DOCKER_TLS_VERIFY: 1
+    DOCKER_CERT_PATH: "/certs/client"
+  before_script:
+    - apk add --no-cache docker-cli
   cache: {}
   script:
     - az login --service-principal -u "$AZURE_CLIENT_ID" -p "$AZURE_CLIENT_SECRET" --tenant "$AZURE_TENANT_ID"
-    # Build the container using Azure Container Registry Tasks (no dind needed)
-    - az acr build --registry acrxebiaexamshared --image frontend:$CI_COMMIT_SHORT_SHA ./frontend
-    # Deploy the new image to Azure Container App
+    - az acr login --name acrxebiaexamshared
+    - docker build -t acrxebiaexamshared.azurecr.io/frontend:$CI_COMMIT_SHORT_SHA ./frontend
+    - docker push acrxebiaexamshared.azurecr.io/frontend:$CI_COMMIT_SHORT_SHA
     - az containerapp update --name ca-xebia-exam-frontend --resource-group rg-xebia-exam-prod --image acrxebiaexamshared.azurecr.io/frontend:$CI_COMMIT_SHORT_SHA
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
