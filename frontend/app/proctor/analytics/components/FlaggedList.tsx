@@ -2,6 +2,7 @@ import React from "react"
 import Link from "next/link"
 import { ArrowRight } from "lucide-react"
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
+import Image from "next/image"
 
 const FLAGGED_STUDENTS = [
   {
@@ -64,7 +65,7 @@ export function FlaggedList() {
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-3">
                       <div className="h-10 w-10 rounded-full overflow-hidden border border-border/30 shrink-0">
-                        <img
+                        <Image
                           src={student.avatar}
                           alt={student.name}
                           className="w-full h-full object-cover"

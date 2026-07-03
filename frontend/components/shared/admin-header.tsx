@@ -5,6 +5,7 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { Search, Bell, HelpCircle, Clock } from "lucide-react"
 import { cn } from "@/lib/utils"
+import Image from "next/image"
 
 interface AdminHeaderProps {
   onSearchChange?: (val: string) => void;
@@ -131,7 +132,7 @@ export function AdminHeader({
           role="img"
           aria-label="User profile"
         >
-          <img
+          <Image
             src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=120"
             alt=""
             className="h-full w-full object-cover"

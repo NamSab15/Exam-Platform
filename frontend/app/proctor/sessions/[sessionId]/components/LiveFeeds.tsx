@@ -1,6 +1,7 @@
 import React from "react"
 import { VideoOff, ScreenShare, ShieldAlert } from "lucide-react"
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
+import Image from "next/image"
 
 interface LiveFeedsProps {
   candidateName: string;
@@ -31,7 +32,7 @@ export function LiveFeeds({
         <CardContent className="p-0 relative aspect-video bg-zinc-950 flex items-center justify-center">
           {webcamUrl ? (
             <>
-              <img
+              <Image
                 src={webcamUrl}
                 alt={`${candidateName} webcam`}
                 className="w-full h-full object-cover opacity-80"

@@ -12,6 +12,7 @@
 import { useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import OnboardingStepper from "../OnboardingStepper";
+import Image from "next/image";
 
 /* ── Shared style constants ─────────────────────────────────────
    Every colour / radius / spacing references the design-project
@@ -140,7 +141,7 @@ export default function OnboardingStep2Page({ onNext }: { onNext?: () => void } 
 
               {logoPreviewUrl ? (
                 <div className="flex items-center gap-4 border border-border rounded-md p-4">
-                  <img
+                  <Image
                     src={logoPreviewUrl}
                     alt="Logo preview"
                     className="max-h-16 object-contain"
