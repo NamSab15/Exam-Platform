@@ -6,7 +6,7 @@ interface BottomNavProps {
 
 export default function BottomNav({ isSidebar = false }: BottomNavProps) {
   const containerClass = isSidebar
-    ? "mt-auto pt-6 px-3 flex flex-col gap-4 border-t border-outline-variant/30"
+    ? "mt-auto pt-6 px-3 flex flex-col gap-4 border-t border-[#d5c1cc]/30"
     : "fixed bottom-4 left-4 z-40 flex flex-col gap-4 bg-background/80 backdrop-blur-sm p-2 rounded-default";
 
   return (

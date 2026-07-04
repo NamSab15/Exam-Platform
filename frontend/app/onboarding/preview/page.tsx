@@ -11,33 +11,34 @@
 "use client";
 
 import { useState, useRef } from "react";
-import Image from "next/image";
 import OnboardingStepper from "../OnboardingStepper";
+import Image from "next/image";
 
 /* ── Shared style constants ─────────────────────────────────────
-   Every color / radius / spacing references the design-project
+   Every colour / radius / spacing references the design-project
    tokens defined in globals.css. */
 
 const inputBase = [
-  "w-full bg-surface-container-lowest border border-outline-variant rounded-default",
-  "text-body-md text-on-surface",
+  "w-full bg-background border border-border rounded-md",
+  "text-[16px] leading-[24px] text-foreground",
   "py-2 px-3 transition-all duration-200",
-  "outline-none focus:border-primary focus:ring-2 focus:ring-primary/10",
+  "outline-none focus:border-primary",
+  "focus-visible:ring-2 focus-visible:ring-primary/20",
 ].join(" ");
 
 const btnPrimary = [
-  "bg-primary text-on-primary rounded-default font-medium",
-  "text-body-md tracking-[0.01em]",
-  "px-4 py-2 hover:bg-primary/90 transition-colors duration-200",
+  "bg-primary text-primary-foreground rounded-md font-medium",
+  "text-[14px] leading-[16px] tracking-[0.01em]",
+  "px-4 py-2 hover:bg-primary/80 transition-colors duration-200",
   "border-none outline-none cursor-pointer",
   "flex items-center gap-2",
 ].join(" ");
 
 const btnSecondary = [
-  "bg-transparent text-on-surface border border-outline-variant rounded-default font-medium",
-  "text-body-md tracking-[0.01em]",
-  "px-6 py-2 hover:bg-surface-container-low transition-colors duration-200",
-  "cursor-pointer outline-none",
+  "bg-background text-muted-foreground border border-border rounded-md font-medium",
+  "text-[14px] leading-[16px] tracking-[0.01em]",
+  "px-6 py-2 hover:bg-muted transition-colors duration-200",
+  "cursor-pointer",
 ].join(" ");
 
 /* ── Types ──────────────────────────────────────────────────── */
@@ -119,12 +120,12 @@ function Toggle({ on, onToggle }: { on: boolean; onToggle: () => void }) {
       className={[
         "relative w-11 h-6 rounded-full transition-colors duration-200",
         "border-none outline-none cursor-pointer shrink-0 p-0",
-        on ? "bg-primary" : "bg-outline",
+        on ? "bg-primary" : "bg-border",
       ].join(" ")}
     >
       <span
         className={[
-          "absolute top-0.5 w-5 h-5 bg-surface-container-lowest rounded-full shadow-sm",
+          "absolute top-0.5 w-5 h-5 bg-background rounded-full shadow-sm",
           "transition-transform duration-200",
           on ? "translate-x-5" : "translate-x-0.5",
         ].join(" ")}
@@ -143,11 +144,11 @@ function ReviewRow({
   value: React.ReactNode;
 }) {
   return (
-    <div className="flex justify-between items-start py-2 border-b border-outline-variant last:border-0">
-      <span className="text-on-surface-variant text-body-md w-40 shrink-0">
+    <div className="flex justify-between items-start py-2 border-b border-border last:border-0">
+      <span className="text-muted-foreground text-[14px] leading-[20px] w-40 shrink-0">
         {label}
       </span>
-      <span className="text-on-surface text-body-md text-right">
+      <span className="text-foreground text-[14px] leading-[20px] text-right">
         {value}
       </span>
     </div>
@@ -168,15 +169,15 @@ function ReviewCard({
   goToStep: (n: number) => void;
 }) {
   return (
-    <div className="bg-surface-container-lowest border border-outline-variant rounded-default p-5 mb-4 shadow-elevation-1">
+    <div className="border border-border rounded-md p-5 mb-4">
       <div className="flex justify-between items-center mb-4">
-        <h3 className="font-heading font-semibold text-body-lg text-on-surface">
+        <h3 className="font-semibold text-foreground text-[16px] leading-[24px]">
           {title}
         </h3>
         <button
           type="button"
           onClick={() => goToStep(stepNum)}
-          className="text-primary text-label-sm hover:underline cursor-pointer bg-transparent border-none p-0 font-medium"
+          className="text-primary text-[14px] hover:underline cursor-pointer bg-transparent border-none p-0 font-medium"
         >
           Edit
         </button>
@@ -200,10 +201,10 @@ function StepOne({
   return (
     <div className="flex flex-col gap-6">
       <div>
-        <h2 className="font-heading font-semibold text-headline-md text-on-surface mb-1">
+        <h2 className="font-semibold text-[20px] leading-[28px] text-foreground mb-1">
           Welcome — let&apos;s set up your organisation
         </h2>
-        <p className="text-body-md text-on-surface-variant">
+        <p className="text-[14px] leading-[20px] text-muted-foreground">
           This information creates your tenant and cannot be changed after
           setup.
         </p>
@@ -212,7 +213,7 @@ function StepOne({
       {/* Organisation name */}
       <div>
         <label
-          className="block font-medium text-label-sm tracking-[0.01em] text-on-surface-variant mb-2"
+          className="block font-medium text-[14px] leading-[16px] tracking-[0.01em] text-muted-foreground mb-2"
           htmlFor="preview_org_name"
         >
           Organisation name
@@ -235,17 +236,17 @@ function StepOne({
       {/* Tenant slug */}
       <div>
         <label
-          className="block font-medium text-label-sm tracking-[0.01em] text-on-surface-variant mb-2"
+          className="block font-medium text-[14px] leading-[16px] tracking-[0.01em] text-muted-foreground mb-2"
           htmlFor="preview_slug"
         >
           Tenant slug
         </label>
-        <div className="flex border border-outline-variant rounded-default overflow-hidden focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20 transition-all duration-200">
-          <span className="text-on-surface-variant text-body-md bg-surface-container-low px-3 py-2 border-r border-outline-variant shrink-0 flex items-center">
+        <div className="flex border border-border rounded-md overflow-hidden focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20 transition-all duration-200">
+          <span className="text-muted-foreground text-[14px] bg-muted px-3 py-2 border-r border-border shrink-0 flex items-center">
             xebia-platform.io/
           </span>
           <input
-            className="flex-1 bg-surface-container-lowest text-body-md text-on-surface py-2 px-3 outline-none border-none"
+            className="flex-1 bg-background text-[16px] leading-[24px] text-foreground py-2 px-3 outline-none border-none"
             id="preview_slug"
             placeholder="your-org"
             type="text"
@@ -253,7 +254,7 @@ function StepOne({
             onChange={(e) => update({ tenantSlug: e.target.value })}
           />
         </div>
-        <p className="text-label-sm text-on-surface-variant mt-1">
+        <p className="text-[14px] leading-[20px] text-muted-foreground mt-1">
           Your unique organisation ID — used in API calls and cannot be changed
           after setup.
         </p>
@@ -261,7 +262,7 @@ function StepOne({
 
       {/* Plan tier */}
       <div>
-        <label className="block font-medium text-label-sm tracking-[0.01em] text-on-surface-variant mb-2">
+        <label className="block font-medium text-[14px] leading-[16px] tracking-[0.01em] text-muted-foreground mb-2">
           Plan tier
         </label>
         <div className="flex gap-3">
@@ -273,11 +274,11 @@ function StepOne({
                 type="button"
                 onClick={() => update({ planTier: tier })}
                 className={[
-                  "flex-1 border-2 rounded-default p-3 cursor-pointer",
-                  "text-center font-medium text-body-md transition-all duration-150",
+                  "flex-1 border-2 rounded-md p-3 cursor-pointer",
+                  "text-center font-medium text-[14px] transition-all duration-150",
                   isSelected
                     ? "border-primary bg-primary/5 text-primary"
-                    : "border-outline-variant bg-surface-container-lowest text-on-surface-variant hover:border-primary/40",
+                    : "border-border bg-background text-foreground hover:border-primary/40",
                 ].join(" ")}
               >
                 {tier}
@@ -290,7 +291,7 @@ function StepOne({
       {/* Primary contact email */}
       <div>
         <label
-          className="block font-medium text-label-sm tracking-[0.01em] text-on-surface-variant mb-2"
+          className="block font-medium text-[14px] leading-[16px] tracking-[0.01em] text-muted-foreground mb-2"
           htmlFor="preview_contact_email"
         >
           Primary contact email
@@ -333,37 +334,34 @@ function StepTwo({
   return (
     <div className="flex flex-col gap-6">
       <div>
-        <h2 className="font-heading font-semibold text-headline-md text-on-surface mb-1">
+        <h2 className="font-semibold text-[20px] leading-[28px] text-foreground mb-1">
           Set up your organisation&apos;s branding
         </h2>
-        <p className="text-body-md text-on-surface-variant">
+        <p className="text-[14px] leading-[20px] text-muted-foreground">
           Controls how the platform appears to your candidates.
         </p>
       </div>
 
       {/* Logo upload */}
       <div>
-        <label className="block font-medium text-label-sm tracking-[0.01em] text-on-surface-variant mb-2">
+        <label className="block font-medium text-[14px] leading-[16px] tracking-[0.01em] text-muted-foreground mb-2">
           Logo
         </label>
 
         {data.logoPreviewUrl ? (
-          <div className="flex items-center gap-4 border border-outline-variant bg-surface-container-low rounded-default p-4">
+          <div className="flex items-center gap-4 border border-border rounded-md p-4">
             <Image
               src={data.logoPreviewUrl}
               alt="Logo preview"
-              width={128}
-              height={64}
               className="max-h-16 object-contain rounded"
-              unoptimized
             />
-            <span className="flex-1 text-body-md text-on-surface font-medium truncate">
+            <span className="flex-1 text-[14px] text-foreground font-medium truncate">
               Uploaded logo
             </span>
             <button
               type="button"
               onClick={() => update({ logoPreviewUrl: "" })}
-              className="text-error hover:opacity-80 transition-opacity cursor-pointer bg-transparent border-none p-1"
+              className="text-destructive hover:opacity-80 transition-opacity cursor-pointer bg-transparent border-none p-1"
               aria-label="Remove logo"
             >
               <span className="material-symbols-outlined text-[20px]">
@@ -373,7 +371,7 @@ function StepTwo({
           </div>
         ) : (
           <div
-            className="border-dashed border-2 border-outline rounded-default p-6 text-center cursor-pointer hover:bg-surface-container-low transition-colors bg-surface-container-lowest"
+            className="border-dashed border-2 border-border rounded-md p-6 text-center cursor-pointer hover:bg-muted transition-colors"
             onClick={() => fileInputRef.current?.click()}
             role="button"
             tabIndex={0}
@@ -382,13 +380,13 @@ function StepTwo({
                 fileInputRef.current?.click();
             }}
           >
-            <span className="material-symbols-outlined text-outline text-4xl mb-2 block">
+            <span className="material-symbols-outlined text-border text-4xl mb-2 block">
               upload
             </span>
-            <p className="text-on-surface font-medium text-body-md">
+            <p className="text-foreground font-medium text-[14px]">
               Drag &amp; drop your logo or click to browse
             </p>
-            <p className="text-label-sm text-on-surface-variant mt-1">
+            <p className="text-[12px] text-muted-foreground mt-1">
               PNG, SVG — max 2 MB
             </p>
           </div>
@@ -405,10 +403,10 @@ function StepTwo({
 
       {/* Brand colour */}
       <div>
-        <label className="block font-medium text-label-sm tracking-[0.01em] text-on-surface-variant mb-2">
+        <label className="block font-medium text-[14px] leading-[16px] tracking-[0.01em] text-muted-foreground mb-2">
           Primary brand colour
         </label>
-        <p className="text-body-md text-on-surface-variant mb-2">
+        <p className="text-[14px] leading-[20px] text-muted-foreground mb-2">
           Used for buttons and highlights on the candidate-facing portal.
         </p>
         <div className="flex items-center gap-3">
@@ -416,7 +414,7 @@ function StepTwo({
             type="color"
             value={data.brandColor}
             onChange={(e) => update({ brandColor: e.target.value })}
-            className="w-10 h-10 rounded cursor-pointer border-none p-0 bg-transparent"
+            className="w-10 h-10 rounded cursor-pointer border-0 p-0 bg-transparent"
             aria-label="Pick brand colour"
           />
           <input
@@ -427,27 +425,27 @@ function StepTwo({
               update({ brandColor: v });
             }}
             className={`${inputBase} w-36`}
-            placeholder="#510047"
+            placeholder="#6C1D5F"
             maxLength={7}
           />
         </div>
         {/* Live preview swatch */}
         <div
-          className="w-full h-8 rounded border border-outline-variant mt-2"
+          className="w-full h-8 rounded border border-border mt-2"
           style={{ backgroundColor: data.brandColor }}
         />
-        <p className="text-label-sm text-on-surface-variant mt-1">Preview</p>
+        <p className="text-[12px] text-muted-foreground mt-1">Preview</p>
       </div>
 
       {/* Display name */}
       <div>
         <label
-          className="block font-medium text-label-sm tracking-[0.01em] text-on-surface-variant mb-2"
+          className="block font-medium text-[14px] leading-[16px] tracking-[0.01em] text-muted-foreground mb-2"
           htmlFor="preview_display_name"
         >
           Display name
         </label>
-        <p className="text-body-md text-on-surface-variant mb-2">
+        <p className="text-[14px] leading-[20px] text-muted-foreground mb-2">
           Shown on the exam portal and in candidate emails.
         </p>
         <input
@@ -463,7 +461,7 @@ function StepTwo({
       {/* Tagline */}
       <div>
         <label
-          className="block font-medium text-label-sm tracking-[0.01em] text-on-surface-variant mb-2"
+          className="block font-medium text-[14px] leading-[16px] tracking-[0.01em] text-muted-foreground mb-2"
           htmlFor="preview_tagline"
         >
           Tagline (optional)
@@ -477,7 +475,7 @@ function StepTwo({
           value={data.tagline}
           onChange={(e) => update({ tagline: e.target.value })}
         />
-        <div className="text-right text-on-surface-variant text-label-sm mt-1">
+        <div className="text-right text-muted-foreground text-[12px] mt-1">
           {data.tagline.length} / 80
         </div>
       </div>
@@ -499,10 +497,10 @@ function StepThree({
   return (
     <div className="flex flex-col gap-6">
       <div>
-        <h2 className="font-heading font-semibold text-headline-md text-on-surface mb-1">
+        <h2 className="font-semibold text-[20px] leading-[28px] text-foreground mb-1">
           Configure timezone and notifications
         </h2>
-        <p className="text-body-md text-on-surface-variant">
+        <p className="text-[14px] leading-[20px] text-muted-foreground">
           These settings apply to all exams unless overridden at the exam level.
         </p>
       </div>
@@ -510,7 +508,7 @@ function StepThree({
       {/* Timezone */}
       <div>
         <label
-          className="block font-medium text-label-sm tracking-[0.01em] text-on-surface-variant mb-2"
+          className="block font-medium text-[14px] leading-[16px] tracking-[0.01em] text-muted-foreground mb-2"
           htmlFor="preview_timezone"
         >
           Organisation timezone
@@ -531,7 +529,7 @@ function StepThree({
 
       {/* Date format */}
       <div>
-        <label className="block font-medium text-label-sm tracking-[0.01em] text-on-surface-variant mb-2">
+        <label className="block font-medium text-[14px] leading-[16px] tracking-[0.01em] text-muted-foreground mb-2">
           Date display format
         </label>
         <div className="flex flex-col gap-2">
@@ -543,23 +541,23 @@ function StepThree({
                 type="button"
                 onClick={() => update({ dateFormat: fmt })}
                 className={[
-                  "flex items-center gap-3 p-3 border rounded-default",
-                  "cursor-pointer hover:bg-surface-container-low/50 transition-colors duration-200",
+                  "flex items-center gap-3 p-3 border rounded-md",
+                  "cursor-pointer hover:bg-muted transition-colors duration-200",
                   "text-left w-full bg-transparent outline-none",
-                  isSelected ? "border-primary bg-surface-container-low" : "border-outline-variant",
+                  isSelected ? "border-primary" : "border-border",
                 ].join(" ")}
               >
                 <span
                   className={[
                     "w-4 h-4 rounded-full border-2 flex items-center justify-center shrink-0",
-                    isSelected ? "border-primary" : "border-outline-variant",
+                    isSelected ? "border-primary" : "border-border",
                   ].join(" ")}
                 >
                   {isSelected && (
                     <span className="w-2 h-2 rounded-full bg-primary" />
                   )}
                 </span>
-                <span className="text-on-surface text-body-md">
+                <span className="text-foreground text-[14px] leading-[20px]">
                   {fmt}
                 </span>
               </button>
@@ -571,12 +569,12 @@ function StepThree({
       {/* Notification email */}
       <div>
         <label
-          className="block font-medium text-label-sm tracking-[0.01em] text-on-surface-variant mb-2"
+          className="block font-medium text-[14px] leading-[16px] tracking-[0.01em] text-muted-foreground mb-2"
           htmlFor="preview_notif_email"
         >
           Notification sender address
         </label>
-        <p className="text-body-md text-on-surface-variant mb-2">
+        <p className="text-[14px] leading-[20px] text-muted-foreground mb-2">
           System emails will be sent from this address.
         </p>
         <input
@@ -592,12 +590,12 @@ function StepThree({
       {/* Default instructions */}
       <div>
         <label
-          className="block font-medium text-label-sm tracking-[0.01em] text-on-surface-variant mb-2"
+          className="block font-medium text-[14px] leading-[16px] tracking-[0.01em] text-muted-foreground mb-2"
           htmlFor="preview_instructions"
         >
           Default candidate instructions
         </label>
-        <p className="text-body-md text-on-surface-variant mb-2">
+        <p className="text-[14px] leading-[20px] text-muted-foreground mb-2">
           Pre-filled on every new exam. Creators can override per exam.
         </p>
         <textarea
@@ -611,17 +609,17 @@ function StepThree({
 
       {/* Notification toggles */}
       <div>
-        <label className="block font-medium text-label-sm tracking-[0.01em] text-on-surface-variant mb-2">
+        <label className="block font-medium text-[14px] leading-[16px] tracking-[0.01em] text-muted-foreground mb-2">
           Email notifications
         </label>
-        <div className="border border-outline-variant rounded-default divide-y divide-outline-variant bg-surface-container-lowest">
+        <div className="border border-border rounded-md">
           {/* Exam reminders */}
-          <div className="flex items-center justify-between py-3 px-4">
+          <div className="flex items-center justify-between py-3 px-4 border-b border-border">
             <div>
-              <p className="text-body-md text-on-surface font-medium">
+              <p className="text-[14px] leading-[20px] text-foreground font-medium">
                 Exam reminders
               </p>
-              <p className="text-label-sm text-on-surface-variant">
+              <p className="text-[14px] leading-[20px] text-muted-foreground">
                 Notify candidates 24 hours before their exam
               </p>
             </div>
@@ -631,12 +629,12 @@ function StepThree({
             />
           </div>
           {/* Result notifications */}
-          <div className="flex items-center justify-between py-3 px-4">
+          <div className="flex items-center justify-between py-3 px-4 border-b border-border">
             <div>
-              <p className="text-body-md text-on-surface font-medium">
+              <p className="text-[14px] leading-[20px] text-foreground font-medium">
                 Result notifications
               </p>
-              <p className="text-label-sm text-on-surface-variant">
+              <p className="text-[14px] leading-[20px] text-muted-foreground">
                 Notify candidates when results are published
               </p>
             </div>
@@ -648,10 +646,10 @@ function StepThree({
           {/* Evaluator assignments */}
           <div className="flex items-center justify-between py-3 px-4">
             <div>
-              <p className="text-body-md text-on-surface font-medium">
+              <p className="text-[14px] leading-[20px] text-foreground font-medium">
                 Evaluator assignments
               </p>
-              <p className="text-label-sm text-on-surface-variant">
+              <p className="text-[14px] leading-[20px] text-muted-foreground">
                 Notify evaluators when sheets are assigned
               </p>
             </div>
@@ -680,10 +678,10 @@ function StepFour({
   return (
     <div className="flex flex-col gap-6">
       <div>
-        <h2 className="font-heading font-semibold text-headline-md text-on-surface mb-1">
+        <h2 className="font-semibold text-[20px] leading-[28px] text-foreground mb-1">
           Invite your team
         </h2>
-        <p className="text-body-md text-on-surface-variant">
+        <p className="text-[14px] leading-[20px] text-muted-foreground">
           Add users to your organisation. You can always invite more later.
         </p>
       </div>
@@ -691,7 +689,7 @@ function StepFour({
       {/* Invite rows */}
       <div>
         {/* Column labels */}
-        <div className="hidden sm:flex gap-2 text-label-sm font-semibold text-on-surface-variant mb-2">
+        <div className="hidden sm:flex gap-2 text-[12px] leading-[16px] font-semibold text-muted-foreground mb-2">
           <span className="flex-1">Full name</span>
           <span className="flex-1">Email address</span>
           <span className="w-44">Role</span>
@@ -751,7 +749,7 @@ function StepFour({
                 })
               }
               className={[
-                "text-error hover:opacity-80 transition-colors cursor-pointer",
+                "text-destructive hover:opacity-80 transition-colors cursor-pointer",
                 "bg-transparent border-none p-1 shrink-0",
                 data.invites.length === 1 ? "invisible" : "",
               ].join(" ")}
@@ -786,18 +784,18 @@ function StepFour({
             Add another person
           </button>
         ) : (
-          <p className="text-on-surface-variant text-body-md mt-1">
+          <p className="text-muted-foreground text-[14px] leading-[20px] mt-1">
             Maximum of 10 invites at once. Add more after setup.
           </p>
         )}
       </div>
 
       {/* Info box */}
-      <div className="border border-dashed border-tertiary bg-tertiary-container/10 rounded-default p-3 flex gap-2 items-start mt-2">
-        <span className="material-symbols-outlined text-tertiary text-[20px] mt-px shrink-0">
+      <div className="bg-amber-50 border border-amber-300 rounded-md p-3 flex gap-2 items-start mt-2">
+        <span className="material-symbols-outlined text-amber-600 text-[20px] mt-px shrink-0">
           info
         </span>
-        <p className="text-body-md text-tertiary">
+        <p className="text-[14px] leading-[20px] text-foreground">
           Invitations will be sent by email once you complete setup. Invited
           users will be prompted to set their password on first login.
         </p>
@@ -822,17 +820,17 @@ function StepFive({
   /* ── Success screen ──────────────────────────────────────── */
   if (setupComplete) {
     return (
-      <div className="flex flex-col items-center gap-4 py-8 text-center bg-surface-container-lowest">
-        <span className="material-symbols-outlined text-success text-5xl animate-none">
+      <div className="flex flex-col items-center gap-4 py-8 text-center">
+        <span className="material-symbols-outlined text-green-700 text-5xl">
           check_circle
         </span>
-        <h2 className="font-heading font-semibold text-headline-md text-on-surface">
+        <h2 className="text-[24px] leading-[32px] font-bold text-foreground">
           Organisation created!
         </h2>
-        <p className="text-on-surface-variant text-body-md">
+        <p className="text-muted-foreground text-[14px] leading-[20px]">
           Invite emails have been queued. Redirecting to your dashboard…
         </p>
-        <div className="text-on-surface-variant text-label-sm font-mono bg-surface-container-low border border-outline-variant rounded-default px-4 py-2">
+        <div className="text-muted-foreground text-[14px] font-mono bg-muted border border-border rounded px-4 py-2">
           tenant: {data.tenantSlug || "your-org"}
         </div>
       </div>
@@ -844,12 +842,12 @@ function StepFive({
   const filledInvites = data.invites.filter((i) => i.name || i.email);
 
   return (
-    <div className="flex flex-col gap-2 bg-surface-container-lowest">
+    <div className="flex flex-col gap-2">
       <div className="mb-4">
-        <h2 className="font-heading font-semibold text-headline-md text-on-surface mb-1">
+        <h2 className="font-semibold text-[20px] leading-[28px] text-foreground mb-1">
           Review your setup
         </h2>
-        <p className="text-body-md text-on-surface-variant">
+        <p className="text-[14px] leading-[20px] text-muted-foreground">
           Everything looks good? Complete setup to create your organisation.
         </p>
       </div>
@@ -860,7 +858,7 @@ function StepFive({
         <ReviewRow
           label="Tenant slug"
           value={
-            <span className="font-mono text-label-sm bg-surface-container-low px-2 py-0.5 rounded border border-outline-variant">
+            <span className="font-mono text-[12px] bg-muted px-2 py-0.5 rounded border border-border">
               {data.tenantSlug || "—"}
             </span>
           }
@@ -868,7 +866,7 @@ function StepFive({
         <ReviewRow
           label="Plan tier"
           value={
-            <span className="bg-surface-container-low text-on-surface rounded-full px-3 py-1 text-label-sm font-medium">
+            <span className="bg-muted text-foreground rounded-full px-3 py-1 text-[12px] font-medium">
               {data.planTier}
             </span>
           }
@@ -885,13 +883,10 @@ function StepFive({
               <Image
                 src={data.logoPreviewUrl}
                 alt="Logo"
-                width={64}
-                height={32}
-                className="h-8 rounded object-contain"
-                unoptimized
+                className="h-8 rounded"
               />
             ) : (
-              <span className="text-on-surface-variant text-label-sm">No logo uploaded</span>
+              <span className="text-muted-foreground text-[12px]">No logo uploaded</span>
             )
           }
         />
@@ -900,10 +895,10 @@ function StepFive({
           value={
             <span className="flex items-center gap-2 justify-end">
               <span
-                className="w-4 h-4 rounded-full border border-outline-variant inline-block"
+                className="w-4 h-4 rounded-full border border-border inline-block"
                 style={{ backgroundColor: data.brandColor }}
               />
-              <span className="font-mono text-label-sm">{data.brandColor}</span>
+              <span className="font-mono text-[12px]">{data.brandColor}</span>
             </span>
           }
         />
@@ -925,24 +920,24 @@ function StepFive({
           value={
             <div className="flex gap-1 flex-wrap justify-end">
               {data.remindersOn && (
-                <span className="bg-success/10 text-success text-label-sm px-2 py-0.5 rounded-full border border-success/20 font-medium">
+                <span className="bg-green-50 text-green-700 text-[12px] px-2 py-0.5 rounded-full border border-green-200">
                   Exam reminders
                 </span>
               )}
               {data.resultsOn && (
-                <span className="bg-success/10 text-success text-label-sm px-2 py-0.5 rounded-full border border-success/20 font-medium">
+                <span className="bg-green-50 text-green-700 text-[12px] px-2 py-0.5 rounded-full border border-green-200">
                   Result notifications
                 </span>
               )}
               {data.assignmentsOn && (
-                <span className="bg-success/10 text-success text-label-sm px-2 py-0.5 rounded-full border border-success/20 font-medium">
+                <span className="bg-green-50 text-green-700 text-[12px] px-2 py-0.5 rounded-full border border-green-200">
                   Evaluator assignments
                 </span>
               )}
               {!data.remindersOn &&
                 !data.resultsOn &&
                 !data.assignmentsOn && (
-                  <span className="text-on-surface-variant text-label-sm">None enabled</span>
+                  <span className="text-muted-foreground text-[12px]">None enabled</span>
                 )}
             </div>
           }
@@ -952,21 +947,21 @@ function StepFive({
       {/* Card 4 — Invited Users */}
       <ReviewCard title="Invited Users" stepNum={4} goToStep={goToStep}>
         {filledInvites.length === 0 ? (
-          <p className="text-on-surface-variant text-body-md">
+          <p className="text-muted-foreground text-[14px]">
             No users invited — you can add them after setup.
           </p>
         ) : (
           <>
-            <table className="w-full text-body-md text-left">
+            <table className="w-full text-[14px]">
               <thead>
-                <tr className="bg-surface-container-low text-label-sm font-semibold text-on-surface-variant">
-                  <th className="py-2 px-3 rounded-tl font-semibold">
+                <tr className="bg-muted">
+                  <th className="text-left text-muted-foreground font-medium py-2 px-3 rounded-tl">
                     Name
                   </th>
-                  <th className="py-2 px-3 font-semibold">
+                  <th className="text-left text-muted-foreground font-medium py-2 px-3">
                     Email
                   </th>
-                  <th className="py-2 px-3 rounded-tr font-semibold">
+                  <th className="text-left text-muted-foreground font-medium py-2 px-3 rounded-tr">
                     Role
                   </th>
                 </tr>
@@ -975,14 +970,14 @@ function StepFive({
                 {filledInvites.slice(0, 5).map((i) => (
                   <tr
                     key={i.id}
-                    className="border-b border-outline-variant last:border-0"
+                    className="border-b border-border last:border-0"
                   >
-                    <td className="py-2 px-3 text-on-surface">
+                    <td className="py-2 px-3 text-foreground">
                       {i.name || "—"}
                     </td>
-                    <td className="py-2 px-3 text-on-surface-variant">{i.email || "—"}</td>
+                    <td className="py-2 px-3 text-muted-foreground">{i.email || "—"}</td>
                     <td className="py-2 px-3">
-                      <span className="bg-surface-container-low text-on-surface text-label-sm px-2 py-0.5 rounded-full font-medium">
+                      <span className="bg-muted text-foreground text-[12px] px-2 py-0.5 rounded-full">
                         {i.role}
                       </span>
                     </td>
@@ -991,7 +986,7 @@ function StepFive({
               </tbody>
             </table>
             {filledInvites.length > 5 && (
-              <p className="text-on-surface-variant text-label-sm mt-2">
+              <p className="text-muted-foreground text-[12px] mt-2">
                 + {filledInvites.length - 5} more
               </p>
             )}
@@ -1000,8 +995,8 @@ function StepFive({
       </ReviewCard>
 
       {/* Setup checklist */}
-      <div className="bg-surface-container-low border border-outline-variant rounded-default p-4 mt-2">
-        <p className="text-on-surface font-semibold text-body-md mb-3">
+      <div className="border border-border rounded-md p-4 mt-2">
+        <p className="text-foreground font-semibold text-[14px] mb-3">
           Your organisation will be set up with:
         </p>
         {[
@@ -1011,10 +1006,10 @@ function StepFive({
           "Welcome emails queued for dispatch",
         ].map((item) => (
           <div key={item} className="flex items-center gap-2 py-1">
-            <span className="material-symbols-outlined text-success text-[20px]">
+            <span className="material-symbols-outlined text-green-700 text-[18px]">
               check_circle
             </span>
-            <span className="text-on-surface text-body-md">{item}</span>
+            <span className="text-muted-foreground text-[14px]">{item}</span>
           </div>
         ))}
       </div>
@@ -1038,7 +1033,7 @@ export default function OnboardingPreviewPage() {
     contactEmail: "",
     // Step 2
     logoPreviewUrl: "",
-    brandColor: "#510047",
+    brandColor: "#6C1D5F",
     displayName: "",
     tagline: "",
     // Step 3
@@ -1064,21 +1059,21 @@ export default function OnboardingPreviewPage() {
   };
 
   return (
-    <div className="min-h-screen bg-background flex flex-col text-on-background">
+    <div className="min-h-screen bg-muted flex flex-col text-foreground">
       {/* ── Top bar ─────────────────────────────────────────── */}
-      <div className="bg-surface-container-lowest border-b border-outline-variant px-8 py-4 flex items-center justify-between">
-        <span className="text-primary font-heading font-bold text-headline-md tracking-tight">
+      <div className="bg-background border-b border-border px-8 py-4 flex items-center justify-between">
+        <span className="text-primary font-bold text-[20px] leading-[28px] tracking-tight">
           Xebia Exam Platform
         </span>
-        <span className="text-on-surface-variant text-label-sm">Tenant Setup Wizard</span>
+        <span className="text-muted-foreground text-[14px]">Tenant Setup Wizard</span>
       </div>
 
       {/* ── Demo banner ─────────────────────────────────────── */}
-      <div className="bg-tertiary-container/10 border-b border-tertiary px-8 py-2 flex items-center gap-2">
-        <span className="material-symbols-outlined text-tertiary text-[18px]">
+      <div className="bg-amber-50 border-b border-amber-300 px-8 py-2 flex items-center gap-2">
+        <span className="material-symbols-outlined text-amber-600 text-[18px]">
           preview
         </span>
-        <span className="text-body-md text-tertiary">
+        <span className="text-[14px] text-amber-900">
           Preview mode — all steps in one page for testing. Data persists as you
           move between steps.
         </span>
@@ -1095,12 +1090,12 @@ export default function OnboardingPreviewPage() {
                 type="button"
                 onClick={() => goToStep(n)}
                 className={[
-                  "text-label-sm px-3 py-1 rounded-full border font-medium",
+                  "text-[12px] px-3 py-1 rounded-full border font-medium",
                   "transition-colors duration-150 cursor-pointer",
                   "outline-none",
                   currentStep === n
-                    ? "bg-primary text-on-primary border-primary"
-                    : "bg-surface-container-lowest text-on-surface-variant border-outline-variant hover:border-primary hover:text-primary",
+                    ? "bg-primary text-primary-foreground border-primary"
+                    : "bg-background text-muted-foreground border-border hover:border-primary hover:text-primary",
                 ].join(" ")}
               >
                 Step {n}
@@ -1112,7 +1107,7 @@ export default function OnboardingPreviewPage() {
           <OnboardingStepper currentStep={currentStep} />
 
           {/* Active step card */}
-          <div className="bg-surface-container-lowest border border-outline-variant rounded-default shadow-elevation-1 p-8">
+          <div className="bg-background border border-border rounded-lg shadow-sm p-8">
             {currentStep === 1 && (
               <StepOne data={wizardData} update={update} />
             )}

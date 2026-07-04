@@ -12,14 +12,14 @@ import BottomNav from "@/components/BottomNav";
    tokens defined in globals.css. */
 
 const inputBase = [
-  "w-full bg-card border border-outline-variant rounded-md",
+  "w-full bg-card border border-[#d5c1cc] rounded-md",
   "text-body-md text-foreground",
   "py-2 px-3 transition-all duration-200",
   "focus-visible:ring-1 focus-visible:ring-primary focus-visible:border-primary focus-visible:outline-none",
 ].join(" ");
 
 const btnPrimary = [
-  "bg-primary text-on-primary rounded-md font-medium",
+  "bg-primary text-white rounded-md font-medium",
   "text-body-md tracking-[0.01em]",
   "px-4 py-2 hover:bg-primary/90 transition-colors duration-200",
   "border-none outline-none cursor-pointer",
@@ -27,7 +27,7 @@ const btnPrimary = [
 ].join(" ");
 
 const btnSecondary = [
-  "bg-transparent text-foreground border border-outline-variant rounded-md font-medium",
+  "bg-transparent text-foreground border border-[#d5c1cc] rounded-md font-medium",
   "text-body-md tracking-[0.01em]",
   "px-6 py-2 hover:bg-muted transition-colors duration-200",
   "cursor-pointer outline-none",
@@ -118,7 +118,7 @@ export default function OnboardingStep2Page({ onNext }: { onNext?: () => void } 
           </div>
 
           {/* ── Main form card ───────────────────────────────── */}
-          <div className="bg-card border border-outline-variant rounded-md p-6 mt-4 shadow-elevation-1">
+          <div className="bg-card border border-[#d5c1cc] rounded-md p-6 mt-4 shadow-sm">
             <h2 className="font-heading font-semibold text-headline-md text-foreground mb-6">
               Step 2 — Branding
             </h2>
@@ -134,7 +134,7 @@ export default function OnboardingStep2Page({ onNext }: { onNext?: () => void } 
                 </label>
 
                 {logoPreviewUrl ? (
-                  <div className="flex items-center gap-4 border border-outline-variant bg-card rounded-md p-4 shadow-elevation-1">
+                  <div className="flex items-center gap-4 border border-[#d5c1cc] bg-card rounded-md p-4 shadow-sm">
                     <Image
                       src={logoPreviewUrl}
                       alt="Logo preview"
@@ -161,7 +161,7 @@ export default function OnboardingStep2Page({ onNext }: { onNext?: () => void } 
                   </div>
                 ) : (
                   <div
-                    className="border-dashed border-2 border-outline-variant rounded-md p-8 flex flex-col items-center justify-center text-center cursor-pointer bg-muted hover:bg-muted/80 transition-colors"
+                    className="border-dashed border-2 border-[#d5c1cc] rounded-md p-8 flex flex-col items-center justify-center text-center cursor-pointer bg-muted hover:bg-muted/80 transition-colors"
                     onClick={() => fileInputRef.current?.click()}
                     onDragOver={(e) => e.preventDefault()}
                     onDrop={handleDrop}
@@ -269,7 +269,7 @@ export default function OnboardingStep2Page({ onNext }: { onNext?: () => void } 
               </div>
 
               {/* Navigation actions */}
-              <div className="flex justify-end gap-4 pt-6 border-t border-outline-variant mt-2">
+              <div className="flex justify-end gap-4 pt-6 border-t border-[#d5c1cc] mt-2">
                 <button
                   className={btnSecondary}
                   type="button"

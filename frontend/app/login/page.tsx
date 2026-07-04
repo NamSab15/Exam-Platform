@@ -8,14 +8,14 @@ import Image from "next/image";
    tokens defined in globals.css. */
 
 const inputBase = [
-  "w-full bg-card border border-outline-variant rounded-md",
+  "w-full bg-card border border-[#d5c1cc] rounded-md",
   "text-body-md text-foreground",
   "py-2 px-4 transition-all duration-200",
   "focus-visible:ring-1 focus-visible:ring-primary focus-visible:border-primary focus-visible:outline-none",
 ].join(" ");
 
 const btnPrimary = [
-  "w-full bg-primary text-on-primary rounded-md",
+  "w-full bg-primary text-white rounded-md",
   "font-medium text-body-md tracking-[0.01em]",
   "py-2 px-4 transition-colors duration-200",
   "hover:bg-primary/90 cursor-pointer",
@@ -24,7 +24,7 @@ const btnPrimary = [
 ].join(" ");
 
 const btnSSO = [
-  "flex-1 bg-card border border-outline-variant text-foreground",
+  "flex-1 bg-card border border-[#d5c1cc] text-foreground",
   "font-medium text-body-md tracking-[0.01em]",
   "py-2 px-4 rounded-md",
   "hover:bg-muted transition-colors duration-200",
@@ -56,7 +56,7 @@ export default function LoginPage({ onNext }: { onNext?: () => void } = {}) {
   return (
     <main className="min-h-screen flex flex-col justify-center items-center bg-background text-foreground antialiased p-4 md:p-0">
       {/* ── Card ────────────────────────────────────────────── */}
-      <div className="w-full max-w-[400px] bg-card border border-outline-variant rounded-md p-8 flex flex-col gap-5 shadow-elevation-1">
+      <div className="w-full max-w-[400px] bg-card border border-[#d5c1cc] rounded-md p-8 flex flex-col gap-5 shadow-sm">
         {/* Brand + heading */}
         <div className="flex flex-col items-center gap-1">
           <Image

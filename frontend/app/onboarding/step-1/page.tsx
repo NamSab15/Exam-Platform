@@ -10,14 +10,14 @@ import BottomNav from "@/components/BottomNav";
    tokens defined in globals.css. */
 
 const inputBase = [
-  "w-full bg-card border border-outline-variant rounded-md",
+  "w-full bg-card border border-[#d5c1cc] rounded-md",
   "text-body-md text-foreground",
   "py-2 px-3 transition-all duration-200",
   "focus-visible:ring-1 focus-visible:ring-primary focus-visible:border-primary focus-visible:outline-none",
 ].join(" ");
 
 const btnPrimary = [
-  "bg-primary text-on-primary rounded-md font-medium",
+  "bg-primary text-white rounded-md font-medium",
   "text-body-md tracking-[0.01em]",
   "py-2 px-6 transition-colors duration-200",
   "hover:bg-primary/90 cursor-pointer",
@@ -26,7 +26,7 @@ const btnPrimary = [
 ].join(" ");
 
 const btnSecondary = [
-  "bg-transparent text-foreground border border-outline-variant rounded-md font-medium",
+  "bg-transparent text-foreground border border-[#d5c1cc] rounded-md font-medium",
   "text-body-md tracking-[0.01em]",
   "py-2 px-6 transition-colors duration-200",
   "hover:bg-muted cursor-pointer outline-none",
@@ -83,7 +83,7 @@ export default function OnboardingStep1Page({ onNext }: { onNext?: () => void } 
           </div>
 
           {/* ── Main form card ───────────────────────────────── */}
-          <div className="bg-card border border-outline-variant rounded-md p-6 mt-4 shadow-elevation-1">
+          <div className="bg-card border border-[#d5c1cc] rounded-md p-6 mt-4 shadow-sm">
             <h2 className="font-heading font-semibold text-headline-md text-foreground mb-6">
               Step 1 — Organisation details
             </h2>
@@ -127,8 +127,8 @@ export default function OnboardingStep1Page({ onNext }: { onNext?: () => void } 
                 >
                   Tenant slug
                 </label>
-                <div className="flex border border-outline-variant rounded-md overflow-hidden focus-within:border-primary focus-within:ring-1 focus-within:ring-primary transition-all duration-200">
-                  <span className="text-muted-foreground text-body-md bg-muted px-3 py-2 border-r border-outline-variant shrink-0 flex items-center select-none font-mono">
+                <div className="flex border border-[#d5c1cc] rounded-md overflow-hidden focus-within:border-primary focus-within:ring-1 focus-within:ring-primary transition-all duration-200">
+                  <span className="text-muted-foreground text-body-md bg-muted px-3 py-2 border-r border-[#d5c1cc] shrink-0 flex items-center select-none font-mono">
                     xebia-platform.io/
                   </span>
                   <input
@@ -165,7 +165,7 @@ export default function OnboardingStep1Page({ onNext }: { onNext?: () => void } 
                           "text-center font-medium text-body-md transition-all duration-150",
                           isSelected
                             ? "border-primary bg-primary/5 text-primary"
-                            : "border-outline-variant bg-card text-muted-foreground hover:border-primary/40",
+                            : "border-[#d5c1cc] bg-card text-muted-foreground hover:border-primary/40",
                         ].join(" ")}
                       >
                         {tier}
@@ -195,7 +195,7 @@ export default function OnboardingStep1Page({ onNext }: { onNext?: () => void } 
               </div>
 
               {/* Note box */}
-              <div className="border border-dashed border-outline-variant bg-muted p-4 rounded-md">
+              <div className="border border-dashed border-[#d5c1cc] bg-muted p-4 rounded-md">
                 <div className="flex items-start gap-2">
                   <span className="material-symbols-outlined text-muted-foreground text-[20px] mt-px animate-none">
                     info
@@ -212,7 +212,7 @@ export default function OnboardingStep1Page({ onNext }: { onNext?: () => void } 
               </div>
 
               {/* Navigation actions */}
-              <div className="flex justify-end gap-4 pt-6 border-t border-outline-variant mt-2">
+              <div className="flex justify-end gap-4 pt-6 border-t border-[#d5c1cc] mt-2">
                 <button
                   className={btnSecondary}
                   type="button"

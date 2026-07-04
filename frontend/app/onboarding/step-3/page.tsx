@@ -11,14 +11,14 @@ import BottomNav from "@/components/BottomNav";
    tokens defined in globals.css. */
 
 const inputBase = [
-  "w-full bg-card border border-outline-variant rounded-md",
+  "w-full bg-card border border-[#d5c1cc] rounded-md",
   "text-body-md text-foreground",
   "py-2 px-3 transition-all duration-200",
   "focus-visible:ring-1 focus-visible:ring-primary focus-visible:border-primary focus-visible:outline-none",
 ].join(" ");
 
 const btnPrimary = [
-  "bg-primary text-on-primary rounded-md font-medium",
+  "bg-primary text-white rounded-md font-medium",
   "text-body-md tracking-[0.01em]",
   "px-4 py-2 hover:bg-primary/90 transition-colors duration-200",
   "border-none outline-none cursor-pointer",
@@ -26,7 +26,7 @@ const btnPrimary = [
 ].join(" ");
 
 const btnSecondary = [
-  "bg-transparent text-foreground border border-outline-variant rounded-md font-medium",
+  "bg-transparent text-foreground border border-[#d5c1cc] rounded-md font-medium",
   "text-body-md tracking-[0.01em]",
   "px-6 py-2 hover:bg-muted transition-colors duration-200",
   "cursor-pointer outline-none",
@@ -83,7 +83,7 @@ function Toggle({
           "relative inline-flex h-6 w-11 shrink-0 rounded-full",
           "cursor-pointer transition-all duration-200",
           "border-none outline-none p-0",
-          enabled ? "bg-primary" : "bg-outline-variant",
+          enabled ? "bg-primary" : "bg-[#d5c1cc]",
         ].join(" ")}
       >
         <span
@@ -155,7 +155,7 @@ export default function OnboardingStep3Page({ onNext }: { onNext?: () => void } 
           </div>
 
           {/* ── Main form card ───────────────────────────────── */}
-          <div className="bg-card border border-outline-variant rounded-md p-6 mt-4 shadow-elevation-1">
+          <div className="bg-card border border-[#d5c1cc] rounded-md p-6 mt-4 shadow-sm">
             <h2 className="font-heading font-semibold text-headline-md text-foreground mb-6">
               Step 3 — Timezone &amp; Notifications
             </h2>
@@ -200,8 +200,8 @@ export default function OnboardingStep3Page({ onNext }: { onNext?: () => void } 
                           "font-medium text-body-md tracking-[0.01em]",
                           "transition-colors duration-200 cursor-pointer",
                           isSelected
-                            ? "bg-primary text-on-primary border-primary rounded-md"
-                            : "bg-transparent text-muted-foreground border-outline-variant hover:bg-muted rounded-md",
+                            ? "bg-primary text-white border-primary rounded-md"
+                            : "bg-transparent text-muted-foreground border-[#d5c1cc] hover:bg-muted rounded-md",
                         ].join(" ")}
                       >
                         {fmt}
@@ -256,7 +256,7 @@ export default function OnboardingStep3Page({ onNext }: { onNext?: () => void } 
                 <label className="block font-medium text-label-sm tracking-[0.01em] text-muted-foreground mb-2">
                   Event notifications
                 </label>
-                <div className="border border-outline-variant bg-card rounded-md divide-y divide-outline-variant shadow-elevation-1">
+                <div className="border border-[#d5c1cc] bg-card rounded-md divide-y divide-[#d5c1cc] shadow-sm">
                   <div className="px-4">
                     <Toggle
                       enabled={remindersOn}
@@ -285,7 +285,7 @@ export default function OnboardingStep3Page({ onNext }: { onNext?: () => void } 
               </div>
 
               {/* Navigation actions */}
-              <div className="flex justify-end gap-4 pt-6 border-t border-outline-variant mt-2">
+              <div className="flex justify-end gap-4 pt-6 border-t border-[#d5c1cc] mt-2">
                 <button
                   className={btnSecondary}
                   type="button"

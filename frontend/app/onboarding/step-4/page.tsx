@@ -11,14 +11,14 @@ import BottomNav from "@/components/BottomNav";
    tokens defined in globals.css. */
 
 const inputBase = [
-  "w-full bg-card border border-outline-variant rounded-md",
+  "w-full bg-card border border-[#d5c1cc] rounded-md",
   "text-body-md text-foreground",
   "py-2 px-3 transition-all duration-200",
   "focus-visible:ring-1 focus-visible:ring-primary focus-visible:border-primary focus-visible:outline-none",
 ].join(" ");
 
 const btnPrimary = [
-  "bg-primary text-on-primary rounded-md font-medium",
+  "bg-primary text-white rounded-md font-medium",
   "text-body-md tracking-[0.01em]",
   "px-4 py-2 hover:bg-primary/90 transition-colors duration-200",
   "border-none outline-none cursor-pointer",
@@ -26,7 +26,7 @@ const btnPrimary = [
 ].join(" ");
 
 const btnSecondary = [
-  "bg-transparent text-foreground border border-outline-variant rounded-md font-medium",
+  "bg-transparent text-foreground border border-[#d5c1cc] rounded-md font-medium",
   "text-body-md tracking-[0.01em]",
   "px-6 py-2 hover:bg-muted transition-colors duration-200",
   "cursor-pointer outline-none",
@@ -118,7 +118,7 @@ export default function OnboardingStep4Page({ onNext }: { onNext?: () => void } 
           </div>
 
           {/* ── Main form card ───────────────────────────────── */}
-          <div className="bg-card border border-outline-variant rounded-md p-6 mt-4 shadow-elevation-1">
+          <div className="bg-card border border-[#d5c1cc] rounded-md p-6 mt-4 shadow-sm">
             <h2 className="font-heading font-semibold text-headline-md text-foreground mb-6">
               Step 4 — Invite users
             </h2>
@@ -203,9 +203,9 @@ export default function OnboardingStep4Page({ onNext }: { onNext?: () => void } 
 
               {/* Divider */}
               <div className="flex items-center gap-4">
-                <div className="h-px bg-outline-variant flex-1" />
+                <div className="h-px bg-[#d5c1cc] flex-1" />
                 <span className="text-muted-foreground text-body-md font-medium">or</span>
-                <div className="h-px bg-outline-variant flex-1" />
+                <div className="h-px bg-[#d5c1cc] flex-1" />
               </div>
 
               {/* Bulk import shortcut */}
@@ -227,7 +227,7 @@ export default function OnboardingStep4Page({ onNext }: { onNext?: () => void } 
               </div>
 
               {/* Info box */}
-              <div className="border border-dashed border-outline-variant bg-muted rounded-md p-3 flex gap-2 items-start">
+              <div className="border border-dashed border-[#d5c1cc] bg-muted rounded-md p-3 flex gap-2 items-start">
                 <span className="material-symbols-outlined text-muted-foreground text-[20px] mt-px shrink-0 animate-none">
                   info
                 </span>
@@ -239,7 +239,7 @@ export default function OnboardingStep4Page({ onNext }: { onNext?: () => void } 
               </div>
 
               {/* Navigation actions */}
-              <div className="flex justify-end gap-4 pt-6 border-t border-outline-variant mt-2">
+              <div className="flex justify-end gap-4 pt-6 border-t border-[#d5c1cc] mt-2">
                 <button
                   className={btnSecondary}
                   type="button"

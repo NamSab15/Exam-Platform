@@ -20,14 +20,14 @@ import BottomNav from "@/components/BottomNav";
    tokens defined in globals.css. */
 
 const inputBase = [
-  "w-full bg-card border border-outline-variant rounded-md",
+  "w-full bg-card border border-[#d5c1cc] rounded-md",
   "text-body-md text-foreground",
   "py-2 px-3 transition-all duration-200",
   "focus-visible:ring-1 focus-visible:ring-primary focus-visible:border-primary focus-visible:outline-none",
 ].join(" ");
 
 const btnPrimary = [
-  "bg-primary text-on-primary rounded-md font-medium",
+  "bg-primary text-white rounded-md font-medium",
   "text-body-md tracking-[0.01em]",
   "px-4 py-2 hover:bg-primary/90 transition-colors duration-200",
   "border-none outline-none cursor-pointer",
@@ -35,7 +35,7 @@ const btnPrimary = [
 ].join(" ");
 
 const btnSecondary = [
-  "bg-transparent text-foreground border border-outline-variant rounded-md font-medium",
+  "bg-transparent text-foreground border border-[#d5c1cc] rounded-md font-medium",
   "text-body-md tracking-[0.01em]",
   "px-6 py-2 hover:bg-muted transition-colors duration-200",
   "cursor-pointer outline-none",
@@ -246,7 +246,7 @@ export default function OrgSettingsPage() {
   function ActionRow() {
     return (
       <>
-        <div className="flex justify-end gap-3 pt-6 border-t border-outline-variant mt-4">
+        <div className="flex justify-end gap-3 pt-6 border-t border-[#d5c1cc] mt-4">
           <button type="button" className={btnSecondary} onClick={handleCancel}>
             Cancel
           </button>
@@ -266,7 +266,7 @@ export default function OrgSettingsPage() {
     return (
       <div className="flex flex-col gap-6">
         {/* BRD constraint note */}
-        <div className="border border-outline-variant bg-muted rounded-md p-4 flex gap-3 items-start">
+        <div className="border border-[#d5c1cc] bg-muted rounded-md p-4 flex gap-3 items-start">
           <span className="material-symbols-outlined text-muted-foreground text-[20px] mt-px">info</span>
           <div>
             <p className="text-body-md text-foreground font-semibold mb-1">
@@ -287,7 +287,7 @@ export default function OrgSettingsPage() {
           </label>
 
           {logoPreviewUrl ? (
-            <div className="flex items-center gap-4 border border-outline-variant bg-card rounded-md p-4 shadow-elevation-1">
+            <div className="flex items-center gap-4 border border-[#d5c1cc] bg-card rounded-md p-4 shadow-sm">
               <Image
                 src={logoPreviewUrl}
                 alt="Logo preview"
@@ -312,7 +312,7 @@ export default function OrgSettingsPage() {
             </div>
           ) : (
             <div
-              className="border-dashed border-2 border-outline-variant rounded-md p-8 flex flex-col items-center justify-center text-center cursor-pointer bg-muted hover:bg-muted/80 transition-colors"
+              className="border-dashed border-2 border-[#d5c1cc] rounded-md p-8 flex flex-col items-center justify-center text-center cursor-pointer bg-muted hover:bg-muted/80 transition-colors"
               onClick={() => fileInputRef.current?.click()}
               role="button"
               tabIndex={0}
@@ -361,7 +361,7 @@ export default function OrgSettingsPage() {
           </div>
           {/* Colour preview bar */}
           <div
-            className="w-full h-8 rounded-md mt-3 border border-outline-variant"
+            className="w-full h-8 rounded-md mt-3 border border-[#d5c1cc]"
             style={{ backgroundColor: brandColor }}
           />
         </div>
@@ -424,7 +424,7 @@ export default function OrgSettingsPage() {
                   <span
                     className={[
                       "w-4 h-4 rounded-full border-2 flex items-center justify-center shrink-0",
-                      isSelected ? "border-primary" : "border-outline-variant",
+                      isSelected ? "border-primary" : "border-[#d5c1cc]",
                     ].join(" ")}
                   >
                     {isSelected && <span className="w-2 h-2 rounded-full bg-primary" />}
@@ -490,7 +490,7 @@ export default function OrgSettingsPage() {
           <label className="block font-medium text-label-sm tracking-[0.01em] text-muted-foreground mb-2">
             Email notifications
           </label>
-          <div className="border border-outline-variant rounded-md divide-y divide-outline-variant bg-card shadow-elevation-1">
+          <div className="border border-[#d5c1cc] rounded-md divide-y divide-[#d5c1cc] bg-card shadow-sm">
             <div className="px-4">
               <Toggle
                 enabled={remindersOn}
@@ -643,7 +643,7 @@ export default function OrgSettingsPage() {
                     "transition-colors duration-200 cursor-pointer outline-none",
                     isSelected
                       ? "bg-muted text-foreground border-primary"
-                      : "bg-transparent text-muted-foreground border-outline-variant hover:bg-muted",
+                      : "bg-transparent text-muted-foreground border-[#d5c1cc] hover:bg-muted",
                   ].join(" ")}
                 >
                   {enc}
@@ -678,7 +678,7 @@ export default function OrgSettingsPage() {
     return (
       <div className="flex flex-col gap-6">
         {/* Plan tier card */}
-        <div className="border border-outline-variant rounded-md p-5 flex items-center justify-between bg-card shadow-elevation-1">
+        <div className="border border-[#d5c1cc] rounded-md p-5 flex items-center justify-between bg-card shadow-sm">
           <div>
             <p className="font-heading text-headline-md font-semibold text-foreground">Professional</p>
             <p className="text-label-sm text-muted-foreground mt-1">
@@ -728,7 +728,7 @@ export default function OrgSettingsPage() {
     return (
       <div className="flex flex-col gap-4">
         {/* Immutable info box */}
-        <div className="border border-outline-variant bg-muted rounded-md p-4 flex gap-3 items-start">
+        <div className="border border-[#d5c1cc] bg-muted rounded-md p-4 flex gap-3 items-start">
           <span className="material-symbols-outlined text-muted-foreground text-[20px] mt-px">lock</span>
           <div>
             <p className="text-body-md text-foreground font-medium mb-1">
@@ -742,11 +742,11 @@ export default function OrgSettingsPage() {
         </div>
 
         {/* Audit table */}
-        <div className="border border-outline-variant rounded-md overflow-hidden bg-card shadow-elevation-1">
+        <div className="border border-[#d5c1cc] rounded-md overflow-hidden bg-card shadow-sm">
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse">
               <thead>
-                <tr className="bg-muted border-b border-outline-variant text-label-sm font-semibold text-muted-foreground uppercase tracking-wider">
+                <tr className="bg-muted border-b border-[#d5c1cc] text-label-sm font-semibold text-muted-foreground uppercase tracking-wider">
                   <th className="p-3 font-semibold">Timestamp</th>
                   <th className="p-3 font-semibold">Actor</th>
                   <th className="p-3 font-semibold">Action</th>
@@ -758,7 +758,7 @@ export default function OrgSettingsPage() {
                 {AUDIT_ROWS.map((row, i) => (
                   <tr
                     key={i}
-                    className="border-b border-outline-variant hover:bg-muted/50 transition-colors"
+                    className="border-b border-[#d5c1cc] hover:bg-muted/50 transition-colors"
                   >
                     <td className="p-3 font-mono text-muted-foreground whitespace-nowrap">{row.ts}</td>
                     <td className="p-3 text-muted-foreground font-mono">{row.actor}</td>
@@ -805,7 +805,7 @@ export default function OrgSettingsPage() {
       <AppNavbar />
 
       {/* ═══ Page header ══════════════════════════════════════ */}
-      <header className="px-6 pt-8 pb-6 border-b border-outline-variant">
+      <header className="px-6 pt-8 pb-6 border-b border-[#d5c1cc]">
         <h1 className="font-heading font-semibold text-headline-lg text-foreground">
           Organisation settings
         </h1>
@@ -817,7 +817,7 @@ export default function OrgSettingsPage() {
       {/* ═══ Main content — sidebar + panel ═══════════════════ */}
       <div className="flex flex-1 max-w-[1280px] w-full mx-auto">
         {/* Sidebar */}
-        <aside className="w-56 shrink-0 border-r border-outline-variant py-4 px-2 flex flex-col justify-between">
+        <aside className="w-56 shrink-0 border-r border-[#d5c1cc] py-4 px-2 flex flex-col justify-between">
           <nav className="flex flex-col gap-0.5">
             {TABS.map((tab) => {
               const isActive = activeTab === tab.id;

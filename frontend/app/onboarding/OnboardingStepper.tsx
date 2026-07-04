@@ -45,7 +45,7 @@ export default function OnboardingStepper({
                 >
                   <div
                     className={`h-px w-full ${
-                      isCompleted ? "bg-primary" : "bg-outline-variant"
+                      isCompleted ? "bg-primary" : "bg-[#d5c1cc]"
                     }`}
                   />
                 </div>
@@ -59,8 +59,8 @@ export default function OnboardingStepper({
                   "font-medium text-label-sm tracking-[0.01em]",
                   "transition-colors duration-200",
                   isActive || isCompleted
-                    ? "bg-primary text-on-primary"
-                    : "border border-outline-variant bg-muted text-muted-foreground",
+                    ? "bg-primary text-primary-foreground"
+                    : "border border-[#d5c1cc] bg-muted text-muted-foreground",
                 ].join(" ")}
               >
                 {isCompleted ? (

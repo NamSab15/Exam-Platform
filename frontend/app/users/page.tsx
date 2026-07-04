@@ -13,21 +13,21 @@ export const metadata: Metadata = {
    tokens defined in globals.css. */
 
 const btnPrimary = [
-  "bg-primary text-on-primary rounded-md py-2 px-4",
+  "bg-primary text-white rounded-md py-2 px-4",
   "font-medium text-body-md tracking-[0.01em]",
   "transition-colors hover:bg-primary/90",
   "border-none outline-none cursor-pointer",
 ].join(" ");
 
 const btnSecondary = [
-  "bg-transparent text-foreground border border-outline-variant rounded-md py-2 px-4",
+  "bg-transparent text-foreground border border-[#d5c1cc] rounded-md py-2 px-4",
   "font-medium text-body-md tracking-[0.01em]",
   "transition-colors hover:bg-muted hover:border-primary",
   "cursor-pointer outline-none",
 ].join(" ");
 
 const inputBase = [
-  "border border-outline-variant rounded-md py-2 px-3",
+  "border border-[#d5c1cc] rounded-md py-2 px-3",
   "text-body-md outline-none bg-card text-foreground",
   "transition-all focus-visible:ring-1 focus-visible:ring-primary focus-visible:border-primary focus-visible:outline-none",
 ].join(" ");
@@ -120,15 +120,15 @@ export default function UsersPage() {
           </section>
 
           {/* ── Data table ───────────────────────────────────── */}
-          <section className="border border-outline-variant rounded-md overflow-hidden bg-card shadow-elevation-1">
+          <section className="border border-[#d5c1cc] rounded-md overflow-hidden bg-card shadow-sm">
             <div className="overflow-x-auto">
               <table className="w-full text-left border-collapse">
                 <thead>
-                  <tr className="bg-muted border-b border-outline-variant text-label-sm font-semibold text-muted-foreground uppercase tracking-wider">
+                  <tr className="bg-muted border-b border-[#d5c1cc] text-label-sm font-semibold text-muted-foreground uppercase tracking-wider">
                     <th className="p-4 w-12">
                       <input
                         type="checkbox"
-                        className="rounded border-outline-variant accent-primary"
+                        className="rounded border-[#d5c1cc] accent-primary"
                       />
                     </th>
                     <th className="p-4 font-semibold">Name</th>
@@ -146,7 +146,7 @@ export default function UsersPage() {
                       <tr
                         key={user.email}
                         className={[
-                          "border-b border-outline-variant border-l-2 border-l-transparent",
+                          "border-b border-[#d5c1cc] border-l-2 border-l-transparent",
                           "transition-colors hover:bg-muted/50 hover:border-l-primary",
                           !isActive && "bg-muted/30",
                         ]
@@ -156,7 +156,7 @@ export default function UsersPage() {
                         <td className="p-4">
                           <input
                             type="checkbox"
-                            className="rounded border-outline-variant accent-primary"
+                            className="rounded border-[#d5c1cc] accent-primary"
                           />
                         </td>
                         <td className={`p-4 font-medium ${!isActive ? "text-muted-foreground" : ""}`}>
@@ -205,7 +205,7 @@ export default function UsersPage() {
                   })}
 
                   {/* Ellipsis row */}
-                  <tr className="border-t border-outline-variant">
+                  <tr className="border-t border-[#d5c1cc]">
                     <td colSpan={6} className="p-4 text-center">
                       <span className="text-muted-foreground/50 font-bold tracking-[0.2em]">
                         ···
@@ -227,10 +227,10 @@ export default function UsersPage() {
               Bulk import panel
             </h2>
 
-            <div className="border border-outline-variant rounded-md p-6 bg-card shadow-elevation-1">
+            <div className="border border-[#d5c1cc] rounded-md p-6 bg-card shadow-sm">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
                 {/* Dropzone */}
-                <div className="border-dashed border-2 border-outline-variant rounded-md p-8 flex flex-col items-center justify-center text-center bg-muted hover:bg-muted/80 transition-colors cursor-pointer min-h-[160px]">
+                <div className="border-dashed border-2 border-[#d5c1cc] rounded-md p-8 flex flex-col items-center justify-center text-center bg-muted hover:bg-muted/80 transition-colors cursor-pointer min-h-[160px]">
                   <span className="material-symbols-outlined text-muted-foreground text-4xl mb-2">
                     upload_file
                   </span>
@@ -249,7 +249,7 @@ export default function UsersPage() {
                     {["name", "email", "role"].map((col) => (
                       <span
                         key={col}
-                        className="bg-muted border border-outline-variant rounded px-2 py-1 font-mono text-label-sm text-muted-foreground"
+                        className="bg-muted border border-[#d5c1cc] rounded px-2 py-1 font-mono text-label-sm text-muted-foreground"
                       >
                         {col}
                       </span>
@@ -268,8 +268,8 @@ export default function UsersPage() {
               </div>
 
               {/* CSV preview */}
-              <div className="bg-muted border border-outline-variant rounded-md overflow-hidden mb-6">
-                <div className="p-3 border-b border-outline-variant bg-card text-body-md font-medium text-foreground">
+              <div className="bg-muted border border-[#d5c1cc] rounded-md overflow-hidden mb-6">
+                <div className="p-3 border-b border-[#d5c1cc] bg-card text-body-md font-medium text-foreground">
                   Preview before confirming
                 </div>
                 <div className="p-4 font-mono text-label-sm flex flex-col gap-2 overflow-x-auto whitespace-nowrap">
@@ -310,7 +310,7 @@ export default function UsersPage() {
               </div>
 
               {/* Footer actions */}
-              <div className="flex flex-col sm:flex-row justify-between items-center gap-4 border-t border-outline-variant pt-6">
+              <div className="flex flex-col sm:flex-row justify-between items-center gap-4 border-t border-[#d5c1cc] pt-6">
                 <p className="text-destructive text-body-md font-medium flex items-center gap-2">
                   <span className="material-symbols-outlined text-[18px]">
                     error

@@ -11,7 +11,7 @@ import BottomNav from "@/components/BottomNav";
    tokens defined in globals.css. */
 
 const btnPrimary = [
-  "bg-primary text-on-primary rounded-md font-medium",
+  "bg-primary text-white rounded-md font-medium",
   "text-body-md tracking-[0.01em]",
   "px-4 py-2 hover:bg-primary/90 transition-colors duration-200",
   "border-none outline-none cursor-pointer",
@@ -19,7 +19,7 @@ const btnPrimary = [
 ].join(" ");
 
 const btnSecondary = [
-  "bg-transparent text-foreground border border-outline-variant rounded-md font-medium",
+  "bg-transparent text-foreground border border-[#d5c1cc] rounded-md font-medium",
   "text-body-md tracking-[0.01em]",
   "px-6 py-2 hover:bg-muted transition-colors duration-200",
   "cursor-pointer outline-none",
@@ -83,7 +83,7 @@ function SummaryCard({
 }) {
   const router = useRouter();
   return (
-    <div className="bg-card border border-outline-variant rounded-md p-5 shadow-elevation-1">
+    <div className="bg-card border border-[#d5c1cc] rounded-md p-5 shadow-sm">
       <div className="flex items-center justify-between mb-3">
         <h3 className="font-heading font-semibold text-body-lg text-foreground">
           {title}
@@ -96,7 +96,7 @@ function SummaryCard({
           Edit
         </button>
       </div>
-      <div className="divide-y divide-outline-variant">{children}</div>
+      <div className="divide-y divide-[#d5c1cc]">{children}</div>
     </div>
   );
 }
@@ -194,14 +194,14 @@ export default function OnboardingStep5Page({ onNext }: { onNext?: () => void } 
           {/* Card 2 — Branding */}
           <SummaryCard title="Branding" editHref="/onboarding/step-2">
             <SummaryRow label="Logo">
-              <div className="w-16 h-16 bg-muted rounded border border-outline-variant flex items-center justify-center text-muted-foreground text-label-sm">
+              <div className="w-16 h-16 bg-muted rounded border border-[#d5c1cc] flex items-center justify-center text-muted-foreground text-label-sm">
                 No logo
               </div>
             </SummaryRow>
             <SummaryRow label="Brand colour">
               <span className="flex items-center gap-2 font-mono">
                 <span
-                  className="w-5 h-5 rounded-full inline-block border border-outline-variant"
+                  className="w-5 h-5 rounded-full inline-block border border-[#d5c1cc]"
                   style={{ backgroundColor: PLACEHOLDER.brandColor }}
                 />
                 {PLACEHOLDER.brandColor}
@@ -262,7 +262,7 @@ export default function OnboardingStep5Page({ onNext }: { onNext?: () => void } 
                       {PLACEHOLDER.invitedUsers.slice(0, 5).map((u) => (
                         <tr
                           key={u.email}
-                          className="border-t border-outline-variant"
+                          className="border-t border-[#d5c1cc]"
                         >
                           <td className="py-2 pr-4">{u.name}</td>
                           <td className="py-2 pr-4 text-muted-foreground font-mono">{u.email}</td>
@@ -283,7 +283,7 @@ export default function OnboardingStep5Page({ onNext }: { onNext?: () => void } 
         </div>
 
         {/* ── Onboarding checklist ─────────────────────────── */}
-        <div className="bg-muted border border-outline-variant rounded-md p-4 mt-6">
+        <div className="bg-muted border border-[#d5c1cc] rounded-md p-4 mt-6">
           <p className="text-foreground font-semibold text-body-md mb-3">
             Your organisation will be set up with:
           </p>

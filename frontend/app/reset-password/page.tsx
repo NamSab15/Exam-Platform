@@ -8,14 +8,14 @@ import Image from "next/image";
    tokens defined in globals.css. */
 
 const inputBase = [
-  "w-full bg-card border border-outline-variant rounded-md",
+  "w-full bg-card border border-[#d5c1cc] rounded-md",
   "text-body-md text-foreground",
   "px-3 py-2 transition-all duration-200",
   "focus-visible:ring-1 focus-visible:ring-primary focus-visible:border-primary focus-visible:outline-none",
 ].join(" ");
 
 const btnPrimary = [
-  "w-full bg-primary text-on-primary rounded-md",
+  "w-full bg-primary text-white rounded-md",
   "font-medium text-body-md tracking-[0.01em]",
   "py-3 transition-colors duration-200",
   "hover:bg-primary/90 cursor-pointer",
@@ -62,7 +62,7 @@ export default function ResetPasswordPage({ onNext }: { onNext?: () => void } = 
     <main className="min-h-screen flex justify-center items-center bg-background text-foreground antialiased p-4 md:p-0">
       <div className="w-full max-w-[400px]">
         {/* ── Card ──────────────────────────────────────────── */}
-        <div className="bg-card border border-outline-variant rounded-md p-8 md:p-10 shadow-elevation-1">
+        <div className="bg-card border border-[#d5c1cc] rounded-md p-8 md:p-10 shadow-sm">
           {/* Brand badge */}
           <div className="flex justify-center mb-6">
             <Image
@@ -85,7 +85,7 @@ export default function ResetPasswordPage({ onNext }: { onNext?: () => void } = 
           </div>
 
           {/* Context bar */}
-          <div className="bg-muted border border-outline-variant rounded-md px-3 py-2 mb-6 text-center">
+          <div className="bg-muted border border-[#d5c1cc] rounded-md px-3 py-2 mb-6 text-center">
             <span className="text-label-sm text-muted-foreground font-normal">
               Signed in as: <span className="font-mono">priya.sharma@university.edu</span>
             </span>
@@ -154,7 +154,7 @@ export default function ResetPasswordPage({ onNext }: { onNext?: () => void } = 
             </div>
 
             {/* ── Checklist panel ───────────────────────────── */}
-            <div className="bg-muted border border-outline-variant rounded-md p-4">
+            <div className="bg-muted border border-[#d5c1cc] rounded-md p-4">
               <ul className="space-y-2 mb-3">
                 {PASSWORD_RULES.map((rule, i) => {
                   const met = ruleResults[i];
