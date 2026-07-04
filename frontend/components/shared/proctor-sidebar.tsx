@@ -103,11 +103,17 @@ export function ProctorSidebar() {
         {/* Brand Header */}
         <div className="flex items-center justify-between gap-3 px-6">
           <div className="flex items-center gap-3">
-            <div
-              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary font-heading text-lg font-bold text-white select-none"
-              aria-hidden="true"
-            >
-              P
+            <div className="relative h-10 w-10 shrink-0 select-none">
+              <img
+                src="/Logo-Purple.png"
+                alt="Logo"
+                className="h-full w-full object-contain dark:hidden"
+              />
+              <img
+                src="/Logo-White.png"
+                alt="Logo"
+                className="hidden h-full w-full object-contain dark:block"
+              />
             </div>
             <div className="flex flex-col">
               <span className="font-heading text-lg font-bold leading-tight text-primary">

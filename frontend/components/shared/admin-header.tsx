@@ -135,6 +135,8 @@ export function AdminHeader({
           <Image
             src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=120"
             alt=""
+            width={32}
+            height={32}
             className="h-full w-full object-cover"
           />
         </div>
