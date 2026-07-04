@@ -3,6 +3,7 @@
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { useEffect, useState } from "react"
+import Image from "next/image"
 import {
   Database,
   FileEdit,
@@ -115,14 +116,18 @@ export function AdminSidebar() {
         <div className="flex items-center justify-between gap-3 px-6">
           <div className="flex items-center gap-3">
             <div className="relative h-10 w-10 shrink-0 select-none">
-              <img
+              <Image
                 src="/Logo-Purple.png"
                 alt="Logo"
+                width={40}
+                height={40}
                 className="h-full w-full object-contain dark:hidden"
               />
-              <img
+              <Image
                 src="/Logo-White.png"
                 alt="Logo"
+                width={40}
+                height={40}
                 className="hidden h-full w-full object-contain dark:block"
               />
             </div>
