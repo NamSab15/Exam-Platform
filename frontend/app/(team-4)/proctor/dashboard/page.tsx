@@ -2,11 +2,10 @@
 
 import React, { useState } from "react"
 import { Download, RefreshCw } from "lucide-react"
-import { AdminHeader } from "@/components/shared/admin-header"
 import { MOCK_CANDIDATES, MOCK_ALERTS, ActivityLogEntry } from "@/lib/proctorMockData"
-import { MetricsCards } from "./components/MetricsCards"
-import { StudentTable } from "./components/StudentTable"
-import { BottomGrid } from "./components/BottomGrid"
+import { MetricsCards } from "@/components/team-4/proctor/dashboard/MetricsCards"
+import { StudentTable } from "@/components/team-4/proctor/dashboard/StudentTable"
+import { BottomGrid } from "@/components/team-4/proctor/dashboard/BottomGrid"
 
 export default function ProctorDashboardPage() {
   const [alerts, setAlerts] = useState<ActivityLogEntry[]>(MOCK_ALERTS)
@@ -31,7 +30,6 @@ export default function ProctorDashboardPage() {
 
   return (
     <div className="flex-1 flex flex-col min-h-screen">
-      <AdminHeader />
       <main className="flex-1 p-6 space-y-6 max-w-7xl mx-auto w-full">
         {/* Page Header */}
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">

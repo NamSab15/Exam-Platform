@@ -14,22 +14,7 @@ import {
   Cell,
 } from "recharts"
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
-
-const LINE_DATA = [
-  { name: "Mon", score: 92, baseline: 90 },
-  { name: "Tue", score: 94, baseline: 90 },
-  { name: "Wed", score: 91, baseline: 90 },
-  { name: "Thu", score: 95, baseline: 90 },
-  { name: "Fri", score: 96, baseline: 90 },
-  { name: "Sat", score: 94, baseline: 90 },
-  { name: "Sun", score: 95, baseline: 90 },
-]
-
-const PIE_DATA = [
-  { name: "Off-screen Gaze", value: 54, color: "oklch(0.43 0.18 330)" }, // primary
-  { name: "Speech/Talking", value: 28, color: "oklch(0.94 0.01 320)" }, // secondary
-  { name: "Multiple People", value: 18, color: "oklch(0.55 0.01 280)" }, // muted
-]
+import { LINE_DATA, PIE_DATA } from "@/lib/proctorMockData"
 
 export function AnalyticsCharts() {
   return (

@@ -35,7 +35,9 @@ export function LiveFeeds({
               <Image
                 src={webcamUrl}
                 alt={`${candidateName} webcam`}
-                className="w-full h-full object-cover opacity-80"
+                fill
+                sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
+                className="object-cover opacity-80"
               />
               {/* Simulated Face Mesh overlay */}
               <div className="absolute inset-0 border-2 border-emerald-500/20 pointer-events-none">
