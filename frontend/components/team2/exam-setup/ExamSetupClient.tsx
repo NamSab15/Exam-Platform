@@ -1,16 +1,16 @@
-'use client'
+'use client';
 
-import React from "react"
-import { useRouter } from "next/navigation"
-import { Sliders, ArrowRight, ArrowLeft } from "lucide-react"
+import React from 'react';
+import { useRouter } from 'next/navigation';
+import { Sliders, ArrowRight, ArrowLeft } from 'lucide-react';
 
-import { Card, CardContent } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { AdminSidebar } from "@/components/shared/admin-sidebar"
-import { AdminHeader } from "@/components/shared/admin-header"
+import { Card, CardContent } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { AdminSidebar } from '@/components/shared/admin-sidebar';
+import { AdminHeader } from '@/components/shared/admin-header';
 
-export default function ExamSetupPage() {
-  const router = useRouter()
+export function ExamSetupClient() {
+  const router = useRouter();
 
   return (
     <div className="page-shell">
@@ -56,7 +56,7 @@ export default function ExamSetupPage() {
                 <Button
                   variant="outline"
                   size="sm"
-                  onClick={() => router.push("/question-bank")}
+                  onClick={() => router.push('/question-bank')}
                   className="gap-1.5 text-xs shadow-none"
                 >
                   <ArrowLeft className="h-4 w-4" />
@@ -65,7 +65,7 @@ export default function ExamSetupPage() {
 
                 <Button
                   size="sm"
-                  onClick={() => router.push("/question-editor?new=true")}
+                  onClick={() => router.push('/question-editor?new=true')}
                   className="gap-1.5 bg-primary text-white hover:bg-primary/95 text-xs"
                 >
                   Create Mock Question
@@ -77,5 +77,6 @@ export default function ExamSetupPage() {
         </main>
       </div>
     </div>
-  )
+  );
 }
+export default ExamSetupClient;

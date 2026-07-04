@@ -35,11 +35,15 @@ export function AdminHeader({
       {/* Left Brand */}
       <div className={cn("flex min-w-0 items-center gap-4 sm:gap-6", hasSidebar && "pl-10 lg:pl-0")}>
         <div className="flex min-w-0 items-center gap-2">
-          <div
-            className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-primary font-heading text-sm font-extrabold text-white select-none"
-            aria-hidden="true"
-          >
-            X
+          <div className="flex h-7 w-auto shrink-0 items-center select-none" aria-hidden="true">
+            <Image
+              src="/logo.png"
+              alt="Xebia Logo"
+              width={34}
+              height={28}
+              priority
+              className="h-full w-auto object-contain"
+            />
           </div>
           <span className="hidden truncate font-heading text-base font-bold text-primary select-none sm:block lg:text-lg">
             Xebia Exam Platform
@@ -135,6 +139,8 @@ export function AdminHeader({
           <Image
             src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=120"
             alt=""
+            width={32}
+            height={32}
             className="h-full w-full object-cover"
           />
         </div>
