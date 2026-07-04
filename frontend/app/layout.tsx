@@ -28,6 +28,8 @@ export const metadata: Metadata = {
   description: "Assessment and Certification Platform",
 };
 
+import { Toaster } from "@/components/ui/sonner";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -45,6 +47,7 @@ export default function RootLayout({
     >
       <body className="min-h-screen bg-background font-sans">
         {children}
+        <Toaster />
       </body>
     </html>
   );

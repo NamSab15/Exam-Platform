@@ -50,9 +50,11 @@ export function ReviewPlayer({
           <div className="relative aspect-video bg-zinc-950 rounded-lg overflow-hidden border border-border/30">
             {webcamUrl && (
               <Image
-                src={webcamUrl} // Make sure webcamUrl is not undefined
+                src={webcamUrl}
                 alt={`${candidateName} webcam recording`}
-                className="w-full h-full object-cover opacity-75"
+                fill
+                sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
+                className="object-cover opacity-75"
               />
             )}
             <div className="absolute top-3 left-3 bg-black/50 px-2 py-0.5 rounded text-[9px] font-bold text-white uppercase tracking-wider">

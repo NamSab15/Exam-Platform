@@ -297,3 +297,102 @@ export const MOCK_ALERTS: ActivityLogEntry[] = [
     severity: "LOW"
   }
 ];
+
+export interface KeystrokeEntry {
+  timestamp: string;
+  char: string;
+  timeGapMs: number;
+  wpm: number;
+  isAnomaly: boolean;
+}
+
+export const MOCK_KEYSTROKES: KeystrokeEntry[] = [
+  { timestamp: "10:35:10 AM", char: "f", timeGapMs: 120, wpm: 75, isAnomaly: false },
+  { timestamp: "10:35:10 AM", char: "u", timeGapMs: 110, wpm: 80, isAnomaly: false },
+  { timestamp: "10:35:10 AM", char: "n", timeGapMs: 130, wpm: 82, isAnomaly: false },
+  { timestamp: "10:35:11 AM", char: "c", timeGapMs: 100, wpm: 85, isAnomaly: false },
+  { timestamp: "10:35:11 AM", char: "t", timeGapMs: 120, wpm: 80, isAnomaly: false },
+  { timestamp: "10:35:11 AM", char: "i", timeGapMs: 90, wpm: 85, isAnomaly: false },
+  { timestamp: "10:35:12 AM", char: "o", timeGapMs: 95, wpm: 90, isAnomaly: false },
+  { timestamp: "10:35:12 AM", char: "n", timeGapMs: 110, wpm: 88, isAnomaly: false },
+  { timestamp: "10:35:12 AM", char: " ", timeGapMs: 150, wpm: 80, isAnomaly: false },
+  { timestamp: "10:35:13 AM", char: "s", timeGapMs: 105, wpm: 82, isAnomaly: false },
+  { timestamp: "10:35:13 AM", char: "o", timeGapMs: 115, wpm: 85, isAnomaly: false },
+  { timestamp: "10:35:13 AM", char: "l", timeGapMs: 95, wpm: 88, isAnomaly: false },
+  { timestamp: "10:35:14 AM", char: "v", timeGapMs: 110, wpm: 80, isAnomaly: false },
+  { timestamp: "10:35:14 AM", char: "e", timeGapMs: 105, wpm: 82, isAnomaly: false },
+  { timestamp: "10:35:15 AM", char: "Ctrl+V (Paste)", timeGapMs: 10, wpm: 240, isAnomaly: true },
+  { timestamp: "10:35:18 AM", char: "K", timeGapMs: 200, wpm: 50, isAnomaly: false },
+  { timestamp: "10:35:19 AM", char: "n", timeGapMs: 120, wpm: 60, isAnomaly: false },
+  { timestamp: "10:35:19 AM", char: "a", timeGapMs: 110, wpm: 65, isAnomaly: false },
+  { timestamp: "10:35:20 AM", char: "p", timeGapMs: 115, wpm: 70, isAnomaly: false },
+  { timestamp: "10:35:20 AM", char: "s", timeGapMs: 100, wpm: 75, isAnomaly: false },
+  { timestamp: "10:35:21 AM", char: "a", timeGapMs: 120, wpm: 72, isAnomaly: false },
+  { timestamp: "10:35:21 AM", char: "c", timeGapMs: 110, wpm: 78, isAnomaly: false },
+  { timestamp: "10:35:22 AM", char: "k", timeGapMs: 115, wpm: 80, isAnomaly: false },
+];
+
+export interface FlaggedStudentEntry {
+  id: string;
+  name: string;
+  major: string;
+  flags: string[];
+  risk: string;
+  avatar: string;
+}
+
+export const FLAGGED_STUDENTS: FlaggedStudentEntry[] = [
+  {
+    id: "SEC-84920-X",
+    name: "Adrian Thorne",
+    major: "Computer Science • Year 3",
+    flags: ["Audio Detected", "+2 others"],
+    risk: "Critical",
+    avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=120",
+  },
+  {
+    id: "SEC-11029-B",
+    name: "Elena Rodriguez",
+    major: "Biochemistry • Year 1",
+    flags: ["Device Detected"],
+    risk: "Critical",
+    avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=120",
+  },
+  {
+    id: "SEC-99231-P",
+    name: "Marcus Vane",
+    major: "Applied Physics • Year 4",
+    flags: ["Off-screen Gaze"],
+    risk: "Moderate",
+    avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=120",
+  },
+];
+
+export interface ChartLinePoint {
+  name: string;
+  score: number;
+  baseline: number;
+}
+
+export const LINE_DATA: ChartLinePoint[] = [
+  { name: "Mon", score: 92, baseline: 90 },
+  { name: "Tue", score: 94, baseline: 90 },
+  { name: "Wed", score: 91, baseline: 90 },
+  { name: "Thu", score: 95, baseline: 90 },
+  { name: "Fri", score: 96, baseline: 90 },
+  { name: "Sat", score: 94, baseline: 90 },
+  { name: "Sun", score: 95, baseline: 90 },
+];
+
+export interface ChartPieSegment {
+  name: string;
+  value: number;
+  color: string;
+}
+
+export const PIE_DATA: ChartPieSegment[] = [
+  { name: "Off-screen Gaze", value: 54, color: "oklch(0.43 0.18 330)" },
+  { name: "Speech/Talking", value: 28, color: "oklch(0.94 0.01 320)" },
+  { name: "Multiple People", value: 18, color: "oklch(0.55 0.01 280)" },
+];
+

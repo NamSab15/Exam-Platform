@@ -1,28 +1,31 @@
 'use client'
 
-import React from "react"
+import React, { Suspense } from "react"
 import Link from "next/link"
-import { usePathname } from "next/navigation"
-import { Search, Bell, HelpCircle, Clock } from "lucide-react"
+import { usePathname, useRouter, useSearchParams } from "next/navigation"
+import { Search, Bell, HelpCircle } from "lucide-react"
 import { cn } from "@/lib/utils"
 import Image from "next/image"
 
-interface AdminHeaderProps {
-  onSearchChange?: (val: string) => void;
-  searchValue?: string;
-  timerCount?: string;
-}
-
-export function AdminHeader({
-  onSearchChange,
-  searchValue = "",
-  timerCount,
-}: AdminHeaderProps) {
+function ProctorHeaderContent() {
   const pathname = usePathname()
+  const router = useRouter()
+  const searchParams = useSearchParams()
+  const searchQuery = searchParams.get("search") || ""
 
   const isEditor = pathname === "/question-editor"
   const isCandidate = pathname === "/candidate-preview"
   const hasSidebar = !isCandidate
+
+  const handleSearchChange = (val: string) => {
+    const params = new URLSearchParams(searchParams.toString())
+    if (val) {
+      params.set("search", val)
+    } else {
+      params.delete("search")
+    }
+    router.replace(`${pathname}?${params.toString()}`)
+  }
 
   const navTabs = [
     { name: "Question Bank", href: "/question-bank", active: pathname === "/question-bank" },
@@ -35,11 +38,22 @@ export function AdminHeader({
       {/* Left Brand */}
       <div className={cn("flex min-w-0 items-center gap-4 sm:gap-6", hasSidebar && "pl-10 lg:pl-0")}>
         <div className="flex min-w-0 items-center gap-2">
-          <div
-            className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-primary font-heading text-sm font-extrabold text-white select-none"
-            aria-hidden="true"
-          >
-            X
+          {/* Logo in front of Xebia Exam Platform */}
+          <div className="relative h-7 w-7 shrink-0 select-none">
+            <Image
+              src="/Logo-Purple.png"
+              alt="Logo"
+              width={28}
+              height={28}
+              className="h-full w-full object-contain dark:hidden"
+            />
+            <Image
+              src="/Logo-White.png"
+              alt="Logo"
+              width={28}
+              height={28}
+              className="hidden h-full w-full object-contain dark:block"
+            />
           </div>
           <span className="hidden truncate font-heading text-base font-bold text-primary select-none sm:block lg:text-lg">
             Xebia Exam Platform
@@ -77,13 +91,9 @@ export function AdminHeader({
             />
             <input
               type="search"
-              placeholder={
-                isCandidate
-                  ? "Search questions..."
-                  : "Search questions, creators, or topics..."
-              }
-              value={searchValue}
-              onChange={(e) => onSearchChange?.(e.target.value)}
+              placeholder="Search questions, candidates, or events..."
+              value={searchQuery}
+              onChange={(e) => handleSearchChange(e.target.value)}
               aria-label="Search questions"
               className="h-10 w-full rounded-full border border-border bg-zinc-50 pl-11 pr-4 text-sm transition-colors focus-visible:border-primary focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary dark:bg-zinc-900"
             />
@@ -93,18 +103,6 @@ export function AdminHeader({
 
       {/* Right Controls */}
       <div className="flex shrink-0 items-center gap-2 sm:gap-4">
-        {isCandidate && timerCount && (
-          <div
-            className="flex items-center gap-2 rounded-full bg-rose-50 px-2.5 py-1 text-rose-600 select-none sm:px-3 dark:bg-rose-950/30 dark:text-rose-400"
-            role="timer"
-            aria-live="polite"
-            aria-label={`Time remaining: ${timerCount}`}
-          >
-            <Clock className="h-4 w-4 shrink-0" aria-hidden="true" />
-            <span className="font-mono text-xs font-semibold sm:text-sm">{timerCount}</span>
-          </div>
-        )}
-
         <button
           type="button"
           className="relative rounded-full p-1.5 text-muted-foreground transition-colors hover:bg-zinc-50 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 dark:hover:bg-zinc-900"
@@ -134,7 +132,7 @@ export function AdminHeader({
         >
           <Image
             src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=120"
-            alt=""
+            alt="User profile"
             width={32}
             height={32}
             className="h-full w-full object-cover"
@@ -142,5 +140,13 @@ export function AdminHeader({
         </div>
       </div>
     </header>
+  )
+}
+
+export function ProctorHeader() {
+  return (
+    <Suspense fallback={<div className="h-16 border-b border-border bg-white" />}>
+      <ProctorHeaderContent />
+    </Suspense>
   )
 }
