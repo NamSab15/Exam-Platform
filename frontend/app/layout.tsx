@@ -42,9 +42,9 @@ export default function RootLayout({
         hanken.variable,
         mono.variable
       )}
+      suppressHydrationWarning
     >
-
-      <body className="min-h-screen bg-background font-sans">
+      <body className="min-h-screen bg-background font-sans" suppressHydrationWarning>
         {children}
       </body>
     </html>

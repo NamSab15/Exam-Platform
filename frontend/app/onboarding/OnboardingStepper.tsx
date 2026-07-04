@@ -1,10 +1,10 @@
 /**
  * OnboardingStepper — 5-step progress indicator for the tenant onboarding wizard.
  *
- * Reusable across all five onboarding steps.  Pass `currentStep` (1–5)
+ * Reusable across all five onboarding steps. Pass `currentStep` (1–5)
  * and the component renders the correct active / completed / upcoming states.
  *
- * All colours / spacing / radii reference the design-project tokens in globals.css.
+ * All colors / spacing / radii reference the design-project tokens in globals.css.
  */
 
 interface OnboardingStepperProps {
@@ -24,8 +24,8 @@ export default function OnboardingStepper({
   currentStep,
 }: OnboardingStepperProps) {
   return (
-    <nav aria-label="Onboarding progress" className="overflow-x-auto pb-2">
-      <ol className="flex items-center" role="list">
+    <nav aria-label="Onboarding progress" className="w-full pb-6">
+      <ol className="flex items-start w-full" role="list">
         {STEPS.map((label, idx) => {
           const stepNum = idx + 1;
           const isActive = stepNum === currentStep;
@@ -35,17 +35,17 @@ export default function OnboardingStepper({
           return (
             <li
               key={label}
-              className={`relative ${isLast ? "" : "pr-8 sm:pr-20"}`}
+              className="relative flex-1 flex flex-col items-center"
             >
               {/* Connector line (hidden on the last step) */}
               {!isLast && (
                 <div
                   aria-hidden="true"
-                  className="absolute inset-0 flex items-center"
+                  className="absolute top-4 left-1/2 -translate-y-1/2 w-full h-px z-0 pointer-events-none"
                 >
                   <div
                     className={`h-px w-full ${
-                      isCompleted ? "bg-primary" : "bg-border"
+                      isCompleted ? "bg-primary" : "bg-outline-variant"
                     }`}
                   />
                 </div>
@@ -55,12 +55,12 @@ export default function OnboardingStepper({
               <span
                 aria-current={isActive ? "step" : undefined}
                 className={[
-                  "relative flex h-8 w-8 items-center justify-center rounded-full",
-                  "font-medium text-[14px] leading-[16px] tracking-[0.01em]",
+                  "relative flex h-8 w-8 items-center justify-center rounded-full z-10",
+                  "font-medium text-label-sm tracking-[0.01em]",
                   "transition-colors duration-200",
                   isActive || isCompleted
-                    ? "bg-primary text-primary-foreground"
-                    : "border border-border bg-background text-muted-foreground",
+                    ? "bg-primary text-on-primary"
+                    : "border border-outline-variant bg-muted text-muted-foreground",
                 ].join(" ")}
               >
                 {isCompleted ? (
@@ -76,8 +76,7 @@ export default function OnboardingStepper({
               {/* Label below circle */}
               <span
                 className={[
-                  "absolute -bottom-6 left-1/2 -translate-x-1/2 whitespace-nowrap",
-                  "font-semibold text-[12px] leading-[16px]",
+                  "mt-2 text-center font-semibold text-label-sm max-w-[120px] sm:max-w-[160px] break-words line-clamp-2 px-1 z-10",
                   isActive || isCompleted ? "text-foreground" : "text-muted-foreground",
                 ].join(" ")}
               >

@@ -1,39 +1,31 @@
-/**
- * Onboarding Step 5 — Review & Confirm
- * Route: /onboarding/step-5
- * BRD: §4.1.1, §4.1.2 — Final review before tenant creation
- *
- * Read-only summary of all previous steps with edit links.
- * "Complete setup" triggers a placeholder success state.
- */
-
 "use client";
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import OnboardingStepper from "../OnboardingStepper";
+import AppNavbar from "@/components/AppNavbar";
+import BottomNav from "@/components/BottomNav";
 
 /* ── Shared style constants ─────────────────────────────────────
-   Every colour / radius / spacing references the design-project
+   Every color / radius / spacing references the design-project
    tokens defined in globals.css. */
 
 const btnPrimary = [
-  "bg-primary text-primary-foreground rounded-md font-medium",
-  "text-[14px] leading-[16px] tracking-[0.01em]",
-  "px-4 py-2 hover:bg-primary/80 transition-colors duration-200",
+  "bg-primary text-on-primary rounded-md font-medium",
+  "text-body-md tracking-[0.01em]",
+  "px-4 py-2 hover:bg-primary/90 transition-colors duration-200",
   "border-none outline-none cursor-pointer",
   "flex items-center gap-2",
 ].join(" ");
 
 const btnSecondary = [
-  "bg-background text-muted-foreground border border-border rounded-md font-medium",
-  "text-[14px] leading-[16px] tracking-[0.01em]",
+  "bg-transparent text-foreground border border-outline-variant rounded-md font-medium",
+  "text-body-md tracking-[0.01em]",
   "px-6 py-2 hover:bg-muted transition-colors duration-200",
-  "cursor-pointer",
+  "cursor-pointer outline-none",
 ].join(" ");
 
 /* ── Placeholder data ───────────────────────────────────────── */
-/* TODO: replace with context/API data from previous steps      */
 
 const PLACEHOLDER = {
   orgName: "Acme University",
@@ -41,7 +33,7 @@ const PLACEHOLDER = {
   planTier: "Professional",
   primaryContact: "admin@acme.edu",
 
-  brandColor: "#6C1D5F",
+  brandColor: "#510047",
   displayName: "Acme University",
   tagline: "Excellence in Assessment",
 
@@ -68,10 +60,10 @@ function SummaryRow({
 }) {
   return (
     <div className="flex flex-col sm:flex-row sm:items-start gap-1 sm:gap-4 py-2">
-      <span className="text-muted-foreground text-[14px] leading-[20px] shrink-0 sm:w-40">
+      <span className="text-muted-foreground text-body-md shrink-0 sm:w-40">
         {label}
       </span>
-      <span className="text-foreground text-[14px] leading-[20px]">
+      <span className="text-foreground text-body-md">
         {children}
       </span>
     </div>
@@ -91,20 +83,20 @@ function SummaryCard({
 }) {
   const router = useRouter();
   return (
-    <div className="border border-border rounded-md p-5">
+    <div className="bg-card border border-outline-variant rounded-md p-5 shadow-elevation-1">
       <div className="flex items-center justify-between mb-3">
-        <h3 className="text-foreground font-semibold text-[16px] leading-[24px]">
+        <h3 className="font-heading font-semibold text-body-lg text-foreground">
           {title}
         </h3>
         <button
           type="button"
           onClick={() => router.push(editHref)}
-          className="text-primary text-[14px] hover:underline cursor-pointer bg-transparent border-none p-0 font-medium"
+          className="text-primary text-label-sm hover:underline cursor-pointer bg-transparent border-none p-0 font-medium"
         >
           Edit
         </button>
       </div>
-      <div className="divide-y divide-border">{children}</div>
+      <div className="divide-y divide-outline-variant">{children}</div>
     </div>
   );
 }
@@ -120,6 +112,30 @@ export default function OnboardingStep5Page({ onNext }: { onNext?: () => void } 
   }
 
   function handleComplete() {
+    try {
+      localStorage.setItem(
+        "xebia_wizard_data",
+        JSON.stringify({
+          orgName: PLACEHOLDER.orgName,
+          slug: PLACEHOLDER.slug,
+          planTier: PLACEHOLDER.planTier,
+          primaryContact: PLACEHOLDER.primaryContact,
+          brandColor: PLACEHOLDER.brandColor,
+          displayName: PLACEHOLDER.displayName,
+          tagline: PLACEHOLDER.tagline,
+          timezone: PLACEHOLDER.timezone,
+          dateFormat: PLACEHOLDER.dateFormat,
+          notifEmail: PLACEHOLDER.notifEmail,
+          defaultInstructions: "",
+          remindersOn: PLACEHOLDER.enabledNotifications.includes("Exam reminders"),
+          resultsOn: PLACEHOLDER.enabledNotifications.includes("Result notifications"),
+          assignmentsOn: false,
+        })
+      );
+    } catch {
+      // localStorage unavailable — org-settings will use defaults
+    }
+
     setSetupComplete(true);
     console.log(
       "Onboarding complete — tenant slug:",
@@ -129,14 +145,16 @@ export default function OnboardingStep5Page({ onNext }: { onNext?: () => void } 
   }
 
   return (
-    <main className="min-h-screen bg-background flex justify-center py-8 md:py-12 px-4 md:px-12 text-foreground">
-      <div className="w-full max-w-[800px] flex flex-col">
+    <>
+      <AppNavbar />
+      <main className="min-h-screen bg-background flex justify-center pt-24 pb-8 md:pt-28 md:pb-12 px-4 md:px-12 text-foreground">
+        <div className="w-full max-w-[800px] flex flex-col">
         {/* ── Header ───────────────────────────────────────── */}
         <header className="mb-8">
-          <h1 className="font-semibold text-[32px] leading-[40px] tracking-[-0.02em] text-foreground mb-1">
+          <h1 className="font-heading font-semibold text-headline-lg text-foreground mb-1">
             Review your setup
           </h1>
-          <p className="text-[14px] leading-[20px] text-muted-foreground">
+          <p className="text-body-md text-muted-foreground">
             Check everything before we create your organisation. You can change
             these settings later from the admin panel.
           </p>
@@ -154,18 +172,17 @@ export default function OnboardingStep5Page({ onNext }: { onNext?: () => void } 
             title="Organisation Details"
             editHref="/onboarding/step-1"
           >
-            {/* TODO: replace with context/API data */}
             <SummaryRow label="Organisation name">
               {PLACEHOLDER.orgName}
             </SummaryRow>
             <SummaryRow label="Tenant slug">
-              <span>{PLACEHOLDER.slug}</span>
-              <span className="block text-muted-foreground text-[12px] leading-[16px] mt-0.5">
+              <span className="font-mono">{PLACEHOLDER.slug}</span>
+              <span className="block text-muted-foreground text-label-sm mt-0.5">
                 (your unique isolation key — cannot be changed after setup)
               </span>
             </SummaryRow>
             <SummaryRow label="Plan tier">
-              <span className="bg-muted text-foreground rounded-full px-3 py-1 text-[14px] font-medium inline-block">
+              <span className="bg-muted text-muted-foreground rounded-full px-3 py-1 text-label-sm font-medium inline-block">
                 {PLACEHOLDER.planTier}
               </span>
             </SummaryRow>
@@ -176,16 +193,15 @@ export default function OnboardingStep5Page({ onNext }: { onNext?: () => void } 
 
           {/* Card 2 — Branding */}
           <SummaryCard title="Branding" editHref="/onboarding/step-2">
-            {/* TODO: replace with context/API data */}
             <SummaryRow label="Logo">
-              <div className="w-16 h-16 bg-muted rounded border border-border flex items-center justify-center text-muted-foreground text-[12px]">
+              <div className="w-16 h-16 bg-muted rounded border border-outline-variant flex items-center justify-center text-muted-foreground text-label-sm">
                 No logo
               </div>
             </SummaryRow>
             <SummaryRow label="Brand colour">
-              <span className="flex items-center gap-2">
+              <span className="flex items-center gap-2 font-mono">
                 <span
-                  className="w-5 h-5 rounded-full inline-block border border-border"
+                  className="w-5 h-5 rounded-full inline-block border border-outline-variant"
                   style={{ backgroundColor: PLACEHOLDER.brandColor }}
                 />
                 {PLACEHOLDER.brandColor}
@@ -204,7 +220,6 @@ export default function OnboardingStep5Page({ onNext }: { onNext?: () => void } 
             title="Timezone & Notifications"
             editHref="/onboarding/step-3"
           >
-            {/* TODO: replace with context/API data */}
             <SummaryRow label="Timezone">{PLACEHOLDER.timezone}</SummaryRow>
             <SummaryRow label="Date format">
               {PLACEHOLDER.dateFormat}
@@ -217,7 +232,7 @@ export default function OnboardingStep5Page({ onNext }: { onNext?: () => void } 
                 {PLACEHOLDER.enabledNotifications.map((n) => (
                   <span
                     key={n}
-                    className="bg-green-50 text-green-700 text-[12px] px-2 py-0.5 rounded-full border border-green-200"
+                    className="bg-success/10 text-success text-label-sm px-2 py-0.5 rounded-full border border-success/20 font-medium"
                   >
                     {n}
                   </span>
@@ -228,9 +243,8 @@ export default function OnboardingStep5Page({ onNext }: { onNext?: () => void } 
 
           {/* Card 4 — Invited Users */}
           <SummaryCard title="Invited Users" editHref="/onboarding/step-4">
-            {/* TODO: replace with context/API data */}
             {PLACEHOLDER.invitedUsers.length === 0 ? (
-              <p className="text-muted-foreground text-[14px] leading-[20px] py-2">
+              <p className="text-muted-foreground text-body-md py-2">
                 No users invited — you can add them after setup.
               </p>
             ) : (
@@ -238,20 +252,20 @@ export default function OnboardingStep5Page({ onNext }: { onNext?: () => void } 
                 <div className="overflow-x-auto">
                   <table className="w-full text-left">
                     <thead>
-                      <tr className="text-[12px] leading-[16px] font-semibold text-muted-foreground">
-                        <th className="py-2 pr-4 font-medium">Name</th>
-                        <th className="py-2 pr-4 font-medium">Email</th>
-                        <th className="py-2 font-medium">Role</th>
+                      <tr className="text-label-sm font-semibold text-muted-foreground">
+                        <th className="py-2 pr-4 font-semibold">Name</th>
+                        <th className="py-2 pr-4 font-semibold">Email</th>
+                        <th className="py-2 font-semibold">Role</th>
                       </tr>
                     </thead>
-                    <tbody className="text-[14px] leading-[20px] text-foreground">
+                    <tbody className="text-body-md text-foreground">
                       {PLACEHOLDER.invitedUsers.slice(0, 5).map((u) => (
                         <tr
                           key={u.email}
-                          className="border-t border-border"
+                          className="border-t border-outline-variant"
                         >
                           <td className="py-2 pr-4">{u.name}</td>
-                          <td className="py-2 pr-4 text-muted-foreground">{u.email}</td>
+                          <td className="py-2 pr-4 text-muted-foreground font-mono">{u.email}</td>
                           <td className="py-2">{u.role}</td>
                         </tr>
                       ))}
@@ -259,7 +273,7 @@ export default function OnboardingStep5Page({ onNext }: { onNext?: () => void } 
                   </table>
                 </div>
                 {PLACEHOLDER.invitedUsers.length > 5 && (
-                  <p className="text-muted-foreground text-[14px] leading-[20px] pt-2">
+                  <p className="text-muted-foreground text-body-md pt-2">
                     + {PLACEHOLDER.invitedUsers.length - 5} more
                   </p>
                 )}
@@ -269,9 +283,8 @@ export default function OnboardingStep5Page({ onNext }: { onNext?: () => void } 
         </div>
 
         {/* ── Onboarding checklist ─────────────────────────── */}
-        {/* TODO: populate dynamically from previous steps */}
-        <div className="border border-border rounded-md p-4 mt-6">
-          <p className="text-foreground font-semibold text-[14px] leading-[20px] mb-3">
+        <div className="bg-muted border border-outline-variant rounded-md p-4 mt-6">
+          <p className="text-foreground font-semibold text-body-md mb-3">
             Your organisation will be set up with:
           </p>
           <ul className="flex flex-col gap-2">
@@ -282,11 +295,15 @@ export default function OnboardingStep5Page({ onNext }: { onNext?: () => void } 
               "Welcome emails queued for dispatch",
             ].map((item) => (
               <li key={item} className="flex items-center gap-2">
-                <span className="material-symbols-outlined text-green-700 text-[20px]">
+                <span className="material-symbols-outlined text-success text-[20px]">
                   check_circle
                 </span>
-                <span className="text-[14px] leading-[20px] text-foreground">
-                  {item}
+                <span className="text-body-md text-foreground">
+                  {item.includes(PLACEHOLDER.slug) ? (
+                    <>
+                      Tenant isolation enabled (slug: <span className="font-mono">{PLACEHOLDER.slug}</span>)
+                    </>
+                  ) : item}
                 </span>
               </li>
             ))}
@@ -316,11 +333,11 @@ export default function OnboardingStep5Page({ onNext }: { onNext?: () => void } 
 
         {/* Success banner (shown after clicking Complete setup) */}
         {setupComplete && (
-          <div className="bg-green-50 border border-green-500 rounded-md p-4 flex gap-3 items-center mt-4">
-            <span className="material-symbols-outlined text-green-700 text-[24px]">
+          <div className="bg-success/10 border border-success/30 rounded-md p-4 flex gap-3 items-center mt-4">
+            <span className="material-symbols-outlined text-success text-[24px]">
               check_circle
             </span>
-            <p className="text-foreground text-[14px] leading-[20px]">
+            <p className="text-foreground text-body-md">
               Your organisation has been created! Sending invite emails and
               redirecting to your dashboard…
             </p>
@@ -328,5 +345,7 @@ export default function OnboardingStep5Page({ onNext }: { onNext?: () => void } 
         )}
       </div>
     </main>
+    <BottomNav />
+  </>
   );
 }

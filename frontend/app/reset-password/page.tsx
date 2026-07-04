@@ -1,24 +1,24 @@
 "use client";
 
 import { useState, useMemo } from "react";
+import Image from "next/image";
 
 /* ── Shared style constants ─────────────────────────────────────
-   Every colour / radius / spacing references the design-project
+   Every color / radius / spacing references the design-project
    tokens defined in globals.css. */
 
 const inputBase = [
-  "w-full bg-background border border-border rounded-md",
-  "text-[16px] leading-[24px] text-foreground",
+  "w-full bg-card border border-outline-variant rounded-md",
+  "text-body-md text-foreground",
   "px-3 py-2 transition-all duration-200",
-  "outline-none focus:border-primary",
-  "focus-visible:ring-2 focus-visible:ring-primary/20",
+  "focus-visible:ring-1 focus-visible:ring-primary focus-visible:border-primary focus-visible:outline-none",
 ].join(" ");
 
 const btnPrimary = [
-  "w-full bg-primary text-primary-foreground rounded-md",
-  "font-medium text-[14px] leading-[16px] tracking-[0.01em]",
+  "w-full bg-primary text-on-primary rounded-md",
+  "font-medium text-body-md tracking-[0.01em]",
   "py-3 transition-colors duration-200",
-  "hover:bg-primary/80 cursor-pointer",
+  "hover:bg-primary/90 cursor-pointer",
   "border-none outline-none",
   "flex justify-center items-center",
 ].join(" ");
@@ -55,7 +55,6 @@ export default function ResetPasswordPage({ onNext }: { onNext?: () => void } = 
       onNext();
       return;
     }
-    // TODO: wire to PATCH /auth/set-password once the backend is ready
     console.log("Set password submitted");
   }
 
@@ -63,28 +62,32 @@ export default function ResetPasswordPage({ onNext }: { onNext?: () => void } = 
     <main className="min-h-screen flex justify-center items-center bg-background text-foreground antialiased p-4 md:p-0">
       <div className="w-full max-w-[400px]">
         {/* ── Card ──────────────────────────────────────────── */}
-        <div className="bg-background border border-border rounded-lg p-8 md:p-10">
+        <div className="bg-card border border-outline-variant rounded-md p-8 md:p-10 shadow-elevation-1">
           {/* Brand badge */}
           <div className="flex justify-center mb-6">
-            <span className="bg-primary text-primary-foreground px-3 py-1 rounded-full font-bold text-[14px] tracking-[0.5px] inline-block">
-              Xebia
-            </span>
+            <Image
+              src="/Logo-Purple.png"
+              alt="Xebia"
+              width={64}
+              height={64}
+              priority
+            />
           </div>
 
           {/* Heading */}
           <div className="text-center mb-6">
-            <h1 className="font-semibold text-[20px] leading-[28px] text-foreground mb-2">
+            <h1 className="font-heading font-semibold text-headline-md text-foreground mb-2">
               Set your password
             </h1>
-            <p className="text-[14px] leading-[20px] text-muted-foreground">
+            <p className="text-body-md text-muted-foreground">
               First login — this step is required before continuing.
             </p>
           </div>
 
           {/* Context bar */}
-          <div className="bg-muted border border-border rounded px-3 py-2 mb-6 text-center">
-            <span className="text-[12px] leading-[16px] text-muted-foreground font-normal">
-              Signed in as: priya.sharma@university.edu
+          <div className="bg-muted border border-outline-variant rounded-md px-3 py-2 mb-6 text-center">
+            <span className="text-label-sm text-muted-foreground font-normal">
+              Signed in as: <span className="font-mono">priya.sharma@university.edu</span>
             </span>
           </div>
 
@@ -94,7 +97,7 @@ export default function ResetPasswordPage({ onNext }: { onNext?: () => void } = 
             <div>
               <div className="flex justify-between items-center mb-1">
                 <label
-                  className="font-medium text-[14px] leading-[16px] tracking-[0.01em] text-foreground"
+                  className="font-medium text-label-sm tracking-[0.01em] text-muted-foreground"
                   htmlFor="new_password"
                 >
                   New password
@@ -112,7 +115,7 @@ export default function ResetPasswordPage({ onNext }: { onNext?: () => void } = 
                   onChange={(e) => setPassword(e.target.value)}
                 />
                 <button
-                  className="absolute right-3 top-1/2 -translate-y-1/2 font-semibold text-[12px] leading-[16px] text-muted-foreground hover:text-foreground transition-colors cursor-pointer bg-transparent border-none p-0"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 font-semibold text-label-sm text-muted-foreground hover:text-foreground transition-colors cursor-pointer bg-transparent border-none p-0"
                   type="button"
                   onClick={() => setShowPassword((v) => !v)}
                   aria-label={showPassword ? "Hide password" : "Show password"}
@@ -125,7 +128,7 @@ export default function ResetPasswordPage({ onNext }: { onNext?: () => void } = 
             {/* Confirm password */}
             <div>
               <label
-                className="block font-medium text-[14px] leading-[16px] tracking-[0.01em] text-foreground mb-1"
+                className="block font-medium text-label-sm tracking-[0.01em] text-muted-foreground mb-1"
                 htmlFor="confirm_password"
               >
                 Confirm new password
@@ -140,7 +143,7 @@ export default function ResetPasswordPage({ onNext }: { onNext?: () => void } = 
                   type={showConfirm ? "text" : "password"}
                 />
                 <button
-                  className="absolute right-3 top-1/2 -translate-y-1/2 font-semibold text-[12px] leading-[16px] text-muted-foreground hover:text-foreground transition-colors cursor-pointer bg-transparent border-none p-0"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 font-semibold text-label-sm text-muted-foreground hover:text-foreground transition-colors cursor-pointer bg-transparent border-none p-0"
                   type="button"
                   onClick={() => setShowConfirm((v) => !v)}
                   aria-label={showConfirm ? "Hide password" : "Show password"}
@@ -151,20 +154,20 @@ export default function ResetPasswordPage({ onNext }: { onNext?: () => void } = 
             </div>
 
             {/* ── Checklist panel ───────────────────────────── */}
-            <div className="bg-muted border border-border rounded-md p-4">
+            <div className="bg-muted border border-outline-variant rounded-md p-4">
               <ul className="space-y-2 mb-3">
                 {PASSWORD_RULES.map((rule, i) => {
                   const met = ruleResults[i];
                   return (
                     <li
                       key={rule.label}
-                      className={`flex items-center text-[14px] leading-[20px] ${
-                        met ? "text-[var(--success)]" : "text-muted-foreground"
+                      className={`flex items-center text-body-md ${
+                        met ? "text-success font-medium" : "text-muted-foreground"
                       }`}
                     >
                       {met ? (
                         <svg
-                          className="w-4 h-4 mr-2 shrink-0 text-[var(--success)]"
+                          className="w-4 h-4 mr-2 shrink-0 text-success"
                           viewBox="0 0 24 24"
                           fill="currentColor"
                           aria-hidden="true"
@@ -188,14 +191,14 @@ export default function ResetPasswordPage({ onNext }: { onNext?: () => void } = 
                   );
                 })}
               </ul>
-              <p className="text-[12px] leading-[16px] text-muted-foreground font-normal">
+              <p className="text-label-sm text-muted-foreground font-normal">
                 Rules are tenant-configurable
               </p>
             </div>
 
             {/* ── MFA notice ────────────────────────────────── */}
-            <div className="border border-dashed border-[var(--warning)] bg-[#FCF9F2] rounded-md p-3 text-center">
-              <p className="text-[14px] leading-[20px] text-[var(--warning)]">
+            <div className="border border-dashed border-warning bg-warning/10 rounded-md p-3 text-center">
+              <p className="text-body-md text-warning">
                 <span className="font-medium">If role requires MFA:</span> MFA
                 enrollment shown next.
               </p>
@@ -209,7 +212,7 @@ export default function ResetPasswordPage({ onNext }: { onNext?: () => void } = 
         </div>
 
         {/* Footnote */}
-        <p className="text-center text-[12px] leading-[16px] text-muted-foreground font-normal mt-6">
+        <p className="text-center text-label-sm text-muted-foreground font-normal mt-6">
           On submit: redirect to tenant onboarding or dashboard by role
         </p>
       </div>

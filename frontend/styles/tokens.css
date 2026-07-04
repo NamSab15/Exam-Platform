@@ -1,0 +1,132 @@
+/**
+ * Generated from DESIGN.md v1.0
+ * Xebia Exam Platform
+ * Team 1 Accounts & Setup
+ *
+ * This file defines all system design tokens as CSS custom properties under :root.
+ * No component should hardcode hex colors or layout sizes directly; they should 
+ * always reference these properties or their Tailwind utility aliases.
+ */
+
+:root {
+  /* ─── Colours ─── */
+  --color-primary: #510047;
+  --color-on-primary: #ffffff;
+  --color-primary-container: #6c1d5f;
+  --color-on-primary-container: #e98ad1;
+  --color-inverse-primary: #fface8;
+  --color-primary-fixed: #ffd7f0;
+  --color-primary-fixed-dim: #fface8;
+  --color-on-primary-fixed: #3a0032;
+  --color-on-primary-fixed-variant: #762668;
+
+  --color-secondary: #7f4d79;
+  --color-on-secondary: #ffffff;
+  --color-secondary-container: #ffc1f4;
+  --color-on-secondary-container: #7c4a76;
+  --color-secondary-fixed: #ffd7f5;
+  --color-secondary-fixed-dim: #f0b3e6;
+  --color-on-secondary-fixed: #330932;
+  --color-on-secondary-fixed-variant: #653660;
+
+  --color-tertiary: #4c1800;
+  --color-on-tertiary: #ffffff;
+  --color-tertiary-container: #702700;
+  --color-on-tertiary-container: #ff8a56;
+  --color-tertiary-fixed: #ffdbcd;
+  --color-tertiary-fixed-dim: #ffb597;
+  --color-on-tertiary-fixed: #360f00;
+  --color-on-tertiary-fixed-variant: #7e2c00;
+
+  --color-error: #ba1a1a;
+  --color-on-error: #ffffff;
+  --color-error-container: #ffdad6;
+  --color-on-error-container: #93000a;
+
+  --color-surface: #fbf9f8;
+  --color-surface-dim: #dbdad9;
+  --color-surface-bright: #fbf9f8;
+  --color-surface-container-lowest: #ffffff;
+  --color-surface-container-low: #f5f3f3;
+  --color-surface-container: #efeded;
+  --color-surface-container-high: #eae8e7;
+  --color-surface-container-highest: #e4e2e2;
+  --color-on-surface: #1b1c1c;
+  --color-on-surface-variant: #51434c;
+  --color-inverse-surface: #303030;
+  --color-inverse-on-surface: #f2f0f0;
+  --color-surface-tint: #923f81;
+  --color-surface-variant: #e4e2e2;
+
+  --color-background: #fbf9f8;
+  --color-on-background: #1b1c1c;
+
+  --color-outline: #83727c;
+  --color-outline-variant: #d5c1cc;
+
+  --color-emerald: #01AC9F;
+  --color-cta-orange: #FF6200;
+  --color-warning: #854F0B;
+
+  /* ─── Tenant Overrides ─── */
+  --color-tenant-primary: var(--color-primary);
+  --tenant-logo-url: none;
+
+  /* ─── Typography ─── */
+  --font-display-family: var(--font-heading, 'Hanken Grotesk', sans-serif);
+  --font-body-family: var(--font-sans, 'Inter', sans-serif);
+  --font-mono-family: var(--font-mono, 'JetBrains Mono', monospace);
+
+  --font-display-size: 48px;
+  --font-display-weight: 700;
+  --font-display-line-height: 56px;
+  --font-display-letter-spacing: -0.02em;
+
+  --font-headline-lg-size: 32px;
+  --font-headline-lg-weight: 600;
+  --font-headline-lg-line-height: 40px;
+
+  --font-headline-md-size: 24px;
+  --font-headline-md-weight: 600;
+  --font-headline-md-line-height: 32px;
+
+  --font-headline-lg-mobile-size: 24px;
+  --font-headline-lg-mobile-weight: 600;
+  --font-headline-lg-mobile-line-height: 32px;
+
+  --font-body-lg-size: 18px;
+  --font-body-lg-weight: 400;
+  --font-body-lg-line-height: 28px;
+
+  --font-body-md-size: 16px;
+  --font-body-md-weight: 400;
+  --font-body-md-line-height: 24px;
+
+  --font-label-sm-size: 12px;
+  --font-label-sm-weight: 500;
+  --font-label-sm-line-height: 16px;
+  --font-label-sm-letter-spacing: 0.05em;
+
+  /* ─── Spacing ─── */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+  --space-container-max: 1280px;
+  --space-gutter: 24px;
+
+  /* ─── Border Radius ─── */
+  --radius-sm: 0.25rem;
+  --radius-default: 0.5rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.5rem;
+  --radius-full: 9999px;
+
+  /* ─── Elevation ─── */
+  --elevation-0: none;
+  --elevation-1: 0 0 0 1px var(--color-outline-variant);
+  --elevation-2: 0 4px 8px 0 rgba(81, 0, 71, 0.05), 0 0 0 1px var(--color-outline-variant);
+  --elevation-3: 0 8px 24px 0 rgba(0, 0, 0, 0.12), 0 0 0 1px var(--color-outline-variant);
+}

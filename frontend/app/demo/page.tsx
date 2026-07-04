@@ -5,9 +5,6 @@
  * Wires all existing Team 1 (Accounts & Setup) screens into
  * a single navigable presentation. No screens are rebuilt —
  * each is imported and rendered as-is.
- *
- * Note: org-settings is excluded because that page has not
- * been built yet. Add it to the screens array when it exists.
  */
 
 "use client";
@@ -24,8 +21,9 @@ import OnboardingStep3 from "../onboarding/step-3/page";
 import OnboardingStep4 from "../onboarding/step-4/page";
 import OnboardingStep5 from "../onboarding/step-5/page";
 
-// Users page is a server component that exports `metadata` — dynamic
-// import avoids the "metadata in client component" build error.
+// These pages use useEffect / localStorage — dynamic import avoids
+// the "metadata in client component" build error.
+const OrgSettingsPage = dynamic(() => import("../org-settings/page"), { ssr: false });
 const UsersPage = dynamic(() => import("../users/page"), { ssr: false });
 
 /* ── Screen registry ────────────────────────────────────────── */
@@ -38,6 +36,7 @@ type Screen =
   | "onboarding-3"
   | "onboarding-4"
   | "onboarding-5"
+  | "org-settings"
   | "users";
 
 /* ── Page component ─────────────────────────────────────────── */
@@ -66,8 +65,9 @@ export default function DemoPage() {
         <OnboardingStep4 onNext={() => setScreen("onboarding-5")} />
       )}
       {screen === "onboarding-5" && (
-        <OnboardingStep5 onNext={() => setScreen("users")} />
+        <OnboardingStep5 onNext={() => setScreen("org-settings")} />
       )}
+      {screen === "org-settings" && <OrgSettingsPage />}
       {screen === "users" && <UsersPage />}
     </>
   );
