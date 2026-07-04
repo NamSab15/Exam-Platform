@@ -4,8 +4,8 @@ import React, { useState, Suspense } from "react"
 import { Download, AlertTriangle, X } from "lucide-react"
 import { useSearchParams } from "next/navigation"
 import { MOCK_CANDIDATES } from "@/lib/proctorMockData"
-import { FilterControls } from "./components/FilterControls"
-import { LogsTable } from "./components/LogsTable"
+import { FilterControls } from "@/components/team-4/proctor/activity-logs/FilterControls"
+import { LogsTable } from "@/components/team-4/proctor/activity-logs/LogsTable"
 
 function ActivityLogsContent() {
   const [severityFilter, setSeverityFilter] = useState("ALL")

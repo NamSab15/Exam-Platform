@@ -4,9 +4,9 @@ import React, { useState, useEffect, use } from "react"
 import Link from "next/link"
 import { ChevronLeft, Clock } from "lucide-react"
 import { MOCK_CANDIDATES, CandidateSession } from "@/lib/proctorMockData"
-import { LiveFeeds } from "./components/LiveFeeds"
-import { IncidentFeed } from "./components/IncidentFeed"
-import { ControlPanel } from "./components/ControlPanel"
+import { LiveFeeds } from "@/components/team-4/proctor/sessions/LiveFeeds"
+import { IncidentFeed } from "@/components/team-4/proctor/sessions/IncidentFeed"
+import { ControlPanel } from "@/components/team-4/proctor/sessions/ControlPanel"
 
 export default function ProctorSessionPage({
   params,

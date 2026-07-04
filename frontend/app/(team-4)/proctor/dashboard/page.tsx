@@ -3,9 +3,9 @@
 import React, { useState } from "react"
 import { Download, RefreshCw } from "lucide-react"
 import { MOCK_CANDIDATES, MOCK_ALERTS, ActivityLogEntry } from "@/lib/proctorMockData"
-import { MetricsCards } from "./components/MetricsCards"
-import { StudentTable } from "./components/StudentTable"
-import { BottomGrid } from "./components/BottomGrid"
+import { MetricsCards } from "@/components/team-4/proctor/dashboard/MetricsCards"
+import { StudentTable } from "@/components/team-4/proctor/dashboard/StudentTable"
+import { BottomGrid } from "@/components/team-4/proctor/dashboard/BottomGrid"
 
 export default function ProctorDashboardPage() {
   const [alerts, setAlerts] = useState<ActivityLogEntry[]>(MOCK_ALERTS)

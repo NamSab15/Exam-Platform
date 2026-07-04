@@ -1,8 +1,8 @@
 import React from "react"
 import { Calendar, Download } from "lucide-react"
-import { MetricCards } from "./components/MetricCards"
-import { AnalyticsCharts } from "./components/AnalyticsCharts"
-import { FlaggedList } from "./components/FlaggedList"
+import { MetricCards } from "@/components/team-4/proctor/analytics/MetricCards"
+import { AnalyticsCharts } from "@/components/team-4/proctor/analytics/AnalyticsCharts"
+import { FlaggedList } from "@/components/team-4/proctor/analytics/FlaggedList"
 
 export default function ProctorAnalyticsPage() {
   const dateRange = "Last 7 Days"

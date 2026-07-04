@@ -3,33 +3,7 @@ import Link from "next/link"
 import { ArrowRight } from "lucide-react"
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 import Image from "next/image"
-
-const FLAGGED_STUDENTS = [
-  {
-    id: "SEC-84920-X",
-    name: "Adrian Thorne",
-    major: "Computer Science • Year 3",
-    flags: ["Audio Detected", "+2 others"],
-    risk: "Critical",
-    avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=120",
-  },
-  {
-    id: "SEC-11029-B",
-    name: "Elena Rodriguez",
-    major: "Biochemistry • Year 1",
-    flags: ["Device Detected"],
-    risk: "Critical",
-    avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=120",
-  },
-  {
-    id: "SEC-99231-P",
-    name: "Marcus Vane",
-    major: "Applied Physics • Year 4",
-    flags: ["Off-screen Gaze"],
-    risk: "Moderate",
-    avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=120",
-  },
-]
+import { FLAGGED_STUDENTS } from "@/lib/proctorMockData"
 
 export function FlaggedList() {
   return (

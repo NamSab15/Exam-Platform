@@ -1,8 +1,8 @@
 'use client'
 
 import React from "react"
-import { ProctorSidebar } from "@/components/shared/proctor-sidebar"
-import { ProctorHeader } from "./components/ProctorHeader"
+import { ProctorSidebar } from "@/components/team-4/proctor/ProctorSidebar"
+import { ProctorHeader } from "@/components/team-4/proctor/ProctorHeader"
 
 export default function ProctorLayout({
   children,
