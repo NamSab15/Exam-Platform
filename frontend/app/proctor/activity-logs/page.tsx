@@ -1,17 +1,18 @@
 'use client'
 
-import React, { useState } from "react"
+import React, { useState, Suspense } from "react"
 import { Download, AlertTriangle, X } from "lucide-react"
-import { AdminHeader } from "@/components/shared/admin-header"
+import { useSearchParams } from "next/navigation"
 import { MOCK_CANDIDATES } from "@/lib/proctorMockData"
 import { FilterControls } from "./components/FilterControls"
 import { LogsTable } from "./components/LogsTable"
 
-export default function ProctorActivityLogsPage() {
+function ActivityLogsContent() {
   const [severityFilter, setSeverityFilter] = useState("ALL")
   const [examFilter, setExamFilter] = useState("ALL")
   const [liveSync, setLiveSync] = useState(true)
-  const [searchQuery, setSearchQuery] = useState("")
+  const searchParams = useSearchParams()
+  const searchQuery = searchParams.get("search") || ""
   const [showToast, setShowToast] = useState(true)
 
   // Derive logs from mock data statically/synchronously
@@ -32,8 +33,6 @@ export default function ProctorActivityLogsPage() {
 
   return (
     <div className="flex-1 flex flex-col min-h-screen">
-      {/* Passing search callback to the shared AdminHeader */}
-      <AdminHeader searchValue={searchQuery} onSearchChange={setSearchQuery} />
       <main className="flex-1 p-6 space-y-6 max-w-7xl mx-auto w-full relative">
         {/* Page Header */}
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
@@ -89,5 +88,17 @@ export default function ProctorActivityLogsPage() {
         )}
       </main>
     </div>
+  )
+}
+
+export default function ProctorActivityLogsPage() {
+  return (
+    <Suspense fallback={
+      <div className="flex-1 flex items-center justify-center min-h-screen">
+        <p className="text-muted-foreground text-sm">Loading activity logs...</p>
+      </div>
+    }>
+      <ActivityLogsContent />
+    </Suspense>
   )
 }

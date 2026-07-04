@@ -1,6 +1,5 @@
 import React from "react"
 import { Calendar, Download } from "lucide-react"
-import { AdminHeader } from "@/components/shared/admin-header"
 import { MetricCards } from "./components/MetricCards"
 import { AnalyticsCharts } from "./components/AnalyticsCharts"
 import { FlaggedList } from "./components/FlaggedList"
@@ -10,7 +9,6 @@ export default function ProctorAnalyticsPage() {
 
   return (
     <div className="flex-1 flex flex-col min-h-screen">
-      <AdminHeader />
       <main className="flex-1 p-6 space-y-6 max-w-7xl mx-auto w-full">
         {/* Page Header */}
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">

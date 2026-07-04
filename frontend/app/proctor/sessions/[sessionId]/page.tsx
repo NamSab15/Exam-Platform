@@ -3,7 +3,6 @@
 import React, { useState, useEffect, use } from "react"
 import Link from "next/link"
 import { ChevronLeft, Clock } from "lucide-react"
-import { AdminHeader } from "@/components/shared/admin-header"
 import { MOCK_CANDIDATES, CandidateSession } from "@/lib/proctorMockData"
 import { LiveFeeds } from "./components/LiveFeeds"
 import { IncidentFeed } from "./components/IncidentFeed"
@@ -115,7 +114,6 @@ export default function ProctorSessionPage({
 
   return (
     <div className="flex-1 flex flex-col min-h-screen">
-      <AdminHeader />
       <main className="flex-1 p-6 space-y-6 max-w-7xl mx-auto w-full">
         {/* Navigation back and session details */}
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between border-b border-border/30 pb-4">
