@@ -1,11 +1,12 @@
 'use client'
 
-import React, { useState, Suspense } from "react"
-import { Download, AlertTriangle, X } from "lucide-react"
+import React, { useState, useEffect, Suspense } from "react"
+import { Download } from "lucide-react"
 import { useSearchParams } from "next/navigation"
 import { MOCK_CANDIDATES } from "@/lib/proctorMockData"
 import { FilterControls } from "@/components/team-4/proctor/activity-logs/FilterControls"
 import { LogsTable } from "@/components/team-4/proctor/activity-logs/LogsTable"
+import { toast } from "sonner"
 
 function ActivityLogsContent() {
   const [severityFilter, setSeverityFilter] = useState("ALL")
@@ -13,13 +14,80 @@ function ActivityLogsContent() {
   const [liveSync, setLiveSync] = useState(true)
   const searchParams = useSearchParams()
   const searchQuery = searchParams.get("search") || ""
-  const [showToast, setShowToast] = useState(true)
 
-  // Derive logs from mock data statically/synchronously
-  const allLogs = MOCK_CANDIDATES.flatMap((c) => c.logs)
-  allLogs.sort((a, b) => b.timestamp.localeCompare(a.timestamp))
+  // Keep logs in React state to support dynamic updates during live sync
+  const [logs, setLogs] = useState(() => {
+    const initialLogs = MOCK_CANDIDATES.flatMap((c) => c.logs)
+    initialLogs.sort((a, b) => b.timestamp.localeCompare(a.timestamp))
+    return initialLogs
+  })
 
-  const filteredLogs = allLogs.filter((log) => {
+  // Simulated live sync interval that periodically adds dynamic logs and triggers a sonner toast
+  useEffect(() => {
+    if (!liveSync) return
+
+    const interval = setInterval(() => {
+      const candidates = MOCK_CANDIDATES
+      const randomCandidate = candidates[Math.floor(Math.random() * candidates.length)]
+      
+      const incidentTypes = [
+        {
+          eventDescription: "Potential background talking detected.",
+          eventCode: "AI-AUD-001",
+          severity: "MEDIUM" as const,
+        },
+        {
+          eventDescription: "Browser focus lost. Tab switched.",
+          eventCode: "SYS-FOC-002",
+          severity: "LOW" as const,
+        },
+        {
+          eventDescription: "Extended gaze deviation detected (away from screen).",
+          eventCode: "AI-GAZ-009",
+          severity: "MEDIUM" as const,
+        },
+        {
+          eventDescription: "Mobile device detected in camera frame.",
+          eventCode: "AI-DEV-004",
+          severity: "HIGH" as const,
+        },
+        {
+          eventDescription: "Unusual keyboard activity or copy-paste detected.",
+          eventCode: "SYS-KBD-004",
+          severity: "HIGH" as const,
+        }
+      ]
+      const selectedIncident = incidentTypes[Math.floor(Math.random() * incidentTypes.length)]
+      
+      const newLog = {
+        id: `log-sim-${Date.now()}`,
+        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' }),
+        candidateId: randomCandidate.id,
+        candidateName: randomCandidate.name,
+        eventDescription: selectedIncident.eventDescription,
+        eventCode: selectedIncident.eventCode,
+        severity: selectedIncident.severity,
+      }
+      
+      setLogs((prev) => [newLog, ...prev])
+      
+      // Trigger shadcn sonner toast according to severity
+      const title = newLog.severity === "HIGH" ? "New High Severity Incident" : "New Proctor Incident"
+      const description = `${newLog.candidateName}: ${newLog.eventDescription}`
+      
+      if (newLog.severity === "HIGH") {
+        toast.error(title, { description, duration: 5000 })
+      } else if (newLog.severity === "MEDIUM") {
+        toast.warning(title, { description, duration: 5000 })
+      } else {
+        toast(title, { description, duration: 5000 })
+      }
+    }, 12000)
+
+    return () => clearInterval(interval)
+  }, [liveSync])
+
+  const filteredLogs = logs.filter((log) => {
     const matchesSearch =
       log.candidateName.toLowerCase().includes(searchQuery.toLowerCase()) ||
       log.eventDescription.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -27,7 +95,6 @@ function ActivityLogsContent() {
 
     const matchesSeverity = severityFilter === "ALL" || log.severity === severityFilter
 
-    // In a real app we'd filter by examId, but for dummy logs we assume all match or matches mock
     return matchesSearch && matchesSeverity
   })
 
@@ -62,30 +129,6 @@ function ActivityLogsContent() {
 
         {/* Audit Table */}
         <LogsTable logs={filteredLogs} />
-
-        {/* Float Notification Toast */}
-        {showToast && (
-          <div className="fixed bottom-6 right-6 max-w-sm w-full bg-card rounded-xl shadow-2xl border border-border/30 overflow-hidden flex items-start p-4 gap-4 animate-bounce-in z-50">
-            <div className="p-2 bg-rose-50 dark:bg-rose-950/20 text-destructive rounded-lg flex-shrink-0">
-              <AlertTriangle className="h-5 w-5" />
-            </div>
-            <div className="flex-1 min-w-0">
-              <h4 className="font-bold text-foreground text-sm">
-                New High Severity Incident
-              </h4>
-              <p className="text-muted-foreground text-xs leading-normal mt-1">
-                Alex Simmons: Multiple faces detected in primary camera feed.
-              </p>
-            </div>
-            <button
-              onClick={() => setShowToast(false)}
-              className="p-1 text-muted-foreground hover:text-foreground hover:bg-accent rounded transition-colors"
-              aria-label="Dismiss toast"
-            >
-              <X className="h-4 w-4" />
-            </button>
-          </div>
-        )}
       </main>
     </div>
   )
