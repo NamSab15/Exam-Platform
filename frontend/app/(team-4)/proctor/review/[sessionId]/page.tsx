@@ -3,36 +3,9 @@
 import React, { useState, useEffect, use } from "react"
 import Link from "next/link"
 import { ChevronLeft, ShieldCheck, AlertTriangle, User } from "lucide-react"
-import { AdminHeader } from "@/components/shared/admin-header"
-import { MOCK_CANDIDATES } from "@/lib/proctorMockData"
-import { ReviewPlayer } from "./components/ReviewPlayer"
-import { KeystrokeLog } from "./components/KeystrokeLog"
-
-const MOCK_KEYSTROKES = [
-  { timestamp: "10:35:10 AM", char: "f", timeGapMs: 120, wpm: 75, isAnomaly: false },
-  { timestamp: "10:35:10 AM", char: "u", timeGapMs: 110, wpm: 80, isAnomaly: false },
-  { timestamp: "10:35:10 AM", char: "n", timeGapMs: 130, wpm: 82, isAnomaly: false },
-  { timestamp: "10:35:11 AM", char: "c", timeGapMs: 100, wpm: 85, isAnomaly: false },
-  { timestamp: "10:35:11 AM", char: "t", timeGapMs: 120, wpm: 80, isAnomaly: false },
-  { timestamp: "10:35:11 AM", char: "i", timeGapMs: 90, wpm: 85, isAnomaly: false },
-  { timestamp: "10:35:12 AM", char: "o", timeGapMs: 95, wpm: 90, isAnomaly: false },
-  { timestamp: "10:35:12 AM", char: "n", timeGapMs: 110, wpm: 88, isAnomaly: false },
-  { timestamp: "10:35:12 AM", char: " ", timeGapMs: 150, wpm: 80, isAnomaly: false },
-  { timestamp: "10:35:13 AM", char: "s", timeGapMs: 105, wpm: 82, isAnomaly: false },
-  { timestamp: "10:35:13 AM", char: "o", timeGapMs: 115, wpm: 85, isAnomaly: false },
-  { timestamp: "10:35:13 AM", char: "l", timeGapMs: 95, wpm: 88, isAnomaly: false },
-  { timestamp: "10:35:14 AM", char: "v", timeGapMs: 110, wpm: 80, isAnomaly: false },
-  { timestamp: "10:35:14 AM", char: "e", timeGapMs: 105, wpm: 82, isAnomaly: false },
-  { timestamp: "10:35:15 AM", char: "Ctrl+V (Paste)", timeGapMs: 10, wpm: 240, isAnomaly: true },
-  { timestamp: "10:35:18 AM", char: "K", timeGapMs: 200, wpm: 50, isAnomaly: false },
-  { timestamp: "10:35:19 AM", char: "n", timeGapMs: 120, wpm: 60, isAnomaly: false },
-  { timestamp: "10:35:19 AM", char: "a", timeGapMs: 110, wpm: 65, isAnomaly: false },
-  { timestamp: "10:35:20 AM", char: "p", timeGapMs: 115, wpm: 70, isAnomaly: false },
-  { timestamp: "10:35:20 AM", char: "s", timeGapMs: 100, wpm: 75, isAnomaly: false },
-  { timestamp: "10:35:21 AM", char: "a", timeGapMs: 120, wpm: 72, isAnomaly: false },
-  { timestamp: "10:35:21 AM", char: "c", timeGapMs: 110, wpm: 78, isAnomaly: false },
-  { timestamp: "10:35:22 AM", char: "k", timeGapMs: 115, wpm: 80, isAnomaly: false },
-]
+import { MOCK_CANDIDATES, MOCK_KEYSTROKES } from "@/lib/proctorMockData"
+import { ReviewPlayer } from "@/components/team-4/proctor/review/ReviewPlayer"
+import { KeystrokeLog } from "@/components/team-4/proctor/review/KeystrokeLog"
 
 export default function ProctorReviewPage({
   params,
@@ -80,7 +53,6 @@ export default function ProctorReviewPage({
 
   return (
     <div className="flex-1 flex flex-col min-h-screen">
-      <AdminHeader />
       <main className="flex-1 p-6 space-y-6 max-w-7xl mx-auto w-full">
         {/* Navigation back and session details */}
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between border-b border-border/30 pb-4">
