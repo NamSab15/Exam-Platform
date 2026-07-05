@@ -20,6 +20,7 @@ import OnboardingStep2 from "./(team-1)/onboarding/step-2/page";
 import OnboardingStep3 from "./(team-1)/onboarding/step-3/page";
 import OnboardingStep4 from "./(team-1)/onboarding/step-4/page";
 import OnboardingStep5 from "./(team-1)/onboarding/step-5/page";
+import Team1Layout from "./(team-1)/layout";
 
 // Users page is a server component that exports `metadata` — dynamic
 // import avoids the "metadata in client component" build error.
@@ -43,7 +44,7 @@ export default function Home() {
   const [screen, setScreen] = useState<Screen>("login");
 
   return (
-    <>
+    <Team1Layout>
       {screen === "login" && (
         <LoginPage onNext={() => setScreen("reset-password")} />
       )}
@@ -66,6 +67,6 @@ export default function Home() {
         <OnboardingStep5 onNext={() => setScreen("users")} />
       )}
       {screen === "users" && <UsersPage />}
-    </>
+    </Team1Layout>
   );
 }

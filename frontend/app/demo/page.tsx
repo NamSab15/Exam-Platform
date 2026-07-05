@@ -25,6 +25,7 @@ import OnboardingStep5 from "../(team-1)/onboarding/step-5/page";
 // the "metadata in client component" build error.
 const OrgSettingsPage = dynamic(() => import("../(team-1)/org-settings/page"), { ssr: false });
 const UsersPage = dynamic(() => import("../(team-1)/users/page"), { ssr: false });
+import Team1Layout from "../(team-1)/layout";
 
 /* ── Screen registry ────────────────────────────────────────── */
 
@@ -45,7 +46,7 @@ export default function DemoPage() {
   const [screen, setScreen] = useState<Screen>("login");
 
   return (
-    <>
+    <Team1Layout>
       {screen === "login" && (
         <LoginPage onNext={() => setScreen("reset-password")} />
       )}
@@ -69,6 +70,6 @@ export default function DemoPage() {
       )}
       {screen === "org-settings" && <OrgSettingsPage />}
       {screen === "users" && <UsersPage />}
-    </>
+    </Team1Layout>
   );
 }
