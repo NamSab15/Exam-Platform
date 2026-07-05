@@ -37,19 +37,10 @@ export function ExamSetupClient() {
           </div>
 
           {/* Placeholder visual Card */}
-          <Card className="border-2 border-dashed py-16">
-            <CardContent className="mx-auto flex max-w-md flex-col items-center justify-center space-y-5 p-6 text-center">
-              <div className="h-16 w-16 rounded-full bg-purple-50 text-primary flex items-center justify-center dark:bg-purple-950/20">
-                <Sliders className="h-8 w-8" />
-              </div>
-
-              <div className="space-y-2">
-                <h3 className="font-heading text-lg font-bold text-zinc-900 dark:text-zinc-50 select-none">
-                  Owning Team: Team 3
-                </h3>
-                <p className="text-xs text-muted-foreground leading-relaxed select-none">
-                  This capability (BRD Section 4.3 — Exam Configuration Setup) is owned by <strong>Team 3 — Taking the Exam / Exam Config</strong>. Integration links between Team 2 (Questions) and Team 3 (Exams) will be established in the next sprint phase.
-                </p>
+          <Card className="border-2 border-dashed py-8">
+            <CardContent className="mx-auto flex max-w-md flex-col items-center justify-center space-y-4 p-6 text-center">
+              <div className="h-12 w-12 rounded-full bg-purple-50 text-primary flex items-center justify-center dark:bg-purple-950/20">
+                <Sliders className="h-6 w-6" />
               </div>
 
               <div className="flex flex-col sm:flex-row items-center gap-3 pt-3 select-none">
@@ -68,7 +59,7 @@ export function ExamSetupClient() {
                   onClick={() => router.push('/question-editor?new=true')}
                   className="gap-1.5 bg-primary text-white hover:bg-primary/95 text-xs"
                 >
-                  Create Mock Question
+                  Create Question
                   <ArrowRight className="h-4 w-4" />
                 </Button>
               </div>
