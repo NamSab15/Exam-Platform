@@ -20,7 +20,7 @@ export default function ResultsPage({ params }: { params: { examId: string } }) 
           <div>
             <h1 className="text-3xl font-bold font-sans text-[#21191e]">Exam Scorecard</h1>
             <p className="text-[#51434c] mt-1 font-sans">
-              Zenith Assessment - Exam ID: {params.examId}
+              Xebia Assessment - Exam ID: {params.examId}
             </p>
           </div>
           <Button className="bg-[#6c1d5f] hover:bg-[#4a1e47] text-white flex items-center gap-2 shadow-sm">

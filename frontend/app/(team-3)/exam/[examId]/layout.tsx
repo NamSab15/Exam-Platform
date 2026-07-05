@@ -24,7 +24,7 @@ export default async function ExamLayout({
             </div>
             <div>
               <h1 className="font-sans font-bold text-lg text-[#21191e] tracking-tight leading-none">
-                Zenith Assessment
+                Xebia Assessment
               </h1>
               <p className="font-sans text-xs text-[#51434c] mt-1">
                 Proctored Exam Session
