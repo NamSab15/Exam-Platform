@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import OnboardingStepper from "../OnboardingStepper";
 import AppNavbar from "@/components/AppNavbar";
 import BottomNav from "@/components/BottomNav";
@@ -11,14 +12,14 @@ import BottomNav from "@/components/BottomNav";
 
 const inputBase = [
   "w-full bg-card border border-[#d5c1cc] rounded-md",
-  "text-body-md text-foreground",
+  "text-sm text-foreground",
   "py-2 px-3 transition-all duration-200",
   "focus-visible:ring-1 focus-visible:ring-primary focus-visible:border-primary focus-visible:outline-none",
 ].join(" ");
 
 const btnPrimary = [
   "bg-primary text-white rounded-md font-medium",
-  "text-body-md tracking-[0.01em]",
+  "text-sm tracking-[0.01em]",
   "py-2 px-6 transition-colors duration-200",
   "hover:bg-primary/90 cursor-pointer",
   "border-none outline-none",
@@ -27,39 +28,44 @@ const btnPrimary = [
 
 const btnSecondary = [
   "bg-transparent text-foreground border border-[#d5c1cc] rounded-md font-medium",
-  "text-body-md tracking-[0.01em]",
+  "text-sm tracking-[0.01em]",
   "py-2 px-6 transition-colors duration-200",
   "hover:bg-muted cursor-pointer outline-none",
 ].join(" ");
 
 /* ── Plan tiers ─────────────────────────────────────────────── */
 
-const PLAN_TIERS = ["Starter", "Professional", "Enterprise"] as const;
+const PLAN_TIERS = ["Basic", "Professional", "Enterprise"] as const;
 type PlanTier = (typeof PLAN_TIERS)[number];
 
 /* ── Page component ─────────────────────────────────────────── */
 
-export default function OnboardingStep1Page({ onNext }: { onNext?: () => void } = {}) {
+interface OnboardingStep1Props {
+  onNext?: () => void;
+}
+
+export default function OnboardingStep1({ onNext }: OnboardingStep1Props = {}) {
+  const router = useRouter();
   const [orgName, setOrgName] = useState("");
   const [tenantSlug, setTenantSlug] = useState("");
   const [contactEmail, setContactEmail] = useState("");
   const [planTier, setPlanTier] = useState<PlanTier>("Professional");
 
   function handleBack() {
-    console.log("Back clicked — no previous step exists for Step 1");
+    router.push("/login");
   }
 
   function handleNext() {
+    localStorage.setItem("org_name", orgName || "Xebia India");
+    localStorage.setItem("tenant_slug", tenantSlug || "xebia-india");
+    localStorage.setItem("plan_tier", planTier);
+    localStorage.setItem("contact_email", contactEmail || "admin@xebia.com");
+
     if (onNext) {
       onNext();
-      return;
+    } else {
+      router.push("/onboarding/step-2");
     }
-    console.log("Next clicked", {
-      orgName,
-      tenantSlug,
-      contactEmail,
-      planTier,
-    });
   }
 
   return (
@@ -69,10 +75,10 @@ export default function OnboardingStep1Page({ onNext }: { onNext?: () => void } 
         <div className="w-full max-w-[800px] flex flex-col">
           {/* ── Header ───────────────────────────────────────── */}
           <header className="mb-8">
-            <h1 className="font-heading font-semibold text-headline-lg text-foreground mb-1">
+            <h1 className="font-heading font-semibold text-3xl text-foreground mb-1">
               Welcome — let&apos;s set up your organisation
             </h1>
-            <p className="text-body-md text-muted-foreground">
+            <p className="text-sm text-muted-foreground">
               Shown once, right after a tenant admin&apos;s first login.
             </p>
           </header>
@@ -84,7 +90,7 @@ export default function OnboardingStep1Page({ onNext }: { onNext?: () => void } 
 
           {/* ── Main form card ───────────────────────────────── */}
           <div className="bg-card border border-[#d5c1cc] rounded-md p-6 mt-4 shadow-sm">
-            <h2 className="font-heading font-semibold text-headline-md text-foreground mb-6">
+            <h2 className="font-heading font-semibold text-2xl text-foreground mb-6">
               Step 1 — Organisation details
             </h2>
 
@@ -95,7 +101,7 @@ export default function OnboardingStep1Page({ onNext }: { onNext?: () => void } 
               {/* Organisation name */}
               <div>
                 <label
-                  className="block font-medium text-label-sm tracking-[0.01em] text-muted-foreground mb-2"
+                  className="block font-medium text-xs tracking-[0.01em] text-muted-foreground mb-2"
                   htmlFor="org_name"
                 >
                   Organisation name
@@ -122,17 +128,17 @@ export default function OnboardingStep1Page({ onNext }: { onNext?: () => void } 
               {/* Tenant slug */}
               <div>
                 <label
-                  className="block font-medium text-label-sm tracking-[0.01em] text-muted-foreground mb-2"
+                  className="block font-medium text-xs tracking-[0.01em] text-muted-foreground mb-2"
                   htmlFor="tenant_slug"
                 >
                   Tenant slug
                 </label>
                 <div className="flex border border-[#d5c1cc] rounded-md overflow-hidden focus-within:border-primary focus-within:ring-1 focus-within:ring-primary transition-all duration-200">
-                  <span className="text-muted-foreground text-body-md bg-muted px-3 py-2 border-r border-[#d5c1cc] shrink-0 flex items-center select-none font-mono">
+                  <span className="text-muted-foreground text-sm bg-muted px-3 py-2 border-r border-[#d5c1cc] shrink-0 flex items-center select-none font-mono">
                     xebia-platform.io/
                   </span>
                   <input
-                    className="flex-1 bg-card text-body-md text-foreground py-2 px-3 outline-none border-none font-mono"
+                    className="flex-1 bg-card text-sm text-foreground py-2 px-3 outline-none border-none font-mono"
                     id="tenant_slug"
                     name="tenant_slug"
                     placeholder="your-organisation"
@@ -141,7 +147,7 @@ export default function OnboardingStep1Page({ onNext }: { onNext?: () => void } 
                     onChange={(e) => setTenantSlug(e.target.value)}
                   />
                 </div>
-                <p className="text-label-sm text-muted-foreground mt-1">
+                <p className="text-xs text-muted-foreground mt-1">
                   Used as your subdomain isolation key. Cannot be changed after
                   setup.
                 </p>
@@ -149,7 +155,7 @@ export default function OnboardingStep1Page({ onNext }: { onNext?: () => void } 
 
               {/* Plan tier */}
               <div>
-                <label className="block font-medium text-label-sm tracking-[0.01em] text-muted-foreground mb-2">
+                <label className="block font-medium text-xs tracking-[0.01em] text-muted-foreground mb-2">
                   Plan tier
                 </label>
                 <div className="flex gap-3">
@@ -162,7 +168,7 @@ export default function OnboardingStep1Page({ onNext }: { onNext?: () => void } 
                         onClick={() => setPlanTier(tier)}
                         className={[
                           "flex-1 border-2 rounded-md p-3 cursor-pointer",
-                          "text-center font-medium text-body-md transition-all duration-150",
+                          "text-center font-medium text-sm transition-all duration-150",
                           isSelected
                             ? "border-primary bg-primary/5 text-primary"
                             : "border-[#d5c1cc] bg-card text-muted-foreground hover:border-primary/40",
@@ -178,7 +184,7 @@ export default function OnboardingStep1Page({ onNext }: { onNext?: () => void } 
               {/* Primary contact email */}
               <div>
                 <label
-                  className="block font-medium text-label-sm tracking-[0.01em] text-muted-foreground mb-2"
+                  className="block font-medium text-xs tracking-[0.01em] text-muted-foreground mb-2"
                   htmlFor="contact_email"
                 >
                   Primary contact email
@@ -201,10 +207,10 @@ export default function OnboardingStep1Page({ onNext }: { onNext?: () => void } 
                     info
                   </span>
                   <div>
-                    <p className="font-semibold text-body-md tracking-[0.01em] text-foreground mb-1">
+                    <p className="font-semibold text-sm tracking-[0.01em] text-foreground mb-1">
                       Note: tenant isolation key created here
                     </p>
-                    <p className="text-body-md text-muted-foreground">
+                    <p className="text-sm text-muted-foreground">
                       This ID is attached to every record going forward.
                     </p>
                   </div>

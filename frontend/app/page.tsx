@@ -13,17 +13,17 @@ import { useState } from "react";
 import dynamic from "next/dynamic";
 
 // Import all existing screen components
-import LoginPage from "./login/page";
-import ResetPasswordPage from "./reset-password/page";
-import OnboardingStep1 from "./onboarding/step-1/page";
-import OnboardingStep2 from "./onboarding/step-2/page";
-import OnboardingStep3 from "./onboarding/step-3/page";
-import OnboardingStep4 from "./onboarding/step-4/page";
-import OnboardingStep5 from "./onboarding/step-5/page";
+import LoginPage from "./(team-1)/login/page";
+import ResetPasswordPage from "./(team-1)/reset-password/page";
+import OnboardingStep1 from "./(team-1)/onboarding/step-1/page";
+import OnboardingStep2 from "./(team-1)/onboarding/step-2/page";
+import OnboardingStep3 from "./(team-1)/onboarding/step-3/page";
+import OnboardingStep4 from "./(team-1)/onboarding/step-4/page";
+import OnboardingStep5 from "./(team-1)/onboarding/step-5/page";
 
 // Users page is a server component that exports `metadata` — dynamic
 // import avoids the "metadata in client component" build error.
-const UsersPage = dynamic(() => import("./users/page"), { ssr: false });
+const UsersPage = dynamic(() => import("./(team-1)/users/page"), { ssr: false });
 
 /* ── Screen registry ────────────────────────────────────────── */
 

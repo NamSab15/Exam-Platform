@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import OnboardingStepper from "../OnboardingStepper";
 import AppNavbar from "@/components/AppNavbar";
@@ -12,14 +12,14 @@ import BottomNav from "@/components/BottomNav";
 
 const inputBase = [
   "w-full bg-card border border-[#d5c1cc] rounded-md",
-  "text-body-md text-foreground",
+  "text-sm text-foreground",
   "py-2 px-3 transition-all duration-200",
   "focus-visible:ring-1 focus-visible:ring-primary focus-visible:border-primary focus-visible:outline-none",
 ].join(" ");
 
 const btnPrimary = [
   "bg-primary text-white rounded-md font-medium",
-  "text-body-md tracking-[0.01em]",
+  "text-sm tracking-[0.01em]",
   "px-4 py-2 hover:bg-primary/90 transition-colors duration-200",
   "border-none outline-none cursor-pointer",
   "flex items-center gap-2",
@@ -27,7 +27,7 @@ const btnPrimary = [
 
 const btnSecondary = [
   "bg-transparent text-foreground border border-[#d5c1cc] rounded-md font-medium",
-  "text-body-md tracking-[0.01em]",
+  "text-sm tracking-[0.01em]",
   "px-6 py-2 hover:bg-muted transition-colors duration-200",
   "cursor-pointer outline-none",
 ].join(" ");
@@ -44,57 +44,64 @@ interface InviteRow {
 const ROLES = [
   "Tenant Admin",
   "Exam Creator",
-  "Proctor",
-  "Report Viewer",
+  "Evaluator",
   "Candidate",
 ] as const;
 
-const MAX_INVITES = 10;
-
 /* ── Page component ─────────────────────────────────────────── */
 
-export default function OnboardingStep4Page({ onNext }: { onNext?: () => void } = {}) {
+interface OnboardingStep4Props {
+  onNext?: () => void;
+}
+
+export default function OnboardingStep4({ onNext }: OnboardingStep4Props = {}) {
   const router = useRouter();
-  const nextId = useRef(1);
 
   const [invites, setInvites] = useState<InviteRow[]>([
-    { id: 1, name: "", email: "", role: "Exam Creator" },
+    { id: 1, name: "", email: "", role: "Candidate" },
   ]);
 
   /* ── Row management ──────────────────────────────────────── */
 
-  function addRow() {
-    if (invites.length >= MAX_INVITES) return;
+  const addRow = () => {
+    if (invites.length >= 10) return;
     setInvites((prev) => [
       ...prev,
-      { id: nextId.current++, name: "", email: "", role: "Exam Creator" },
+      { id: Date.now(), name: "", email: "", role: "Candidate" },
     ]);
-  }
+  };
 
-  function removeRow(id: number) {
+  const removeRow = (id: number) => {
+    if (invites.length === 1) {
+      setInvites([{ id: 1, name: "", email: "", role: "Candidate" }]);
+      return;
+    }
     setInvites((prev) => prev.filter((row) => row.id !== id));
-  }
+  };
 
-  function updateRow(id: number, field: keyof InviteRow, value: string) {
+  const updateRow = (id: number, field: keyof InviteRow, value: string) => {
     setInvites((prev) =>
       prev.map((row) => (row.id === id ? { ...row, [field]: value } : row))
     );
-  }
+  };
 
   /* ── Navigation ─────────────────────────────────────────── */
 
-  function handleBack() {
+  const handleBack = () => {
     router.push("/onboarding/step-3");
-  }
+  };
 
-  function handleNext() {
+  const handleNext = () => {
+    // Filter out rows that don't have both email and name
+    const validInvites = invites.filter((row) => row.name.trim() && row.email.trim());
+    localStorage.setItem("invites", JSON.stringify(validInvites));
+
     if (onNext) {
       onNext();
-      return;
+    } else {
+      router.push("/onboarding/step-5");
     }
-    console.log("Step 4 data:", { invites });
-    router.push("/onboarding/step-5");
-  }
+  };
 
   return (
     <>
@@ -103,10 +110,10 @@ export default function OnboardingStep4Page({ onNext }: { onNext?: () => void } 
         <div className="w-full max-w-[800px] flex flex-col">
           {/* ── Header ───────────────────────────────────────── */}
           <header className="mb-8">
-            <h1 className="font-heading font-semibold text-headline-lg text-foreground mb-1">
+            <h1 className="font-heading font-semibold text-3xl text-foreground mb-1">
               Invite your team
             </h1>
-            <p className="text-body-md text-muted-foreground">
+            <p className="text-sm text-muted-foreground">
               Add users to your organisation. You can always invite more later
               from the Users page.
             </p>
@@ -119,7 +126,7 @@ export default function OnboardingStep4Page({ onNext }: { onNext?: () => void } 
 
           {/* ── Main form card ───────────────────────────────── */}
           <div className="bg-card border border-[#d5c1cc] rounded-md p-6 mt-4 shadow-sm">
-            <h2 className="font-heading font-semibold text-headline-md text-foreground mb-6">
+            <h2 className="font-heading font-semibold text-2xl text-foreground mb-6">
               Step 4 — Invite users
             </h2>
 
@@ -130,14 +137,14 @@ export default function OnboardingStep4Page({ onNext }: { onNext?: () => void } 
               {/* Invite row builder */}
               <div className="flex flex-col gap-3">
                 {/* Column labels */}
-                <div className="hidden sm:grid grid-cols-[1fr_1fr_176px_36px] gap-3 text-label-sm font-semibold text-muted-foreground">
+                <div className="hidden sm:grid grid-cols-[1fr_1fr_176px_36px] gap-3 text-xs font-semibold text-muted-foreground">
                   <span>Full name</span>
                   <span>Email address</span>
                   <span>Role</span>
                   <span />
                 </div>
 
-                {invites.map((row, idx) => (
+                {invites.map((row) => (
                   <div key={row.id} className="grid grid-cols-1 sm:grid-cols-[1fr_1fr_176px_36px] gap-3 items-center">
                     <input
                       className={inputBase}
@@ -154,7 +161,7 @@ export default function OnboardingStep4Page({ onNext }: { onNext?: () => void } 
                       onChange={(e) => updateRow(row.id, "email", e.target.value)}
                     />
                     <select
-                      className="form-select cursor-pointer w-full"
+                      className={inputBase}
                       value={row.role}
                       onChange={(e) => updateRow(row.id, "role", e.target.value)}
                     >
@@ -164,16 +171,11 @@ export default function OnboardingStep4Page({ onNext }: { onNext?: () => void } 
                         </option>
                       ))}
                     </select>
-                    {/* Remove button — hidden on the first row */}
                     <button
                       type="button"
                       onClick={() => removeRow(row.id)}
-                      className={[
-                        "text-destructive hover:opacity-80 transition-colors cursor-pointer",
-                        "bg-transparent border-none p-1 self-center w-9 justify-self-center",
-                        idx === 0 ? "invisible" : "",
-                      ].join(" ")}
-                      aria-label={`Remove invite row ${idx + 1}`}
+                      className="text-destructive hover:opacity-85 p-1 self-center w-fit shrink-0 cursor-pointer bg-transparent border-none outline-none"
+                      aria-label="Remove person"
                     >
                       <span className="material-symbols-outlined text-[20px]">
                         delete
@@ -183,7 +185,7 @@ export default function OnboardingStep4Page({ onNext }: { onNext?: () => void } 
                 ))}
 
                 {/* Add another button or limit message */}
-                {invites.length < MAX_INVITES ? (
+                {invites.length < 10 ? (
                   <button
                     type="button"
                     onClick={addRow}
@@ -195,7 +197,7 @@ export default function OnboardingStep4Page({ onNext }: { onNext?: () => void } 
                     Add another person
                   </button>
                 ) : (
-                  <p className="text-muted-foreground text-body-md mt-1">
+                  <p className="text-muted-foreground text-sm mt-1">
                     Maximum of 10 invites at once. Add more after setup.
                   </p>
                 )}
@@ -204,7 +206,7 @@ export default function OnboardingStep4Page({ onNext }: { onNext?: () => void } 
               {/* Divider */}
               <div className="flex items-center gap-4">
                 <div className="h-px bg-[#d5c1cc] flex-1" />
-                <span className="text-muted-foreground text-body-md font-medium">or</span>
+                <span className="text-muted-foreground text-sm font-medium">or</span>
                 <div className="h-px bg-[#d5c1cc] flex-1" />
               </div>
 
@@ -220,7 +222,7 @@ export default function OnboardingStep4Page({ onNext }: { onNext?: () => void } 
                   </span>
                   Bulk import via CSV
                 </button>
-                <p className="text-body-md text-muted-foreground mt-2">
+                <p className="text-sm text-muted-foreground mt-2">
                   Use the Users page after setup to import hundreds of users at
                   once.
                 </p>
@@ -231,7 +233,7 @@ export default function OnboardingStep4Page({ onNext }: { onNext?: () => void } 
                 <span className="material-symbols-outlined text-muted-foreground text-[20px] mt-px shrink-0 animate-none">
                   info
                 </span>
-                <p className="text-body-md text-muted-foreground">
+                <p className="text-sm text-muted-foreground">
                   Invitations will be sent by email once you complete setup in the
                   final step. Invited users will be asked to set their password on
                   first login.

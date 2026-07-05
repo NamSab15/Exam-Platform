@@ -9,14 +9,14 @@ import Image from "next/image";
 
 const inputBase = [
   "w-full bg-card border border-[#d5c1cc] rounded-md",
-  "text-body-md text-foreground",
+  "text-sm text-foreground",
   "py-2 px-4 transition-all duration-200",
   "focus-visible:ring-1 focus-visible:ring-primary focus-visible:border-primary focus-visible:outline-none",
 ].join(" ");
 
 const btnPrimary = [
   "w-full bg-primary text-white rounded-md",
-  "font-medium text-body-md tracking-[0.01em]",
+  "font-medium text-sm tracking-[0.01em]",
   "py-2 px-4 transition-colors duration-200",
   "hover:bg-primary/90 cursor-pointer",
   "border-none outline-none",
@@ -25,7 +25,7 @@ const btnPrimary = [
 
 const btnSSO = [
   "flex-1 bg-card border border-[#d5c1cc] text-foreground",
-  "font-medium text-body-md tracking-[0.01em]",
+  "font-medium text-sm tracking-[0.01em]",
   "py-2 px-4 rounded-md",
   "hover:bg-muted transition-colors duration-200",
   "cursor-pointer outline-none focus-visible:ring-1 focus-visible:ring-primary focus-visible:border-primary",
@@ -67,10 +67,10 @@ export default function LoginPage({ onNext }: { onNext?: () => void } = {}) {
             className="mb-4"
             priority
           />
-          <h1 className="font-heading font-semibold text-headline-md text-foreground">
+          <h1 className="font-heading font-semibold text-2xl text-foreground">
             Sign in
           </h1>
-          <p className="text-body-md text-muted-foreground text-center">
+          <p className="text-sm text-muted-foreground text-center">
             Tenant detected automatically from subdomain
           </p>
         </div>
@@ -80,7 +80,7 @@ export default function LoginPage({ onNext }: { onNext?: () => void } = {}) {
           {/* Email */}
           <div className="flex flex-col gap-2">
             <label
-              className="font-medium text-label-sm tracking-[0.01em] text-muted-foreground"
+              className="font-medium text-xs tracking-[0.01em] text-muted-foreground"
               htmlFor="email"
             >
               Email
@@ -102,13 +102,13 @@ export default function LoginPage({ onNext }: { onNext?: () => void } = {}) {
           <div className="flex flex-col gap-2">
             <div className="flex justify-between items-center">
               <label
-                className="font-medium text-label-sm tracking-[0.01em] text-muted-foreground"
+                className="font-medium text-xs tracking-[0.01em] text-muted-foreground"
                 htmlFor="password"
               >
                 Password
               </label>
               <button
-                className="font-semibold text-label-sm text-primary hover:underline cursor-pointer bg-transparent border-none p-0"
+                className="font-semibold text-xs text-primary hover:underline cursor-pointer bg-transparent border-none p-0"
                 type="button"
               >
                 Forgot password?
@@ -126,7 +126,7 @@ export default function LoginPage({ onNext }: { onNext?: () => void } = {}) {
                 }}
               />
               <button
-                className="absolute right-4 top-1/2 -translate-y-1/2 font-semibold text-label-sm text-muted-foreground hover:text-foreground transition-colors cursor-pointer bg-transparent border-none p-0"
+                className="absolute right-4 top-1/2 -translate-y-1/2 font-semibold text-xs text-muted-foreground hover:text-foreground transition-colors cursor-pointer bg-transparent border-none p-0"
                 type="button"
                 onClick={() => setShowPassword((v) => !v)}
                 aria-label={showPassword ? "Hide password" : "Show password"}
@@ -141,11 +141,11 @@ export default function LoginPage({ onNext }: { onNext?: () => void } = {}) {
             <button className={btnPrimary} type="submit">
               Sign in
             </button>
-            <p className="text-label-sm font-semibold text-muted-foreground text-center mt-1 opacity-80">
+            <p className="text-xs font-semibold text-muted-foreground text-center mt-1 opacity-80">
               Locks after 5 failed attempts in 15 minutes.
             </p>
             {/* Hidden until triggered by auth response */}
-            <p className="text-label-sm font-semibold text-destructive text-center mt-1 hidden">
+            <p className="text-xs font-semibold text-destructive text-center mt-1 hidden">
               Account locked due to multiple failed attempts.
             </p>
           </div>
@@ -154,7 +154,7 @@ export default function LoginPage({ onNext }: { onNext?: () => void } = {}) {
         {/* ── Divider ───────────────────────────────────────── */}
         <div className="flex items-center gap-4">
           <div className="h-px bg-border flex-1" />
-          <span className="font-semibold text-label-sm text-muted-foreground">
+          <span className="font-semibold text-xs text-muted-foreground">
             or continue with
           </span>
           <div className="h-px bg-border flex-1" />
@@ -170,7 +170,7 @@ export default function LoginPage({ onNext }: { onNext?: () => void } = {}) {
               Microsoft
             </button>
           </div>
-          <p className="text-label-sm font-semibold text-muted-foreground text-center mt-1">
+          <p className="text-xs font-semibold text-muted-foreground text-center mt-1">
             SAML available for enterprise tenants
           </p>
         </div>
@@ -178,16 +178,16 @@ export default function LoginPage({ onNext }: { onNext?: () => void } = {}) {
         {/* ── Footer ────────────────────────────────────────── */}
         <div className="mt-1 pt-5 border-t border-border">
           {error && (
-            <div className="mb-4 flex items-start gap-2 py-sm px-md bg-destructive/10 text-destructive border border-destructive/20 rounded-md">
+            <div className="mb-4 flex items-start gap-2 py-2 px-3 bg-destructive/10 text-destructive border border-destructive/20 rounded-md">
               <span className="material-symbols-outlined text-[20px] shrink-0 select-none">
                 error
               </span>
-              <span className="text-body-md font-medium text-left">
+              <span className="text-sm font-medium text-left">
                 {error}
               </span>
             </div>
           )}
-          <p className="text-label-sm font-semibold text-muted-foreground text-center">
+          <p className="text-xs font-semibold text-muted-foreground text-center">
             New tenant? Contact your admin for an invite
           </p>
         </div>
@@ -195,7 +195,7 @@ export default function LoginPage({ onNext }: { onNext?: () => void } = {}) {
 
       {/* ── Accessibility note (below card) ─────────────────── */}
       <div className="mt-5">
-        <p className="text-label-sm font-semibold text-muted-foreground text-center">
+        <p className="text-xs font-semibold text-muted-foreground text-center">
           Accessibility: full keyboard navigation · screen-reader labels on
           all fields
         </p>

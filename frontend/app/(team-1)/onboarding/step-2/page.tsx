@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import OnboardingStepper from "../OnboardingStepper";
 import AppNavbar from "@/components/AppNavbar";
@@ -13,14 +13,14 @@ import BottomNav from "@/components/BottomNav";
 
 const inputBase = [
   "w-full bg-card border border-[#d5c1cc] rounded-md",
-  "text-body-md text-foreground",
+  "text-sm text-foreground",
   "py-2 px-3 transition-all duration-200",
   "focus-visible:ring-1 focus-visible:ring-primary focus-visible:border-primary focus-visible:outline-none",
 ].join(" ");
 
 const btnPrimary = [
   "bg-primary text-white rounded-md font-medium",
-  "text-body-md tracking-[0.01em]",
+  "text-sm tracking-[0.01em]",
   "px-4 py-2 hover:bg-primary/90 transition-colors duration-200",
   "border-none outline-none cursor-pointer",
   "flex items-center gap-2",
@@ -28,74 +28,97 @@ const btnPrimary = [
 
 const btnSecondary = [
   "bg-transparent text-foreground border border-[#d5c1cc] rounded-md font-medium",
-  "text-body-md tracking-[0.01em]",
+  "text-sm tracking-[0.01em]",
   "px-6 py-2 hover:bg-muted transition-colors duration-200",
   "cursor-pointer outline-none",
 ].join(" ");
 
 /* ── Page component ─────────────────────────────────────────── */
 
-export default function OnboardingStep2Page({ onNext }: { onNext?: () => void } = {}) {
+interface OnboardingStep2Props {
+  onNext?: () => void;
+}
+
+export default function OnboardingStep2({ onNext }: OnboardingStep2Props = {}) {
   const router = useRouter();
 
   const [logoFile, setLogoFile] = useState<File | null>(null);
-  const [logoPreviewUrl, setLogoPreviewUrl] = useState<string | null>(null);
+  const [logoPreviewUrl, setLogoPreviewUrl] = useState<string>("");
   const [brandColor, setBrandColor] = useState("#510047");
   const [displayName, setDisplayName] = useState("");
   const [tagline, setTagline] = useState("");
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  // Load from localStorage for initial display
+  useEffect(() => {
+    const cachedName = localStorage.getItem("org_name") || "";
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setDisplayName(cachedName);
+  }, []);
+
   /* ── Logo handling ──────────────────────────────────────────── */
 
-  function handleFileSelect(file: File | undefined) {
+  const handleFileSelect = (file?: File) => {
     if (!file) return;
     setLogoFile(file);
     const url = URL.createObjectURL(file);
     setLogoPreviewUrl(url);
-  }
+  };
 
-  function handleDrop(e: React.DragEvent<HTMLDivElement>) {
+  const handleDrop = (e: React.DragEvent) => {
     e.preventDefault();
-    handleFileSelect(e.dataTransfer.files[0]);
-  }
+    const file = e.dataTransfer.files?.[0];
+    handleFileSelect(file);
+  };
 
-  function removeLogo() {
+  const removeLogo = () => {
     setLogoFile(null);
-    if (logoPreviewUrl) URL.revokeObjectURL(logoPreviewUrl);
-    setLogoPreviewUrl(null);
-    if (fileInputRef.current) fileInputRef.current.value = "";
-  }
+    if (logoPreviewUrl) {
+      URL.revokeObjectURL(logoPreviewUrl);
+      setLogoPreviewUrl("");
+    }
+  };
 
   /* ── Colour sync ────────────────────────────────────────────── */
 
-  function handleHexInput(value: string) {
-    setBrandColor(value);
-  }
+  const handleColorPicker = (color: string) => {
+    setBrandColor(color);
+  };
 
-  function handleColorPicker(value: string) {
-    setBrandColor(value);
-  }
+  const handleHexInput = (hex: string) => {
+    if (hex.startsWith("#") || hex.length === 0) {
+      setBrandColor(hex);
+    } else {
+      setBrandColor("#" + hex);
+    }
+  };
 
   /* ── Navigation ─────────────────────────────────────────────── */
 
-  function handleBack() {
+  const handleBack = () => {
     router.push("/onboarding/step-1");
-  }
+  };
 
-  function handleNext() {
+  const handleNext = () => {
+    // Save to cache for preview page
+    localStorage.setItem("brand_color", brandColor);
+    localStorage.setItem("display_name", displayName || "Xebia India");
+    localStorage.setItem("tagline", tagline || "Excellence in Assessment");
+
+    // Convert file to base64 for persistent preview if set
+    if (logoPreviewUrl) {
+      localStorage.setItem("logo_url", logoPreviewUrl);
+    } else {
+      localStorage.removeItem("logo_url");
+    }
+
     if (onNext) {
       onNext();
-      return;
+    } else {
+      router.push("/onboarding/step-3");
     }
-    console.log("Step 2 data:", {
-      logoFile: logoFile?.name ?? null,
-      brandColor,
-      displayName,
-      tagline,
-    });
-    router.push("/onboarding/step-3");
-  }
+  };
 
   return (
     <>
@@ -104,10 +127,10 @@ export default function OnboardingStep2Page({ onNext }: { onNext?: () => void } 
         <div className="w-full max-w-[800px] flex flex-col">
           {/* ── Header ───────────────────────────────────────── */}
           <header className="mb-8">
-            <h1 className="font-heading font-semibold text-headline-lg text-foreground mb-1">
+            <h1 className="font-heading font-semibold text-3xl text-foreground mb-1">
               Set up your organisation&apos;s branding
             </h1>
-            <p className="text-body-md text-muted-foreground">
+            <p className="text-sm text-muted-foreground">
               These settings control how the platform appears to your candidates.
             </p>
           </header>
@@ -119,7 +142,7 @@ export default function OnboardingStep2Page({ onNext }: { onNext?: () => void } 
 
           {/* ── Main form card ───────────────────────────────── */}
           <div className="bg-card border border-[#d5c1cc] rounded-md p-6 mt-4 shadow-sm">
-            <h2 className="font-heading font-semibold text-headline-md text-foreground mb-6">
+            <h2 className="font-heading font-semibold text-2xl text-foreground mb-6">
               Step 2 — Branding
             </h2>
 
@@ -129,7 +152,7 @@ export default function OnboardingStep2Page({ onNext }: { onNext?: () => void } 
             >
               {/* Organisation logo */}
               <div>
-                <label className="block font-medium text-label-sm tracking-[0.01em] text-muted-foreground mb-2">
+                <label className="block font-medium text-xs tracking-[0.01em] text-muted-foreground mb-2">
                   Organisation logo
                 </label>
 
@@ -144,7 +167,7 @@ export default function OnboardingStep2Page({ onNext }: { onNext?: () => void } 
                       unoptimized
                     />
                     <div className="flex-1">
-                      <p className="text-body-md text-foreground font-medium truncate">
+                      <p className="text-sm text-foreground font-medium truncate">
                         {logoFile?.name}
                       </p>
                     </div>
@@ -176,10 +199,10 @@ export default function OnboardingStep2Page({ onNext }: { onNext?: () => void } 
                     <span className="material-symbols-outlined text-muted-foreground text-4xl mb-2">
                       upload
                     </span>
-                    <p className="text-foreground font-medium text-body-md">
+                    <p className="text-foreground font-medium text-sm">
                       Drag &amp; drop your logo here, or click to browse
                     </p>
-                    <p className="text-label-sm text-muted-foreground mt-1">
+                    <p className="text-xs text-muted-foreground mt-1">
                       PNG, SVG — max 2 MB (recommended aspect 4:1)
                     </p>
                   </div>
@@ -196,10 +219,10 @@ export default function OnboardingStep2Page({ onNext }: { onNext?: () => void } 
 
               {/* Brand Color Picker */}
               <div>
-                <label className="block font-medium text-label-sm tracking-[0.01em] text-muted-foreground mb-2">
+                <label className="block font-medium text-xs tracking-[0.01em] text-muted-foreground mb-2">
                   Primary brand colour
                 </label>
-                <p className="text-body-md text-muted-foreground mb-2">
+                <p className="text-sm text-muted-foreground mb-2">
                   Used for buttons and highlights on the candidate-facing portal.
                 </p>
                 <div className="flex items-center gap-3">
@@ -225,12 +248,12 @@ export default function OnboardingStep2Page({ onNext }: { onNext?: () => void } 
               {/* Display name */}
               <div>
                 <label
-                  className="block font-medium text-label-sm tracking-[0.01em] text-muted-foreground mb-2"
+                  className="block font-medium text-xs tracking-[0.01em] text-muted-foreground mb-2"
                   htmlFor="display_name"
                 >
                   Display name
                 </label>
-                <p className="text-body-md text-muted-foreground mb-2">
+                <p className="text-sm text-muted-foreground mb-2">
                   Shown on the exam portal and in candidate emails. This is your
                   public-facing name, separate from the organisation slug.
                 </p>
@@ -248,7 +271,7 @@ export default function OnboardingStep2Page({ onNext }: { onNext?: () => void } 
               {/* Tagline (optional) */}
               <div>
                 <label
-                  className="block font-medium text-label-sm tracking-[0.01em] text-muted-foreground mb-2"
+                  className="block font-medium text-xs tracking-[0.01em] text-muted-foreground mb-2"
                   htmlFor="tagline"
                 >
                   Tagline (optional)
@@ -263,7 +286,7 @@ export default function OnboardingStep2Page({ onNext }: { onNext?: () => void } 
                   value={tagline}
                   onChange={(e) => setTagline(e.target.value)}
                 />
-                <p className="text-label-sm text-muted-foreground mt-1 text-right font-mono">
+                <p className="text-xs text-muted-foreground mt-1 text-right font-mono">
                   {tagline.length} / 80
                 </p>
               </div>

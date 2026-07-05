@@ -12,7 +12,7 @@ import BottomNav from "@/components/BottomNav";
 
 const btnPrimary = [
   "bg-primary text-white rounded-md font-medium",
-  "text-body-md tracking-[0.01em]",
+  "text-sm tracking-[0.01em]",
   "px-4 py-2 hover:bg-primary/90 transition-colors duration-200",
   "border-none outline-none cursor-pointer",
   "flex items-center gap-2",
@@ -20,7 +20,7 @@ const btnPrimary = [
 
 const btnSecondary = [
   "bg-transparent text-foreground border border-[#d5c1cc] rounded-md font-medium",
-  "text-body-md tracking-[0.01em]",
+  "text-sm tracking-[0.01em]",
   "px-6 py-2 hover:bg-muted transition-colors duration-200",
   "cursor-pointer outline-none",
 ].join(" ");
@@ -43,9 +43,8 @@ const PLACEHOLDER = {
   enabledNotifications: ["Exam reminders", "Result notifications"],
 
   invitedUsers: [
-    { name: "Priya Sharma", email: "priya@acme.edu", role: "Exam Creator" },
-    { name: "Arjun Mehta", email: "arjun@acme.edu", role: "Proctor" },
-    { name: "Lena Fischer", email: "lena@acme.edu", role: "Candidate" },
+    { name: "Siddharth Sen", email: "siddharth@acme.edu", role: "Exam Creator" },
+    { name: "Neha Sharma", email: "neha@acme.edu", role: "Evaluator" },
   ],
 };
 
@@ -60,10 +59,10 @@ function SummaryRow({
 }) {
   return (
     <div className="flex flex-col sm:flex-row sm:items-start gap-1 sm:gap-4 py-2">
-      <span className="text-muted-foreground text-body-md shrink-0 sm:w-40">
+      <span className="text-muted-foreground text-sm shrink-0 sm:w-40">
         {label}
       </span>
-      <span className="text-foreground text-body-md">
+      <span className="text-foreground text-sm">
         {children}
       </span>
     </div>
@@ -85,13 +84,13 @@ function SummaryCard({
   return (
     <div className="bg-card border border-[#d5c1cc] rounded-md p-5 shadow-sm">
       <div className="flex items-center justify-between mb-3">
-        <h3 className="font-heading font-semibold text-body-lg text-foreground">
+        <h3 className="font-heading font-semibold text-lg text-foreground">
           {title}
         </h3>
         <button
           type="button"
           onClick={() => router.push(editHref)}
-          className="text-primary text-label-sm hover:underline cursor-pointer bg-transparent border-none p-0 font-medium"
+          className="text-primary text-xs hover:underline cursor-pointer bg-transparent border-none p-0 font-medium"
         >
           Edit
         </button>
@@ -151,10 +150,10 @@ export default function OnboardingStep5Page({ onNext }: { onNext?: () => void } 
         <div className="w-full max-w-[800px] flex flex-col">
         {/* ── Header ───────────────────────────────────────── */}
         <header className="mb-8">
-          <h1 className="font-heading font-semibold text-headline-lg text-foreground mb-1">
+          <h1 className="font-heading font-semibold text-3xl text-foreground mb-1">
             Review your setup
           </h1>
-          <p className="text-body-md text-muted-foreground">
+          <p className="text-sm text-muted-foreground">
             Check everything before we create your organisation. You can change
             these settings later from the admin panel.
           </p>
@@ -177,12 +176,12 @@ export default function OnboardingStep5Page({ onNext }: { onNext?: () => void } 
             </SummaryRow>
             <SummaryRow label="Tenant slug">
               <span className="font-mono">{PLACEHOLDER.slug}</span>
-              <span className="block text-muted-foreground text-label-sm mt-0.5">
+              <span className="block text-muted-foreground text-xs mt-0.5">
                 (your unique isolation key — cannot be changed after setup)
               </span>
             </SummaryRow>
             <SummaryRow label="Plan tier">
-              <span className="bg-muted text-muted-foreground rounded-full px-3 py-1 text-label-sm font-medium inline-block">
+              <span className="bg-muted text-muted-foreground rounded-full px-3 py-1 text-xs font-medium inline-block">
                 {PLACEHOLDER.planTier}
               </span>
             </SummaryRow>
@@ -194,7 +193,7 @@ export default function OnboardingStep5Page({ onNext }: { onNext?: () => void } 
           {/* Card 2 — Branding */}
           <SummaryCard title="Branding" editHref="/onboarding/step-2">
             <SummaryRow label="Logo">
-              <div className="w-16 h-16 bg-muted rounded border border-[#d5c1cc] flex items-center justify-center text-muted-foreground text-label-sm">
+              <div className="w-16 h-16 bg-muted rounded border border-[#d5c1cc] flex items-center justify-center text-muted-foreground text-xs">
                 No logo
               </div>
             </SummaryRow>
@@ -232,7 +231,7 @@ export default function OnboardingStep5Page({ onNext }: { onNext?: () => void } 
                 {PLACEHOLDER.enabledNotifications.map((n) => (
                   <span
                     key={n}
-                    className="bg-success/10 text-success text-label-sm px-2 py-0.5 rounded-full border border-success/20 font-medium"
+                    className="bg-success/10 text-success text-xs px-2 py-0.5 rounded-full border border-success/20 font-medium"
                   >
                     {n}
                   </span>
@@ -244,7 +243,7 @@ export default function OnboardingStep5Page({ onNext }: { onNext?: () => void } 
           {/* Card 4 — Invited Users */}
           <SummaryCard title="Invited Users" editHref="/onboarding/step-4">
             {PLACEHOLDER.invitedUsers.length === 0 ? (
-              <p className="text-muted-foreground text-body-md py-2">
+              <p className="text-muted-foreground text-sm py-2">
                 No users invited — you can add them after setup.
               </p>
             ) : (
@@ -252,13 +251,13 @@ export default function OnboardingStep5Page({ onNext }: { onNext?: () => void } 
                 <div className="overflow-x-auto">
                   <table className="w-full text-left">
                     <thead>
-                      <tr className="text-label-sm font-semibold text-muted-foreground">
+                      <tr className="text-xs font-semibold text-muted-foreground">
                         <th className="py-2 pr-4 font-semibold">Name</th>
                         <th className="py-2 pr-4 font-semibold">Email</th>
                         <th className="py-2 font-semibold">Role</th>
                       </tr>
                     </thead>
-                    <tbody className="text-body-md text-foreground">
+                    <tbody className="text-sm text-foreground">
                       {PLACEHOLDER.invitedUsers.slice(0, 5).map((u) => (
                         <tr
                           key={u.email}
@@ -273,7 +272,7 @@ export default function OnboardingStep5Page({ onNext }: { onNext?: () => void } 
                   </table>
                 </div>
                 {PLACEHOLDER.invitedUsers.length > 5 && (
-                  <p className="text-muted-foreground text-body-md pt-2">
+                  <p className="text-muted-foreground text-sm pt-2">
                     + {PLACEHOLDER.invitedUsers.length - 5} more
                   </p>
                 )}
@@ -284,7 +283,7 @@ export default function OnboardingStep5Page({ onNext }: { onNext?: () => void } 
 
         {/* ── Onboarding checklist ─────────────────────────── */}
         <div className="bg-muted border border-[#d5c1cc] rounded-md p-4 mt-6">
-          <p className="text-foreground font-semibold text-body-md mb-3">
+          <p className="text-foreground font-semibold text-sm mb-3">
             Your organisation will be set up with:
           </p>
           <ul className="flex flex-col gap-2">
@@ -298,7 +297,7 @@ export default function OnboardingStep5Page({ onNext }: { onNext?: () => void } 
                 <span className="material-symbols-outlined text-success text-[20px]">
                   check_circle
                 </span>
-                <span className="text-body-md text-foreground">
+                <span className="text-sm text-foreground">
                   {item.includes(PLACEHOLDER.slug) ? (
                     <>
                       Tenant isolation enabled (slug: <span className="font-mono">{PLACEHOLDER.slug}</span>)
@@ -337,7 +336,7 @@ export default function OnboardingStep5Page({ onNext }: { onNext?: () => void } 
             <span className="material-symbols-outlined text-success text-[24px]">
               check_circle
             </span>
-            <p className="text-foreground text-body-md">
+            <p className="text-foreground text-sm">
               Your organisation has been created! Sending invite emails and
               redirecting to your dashboard…
             </p>

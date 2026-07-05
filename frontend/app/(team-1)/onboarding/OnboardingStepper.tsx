@@ -56,7 +56,7 @@ export default function OnboardingStepper({
                 aria-current={isActive ? "step" : undefined}
                 className={[
                   "relative flex h-8 w-8 items-center justify-center rounded-full z-10",
-                  "font-medium text-label-sm tracking-[0.01em]",
+                  "font-medium text-xs tracking-[0.01em]",
                   "transition-colors duration-200",
                   isActive || isCompleted
                     ? "bg-primary text-primary-foreground"
@@ -76,7 +76,7 @@ export default function OnboardingStepper({
               {/* Label below circle */}
               <span
                 className={[
-                  "mt-2 text-center font-semibold text-label-sm max-w-[120px] sm:max-w-[160px] break-words line-clamp-2 px-1 z-10",
+                  "mt-2 text-center font-semibold text-xs max-w-[120px] sm:max-w-[160px] break-words line-clamp-2 px-1 z-10",
                   isActive || isCompleted ? "text-foreground" : "text-muted-foreground",
                 ].join(" ")}
               >

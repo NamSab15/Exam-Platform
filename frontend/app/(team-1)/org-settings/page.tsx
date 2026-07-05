@@ -21,14 +21,14 @@ import BottomNav from "@/components/BottomNav";
 
 const inputBase = [
   "w-full bg-card border border-[#d5c1cc] rounded-md",
-  "text-body-md text-foreground",
+  "text-sm text-foreground",
   "py-2 px-3 transition-all duration-200",
   "focus-visible:ring-1 focus-visible:ring-primary focus-visible:border-primary focus-visible:outline-none",
 ].join(" ");
 
 const btnPrimary = [
   "bg-primary text-white rounded-md font-medium",
-  "text-body-md tracking-[0.01em]",
+  "text-sm tracking-[0.01em]",
   "px-4 py-2 hover:bg-primary/90 transition-colors duration-200",
   "border-none outline-none cursor-pointer",
   "flex items-center gap-2",
@@ -36,7 +36,7 @@ const btnPrimary = [
 
 const btnSecondary = [
   "bg-transparent text-foreground border border-[#d5c1cc] rounded-md font-medium",
-  "text-body-md tracking-[0.01em]",
+  "text-sm tracking-[0.01em]",
   "px-6 py-2 hover:bg-muted transition-colors duration-200",
   "cursor-pointer outline-none",
 ].join(" ");
@@ -109,10 +109,10 @@ function Toggle({
   return (
     <div className="flex items-center justify-between gap-4 py-3">
       <div className="flex-1">
-        <p className="text-body-md text-foreground font-medium">
+        <p className="text-sm text-foreground font-medium">
           {label}
         </p>
-        <p className="text-label-sm text-muted-foreground">{description}</p>
+        <p className="text-xs text-muted-foreground">{description}</p>
       </div>
       <button
         type="button"
@@ -144,7 +144,7 @@ function Toggle({
 
 function AuditNote() {
   return (
-    <p className="text-label-sm text-muted-foreground mt-4 flex items-center gap-1.5 font-sans">
+    <p className="text-xs text-muted-foreground mt-4 flex items-center gap-1.5 font-sans">
       <span className="material-symbols-outlined text-[14px]">history</span>
       Every change made here is recorded in the audit log.
     </p>
@@ -269,10 +269,10 @@ export default function OrgSettingsPage() {
         <div className="border border-[#d5c1cc] bg-muted rounded-md p-4 flex gap-3 items-start">
           <span className="material-symbols-outlined text-muted-foreground text-[20px] mt-px">info</span>
           <div>
-            <p className="text-body-md text-foreground font-semibold mb-1">
+            <p className="text-sm text-foreground font-semibold mb-1">
               Branding scope (BRD §7.1)
             </p>
-            <p className="text-body-md text-muted-foreground">
+            <p className="text-sm text-muted-foreground">
               Only the <strong>organisation logo</strong> and <strong>primary accent colour</strong> are
               tenant-configurable. Full white-labelling is not available at launch — the
               platform shell remains Xebia-branded.
@@ -282,7 +282,7 @@ export default function OrgSettingsPage() {
 
         {/* Logo upload */}
         <div>
-          <label className="block font-medium text-label-sm tracking-[0.01em] text-muted-foreground mb-2">
+          <label className="block font-medium text-xs tracking-[0.01em] text-muted-foreground mb-2">
             Organisation logo
           </label>
 
@@ -297,7 +297,7 @@ export default function OrgSettingsPage() {
                 unoptimized
               />
               <div className="flex-1">
-                <p className="text-body-md text-foreground font-medium truncate">
+                <p className="text-sm text-foreground font-medium truncate">
                   {logoFileName}
                 </p>
               </div>
@@ -321,8 +321,8 @@ export default function OrgSettingsPage() {
               }}
             >
               <span className="material-symbols-outlined text-muted-foreground text-4xl mb-2">upload</span>
-              <p className="text-foreground font-medium text-body-md">Click to upload</p>
-              <p className="text-label-sm text-muted-foreground mt-1">
+              <p className="text-foreground font-medium text-sm">Click to upload</p>
+              <p className="text-xs text-muted-foreground mt-1">
                 PNG / SVG — never stretched or recoloured
               </p>
             </div>
@@ -339,7 +339,7 @@ export default function OrgSettingsPage() {
 
         {/* Primary accent colour */}
         <div>
-          <label className="block font-medium text-label-sm tracking-[0.01em] text-muted-foreground mb-2">
+          <label className="block font-medium text-xs tracking-[0.01em] text-muted-foreground mb-2">
             Primary accent colour
           </label>
           <div className="flex items-center gap-3">
@@ -377,7 +377,7 @@ export default function OrgSettingsPage() {
         {/* Timezone selector */}
         <div>
           <label
-            className="block font-medium text-label-sm tracking-[0.01em] text-muted-foreground mb-2"
+            className="block font-medium text-xs tracking-[0.01em] text-muted-foreground mb-2"
             htmlFor="tz_select"
           >
             Organisation timezone
@@ -394,7 +394,7 @@ export default function OrgSettingsPage() {
               </option>
             ))}
           </select>
-          <p className="text-label-sm text-muted-foreground mt-2">
+          <p className="text-xs text-muted-foreground mt-2">
             All times are stored in UTC and displayed to candidates in their local
             timezone (BRD §4.3.2).
           </p>
@@ -402,7 +402,7 @@ export default function OrgSettingsPage() {
 
         {/* Date format radio group */}
         <div>
-          <label className="block font-medium text-label-sm tracking-[0.01em] text-muted-foreground mb-2">
+          <label className="block font-medium text-xs tracking-[0.01em] text-muted-foreground mb-2">
             Date display format
           </label>
           <div className="flex flex-col gap-1">
@@ -429,7 +429,7 @@ export default function OrgSettingsPage() {
                   >
                     {isSelected && <span className="w-2 h-2 rounded-full bg-primary" />}
                   </span>
-                  <span className="text-foreground text-body-md font-sans">{fmt}</span>
+                  <span className="text-foreground text-sm font-sans">{fmt}</span>
                 </button>
               );
             })}
@@ -447,12 +447,12 @@ export default function OrgSettingsPage() {
         {/* Notification sender email */}
         <div>
           <label
-            className="block font-medium text-label-sm tracking-[0.01em] text-muted-foreground mb-2"
+            className="block font-medium text-xs tracking-[0.01em] text-muted-foreground mb-2"
             htmlFor="notif_sender"
           >
             Notification sender email
           </label>
-          <p className="text-body-md text-muted-foreground mb-2">
+          <p className="text-sm text-muted-foreground mb-2">
             System emails (exam invites, results, certificates) are sent from this address.
           </p>
           <input
@@ -468,12 +468,12 @@ export default function OrgSettingsPage() {
         {/* Default candidate instructions */}
         <div>
           <label
-            className="block font-medium text-label-sm tracking-[0.01em] text-muted-foreground mb-2"
+            className="block font-medium text-xs tracking-[0.01em] text-muted-foreground mb-2"
             htmlFor="default_instructions"
           >
             Default candidate instructions
           </label>
-          <p className="text-body-md text-muted-foreground mb-2">
+          <p className="text-sm text-muted-foreground mb-2">
             This text pre-fills on every new exam. Exam Creators can override it per exam.
           </p>
           <textarea
@@ -487,7 +487,7 @@ export default function OrgSettingsPage() {
 
         {/* Toggle rows */}
         <div>
-          <label className="block font-medium text-label-sm tracking-[0.01em] text-muted-foreground mb-2">
+          <label className="block font-medium text-xs tracking-[0.01em] text-muted-foreground mb-2">
             Email notifications
           </label>
           <div className="border border-[#d5c1cc] rounded-md divide-y divide-[#d5c1cc] bg-card shadow-sm">
@@ -530,10 +530,10 @@ export default function OrgSettingsPage() {
         <div className="border border-dashed border-warning bg-warning/10 rounded-md p-4 flex gap-3 items-start">
           <span className="material-symbols-outlined text-warning text-[20px] mt-px">info</span>
           <div>
-            <p className="text-body-md font-semibold text-warning mb-1">
+            <p className="text-sm font-semibold text-warning mb-1">
               Should-Have feature (BRD)
             </p>
-            <p className="text-body-md text-warning">
+            <p className="text-sm text-warning">
               The platform sends emails from Xebia&apos;s default address until a custom
               SMTP relay is configured here.
             </p>
@@ -543,7 +543,7 @@ export default function OrgSettingsPage() {
         {/* SMTP host */}
         <div>
           <label
-            className="block font-medium text-label-sm tracking-[0.01em] text-muted-foreground mb-2"
+            className="block font-medium text-xs tracking-[0.01em] text-muted-foreground mb-2"
             htmlFor="smtp_host"
           >
             SMTP host
@@ -561,7 +561,7 @@ export default function OrgSettingsPage() {
         {/* SMTP port */}
         <div>
           <label
-            className="block font-medium text-label-sm tracking-[0.01em] text-muted-foreground mb-2"
+            className="block font-medium text-xs tracking-[0.01em] text-muted-foreground mb-2"
             htmlFor="smtp_port"
           >
             SMTP port
@@ -579,7 +579,7 @@ export default function OrgSettingsPage() {
         {/* Username */}
         <div>
           <label
-            className="block font-medium text-label-sm tracking-[0.01em] text-muted-foreground mb-2"
+            className="block font-medium text-xs tracking-[0.01em] text-muted-foreground mb-2"
             htmlFor="smtp_user"
           >
             Username
@@ -597,7 +597,7 @@ export default function OrgSettingsPage() {
         {/* Password with show/hide */}
         <div>
           <label
-            className="block font-medium text-label-sm tracking-[0.01em] text-muted-foreground mb-2"
+            className="block font-medium text-xs tracking-[0.01em] text-muted-foreground mb-2"
             htmlFor="smtp_pass"
           >
             Password
@@ -626,7 +626,7 @@ export default function OrgSettingsPage() {
 
         {/* Encryption selector */}
         <div>
-          <label className="block font-medium text-label-sm tracking-[0.01em] text-muted-foreground mb-2">
+          <label className="block font-medium text-xs tracking-[0.01em] text-muted-foreground mb-2">
             Encryption
           </label>
           <div className="flex gap-2">
@@ -639,7 +639,7 @@ export default function OrgSettingsPage() {
                   onClick={() => setSmtpEncryption(enc)}
                   className={[
                     "flex-1 border py-2 px-3 text-center rounded-md",
-                    "font-medium text-body-md tracking-[0.01em]",
+                    "font-medium text-sm tracking-[0.01em]",
                     "transition-colors duration-200 cursor-pointer outline-none",
                     isSelected
                       ? "bg-muted text-foreground border-primary"
@@ -680,8 +680,8 @@ export default function OrgSettingsPage() {
         {/* Plan tier card */}
         <div className="border border-[#d5c1cc] rounded-md p-5 flex items-center justify-between bg-card shadow-sm">
           <div>
-            <p className="font-heading text-headline-md font-semibold text-foreground">Professional</p>
-            <p className="text-label-sm text-muted-foreground mt-1">
+            <p className="font-heading text-2xl font-semibold text-foreground">Professional</p>
+            <p className="text-xs text-muted-foreground mt-1">
               Renews annually on 1 Jan 2027
             </p>
           </div>
@@ -696,10 +696,10 @@ export default function OrgSettingsPage() {
           return (
             <div key={m.label}>
               <div className="flex items-center justify-between mb-1.5">
-                <span className="text-body-md text-foreground font-medium">
+                <span className="text-sm text-foreground font-medium">
                   {m.label}
                 </span>
-                <span className="text-body-md text-muted-foreground font-mono">
+                <span className="text-sm text-muted-foreground font-mono">
                   {m.used}{m.unit} / {m.limit}{m.unit ? ` ${m.unit}` : ""}
                 </span>
               </div>
@@ -714,7 +714,7 @@ export default function OrgSettingsPage() {
         })}
 
         {/* Contact sales */}
-        <p className="text-label-sm text-muted-foreground font-medium">
+        <p className="text-xs text-muted-foreground font-medium">
           Need more capacity?{" "}
           <a href="#" className="text-primary hover:underline font-semibold">
             Contact sales for Enterprise
@@ -731,10 +731,10 @@ export default function OrgSettingsPage() {
         <div className="border border-[#d5c1cc] bg-muted rounded-md p-4 flex gap-3 items-start">
           <span className="material-symbols-outlined text-muted-foreground text-[20px] mt-px">lock</span>
           <div>
-            <p className="text-body-md text-foreground font-medium mb-1">
+            <p className="text-sm text-foreground font-medium mb-1">
               Immutable audit log (BR-10)
             </p>
-            <p className="text-body-md text-muted-foreground">
+            <p className="text-sm text-muted-foreground">
               This log is append-only and cannot be edited, deleted, or tampered with.
               It is retained for compliance and forensic review.
             </p>
@@ -746,7 +746,7 @@ export default function OrgSettingsPage() {
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse">
               <thead>
-                <tr className="bg-muted border-b border-[#d5c1cc] text-label-sm font-semibold text-muted-foreground uppercase tracking-wider">
+                <tr className="bg-muted border-b border-[#d5c1cc] text-xs font-semibold text-muted-foreground uppercase tracking-wider">
                   <th className="p-3 font-semibold">Timestamp</th>
                   <th className="p-3 font-semibold">Actor</th>
                   <th className="p-3 font-semibold">Action</th>
@@ -754,7 +754,7 @@ export default function OrgSettingsPage() {
                   <th className="p-3 font-semibold">IP Address</th>
                 </tr>
               </thead>
-              <tbody className="text-body-md text-foreground">
+              <tbody className="text-sm text-foreground">
                 {AUDIT_ROWS.map((row, i) => (
                   <tr
                     key={i}
@@ -763,7 +763,7 @@ export default function OrgSettingsPage() {
                     <td className="p-3 font-mono text-muted-foreground whitespace-nowrap">{row.ts}</td>
                     <td className="p-3 text-muted-foreground font-mono">{row.actor}</td>
                     <td className="p-3">
-                      <span className="bg-muted text-muted-foreground rounded px-2 py-0.5 text-label-sm font-medium font-mono">
+                      <span className="bg-muted text-muted-foreground rounded px-2 py-0.5 text-xs font-medium font-mono">
                         {row.action}
                       </span>
                     </td>
@@ -806,10 +806,10 @@ export default function OrgSettingsPage() {
 
       {/* ═══ Page header ══════════════════════════════════════ */}
       <header className="px-6 pt-8 pb-6 border-b border-[#d5c1cc]">
-        <h1 className="font-heading font-semibold text-headline-lg text-foreground">
+        <h1 className="font-heading font-semibold text-3xl text-foreground">
           Organisation settings
         </h1>
-        <p className="font-mono text-label-sm text-muted-foreground mt-1 tracking-[0.05em]">
+        <p className="font-mono text-xs text-muted-foreground mt-1 tracking-[0.05em]">
           {tenantSlug}
         </p>
       </header>
@@ -836,7 +836,7 @@ export default function OrgSettingsPage() {
                   ].join(" ")}
                 >
                   <span className="material-symbols-outlined text-[20px]">{tab.icon}</span>
-                  <span className="text-body-md">{tab.label}</span>
+                  <span className="text-sm">{tab.label}</span>
                 </button>
               );
             })}
@@ -846,7 +846,7 @@ export default function OrgSettingsPage() {
 
         {/* Content panel */}
         <main className="flex-1 p-8 max-w-[800px]">
-          <h2 className="font-heading font-semibold text-headline-md text-foreground mb-6">
+          <h2 className="font-heading font-semibold text-2xl text-foreground mb-6">
             {TABS.find((t) => t.id === activeTab)?.label}
           </h2>
           {renderTabContent()}

@@ -9,14 +9,14 @@ import Image from "next/image";
 
 const inputBase = [
   "w-full bg-card border border-[#d5c1cc] rounded-md",
-  "text-body-md text-foreground",
+  "text-sm text-foreground",
   "px-3 py-2 transition-all duration-200",
   "focus-visible:ring-1 focus-visible:ring-primary focus-visible:border-primary focus-visible:outline-none",
 ].join(" ");
 
 const btnPrimary = [
   "w-full bg-primary text-white rounded-md",
-  "font-medium text-body-md tracking-[0.01em]",
+  "font-medium text-sm tracking-[0.01em]",
   "py-3 transition-colors duration-200",
   "hover:bg-primary/90 cursor-pointer",
   "border-none outline-none",
@@ -76,17 +76,17 @@ export default function ResetPasswordPage({ onNext }: { onNext?: () => void } = 
 
           {/* Heading */}
           <div className="text-center mb-6">
-            <h1 className="font-heading font-semibold text-headline-md text-foreground mb-2">
+            <h1 className="font-heading font-semibold text-2xl text-foreground mb-2">
               Set your password
             </h1>
-            <p className="text-body-md text-muted-foreground">
+            <p className="text-sm text-muted-foreground">
               First login — this step is required before continuing.
             </p>
           </div>
 
           {/* Context bar */}
           <div className="bg-muted border border-[#d5c1cc] rounded-md px-3 py-2 mb-6 text-center">
-            <span className="text-label-sm text-muted-foreground font-normal">
+            <span className="text-xs text-muted-foreground font-normal">
               Signed in as: <span className="font-mono">priya.sharma@university.edu</span>
             </span>
           </div>
@@ -97,7 +97,7 @@ export default function ResetPasswordPage({ onNext }: { onNext?: () => void } = 
             <div>
               <div className="flex justify-between items-center mb-1">
                 <label
-                  className="font-medium text-label-sm tracking-[0.01em] text-muted-foreground"
+                  className="font-medium text-xs tracking-[0.01em] text-muted-foreground"
                   htmlFor="new_password"
                 >
                   New password
@@ -115,7 +115,7 @@ export default function ResetPasswordPage({ onNext }: { onNext?: () => void } = 
                   onChange={(e) => setPassword(e.target.value)}
                 />
                 <button
-                  className="absolute right-3 top-1/2 -translate-y-1/2 font-semibold text-label-sm text-muted-foreground hover:text-foreground transition-colors cursor-pointer bg-transparent border-none p-0"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 font-semibold text-xs text-muted-foreground hover:text-foreground transition-colors cursor-pointer bg-transparent border-none p-0"
                   type="button"
                   onClick={() => setShowPassword((v) => !v)}
                   aria-label={showPassword ? "Hide password" : "Show password"}
@@ -128,7 +128,7 @@ export default function ResetPasswordPage({ onNext }: { onNext?: () => void } = 
             {/* Confirm password */}
             <div>
               <label
-                className="block font-medium text-label-sm tracking-[0.01em] text-muted-foreground mb-1"
+                className="block font-medium text-xs tracking-[0.01em] text-muted-foreground mb-1"
                 htmlFor="confirm_password"
               >
                 Confirm new password
@@ -143,7 +143,7 @@ export default function ResetPasswordPage({ onNext }: { onNext?: () => void } = 
                   type={showConfirm ? "text" : "password"}
                 />
                 <button
-                  className="absolute right-3 top-1/2 -translate-y-1/2 font-semibold text-label-sm text-muted-foreground hover:text-foreground transition-colors cursor-pointer bg-transparent border-none p-0"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 font-semibold text-xs text-muted-foreground hover:text-foreground transition-colors cursor-pointer bg-transparent border-none p-0"
                   type="button"
                   onClick={() => setShowConfirm((v) => !v)}
                   aria-label={showConfirm ? "Hide password" : "Show password"}
@@ -161,7 +161,7 @@ export default function ResetPasswordPage({ onNext }: { onNext?: () => void } = 
                   return (
                     <li
                       key={rule.label}
-                      className={`flex items-center text-body-md ${
+                      className={`flex items-center text-sm ${
                         met ? "text-success font-medium" : "text-muted-foreground"
                       }`}
                     >
@@ -191,14 +191,14 @@ export default function ResetPasswordPage({ onNext }: { onNext?: () => void } = 
                   );
                 })}
               </ul>
-              <p className="text-label-sm text-muted-foreground font-normal">
+              <p className="text-xs text-muted-foreground font-normal">
                 Rules are tenant-configurable
               </p>
             </div>
 
             {/* ── MFA notice ────────────────────────────────── */}
             <div className="border border-dashed border-warning bg-warning/10 rounded-md p-3 text-center">
-              <p className="text-body-md text-warning">
+              <p className="text-sm text-warning">
                 <span className="font-medium">If role requires MFA:</span> MFA
                 enrollment shown next.
               </p>
@@ -212,7 +212,7 @@ export default function ResetPasswordPage({ onNext }: { onNext?: () => void } = 
         </div>
 
         {/* Footnote */}
-        <p className="text-center text-label-sm text-muted-foreground font-normal mt-6">
+        <p className="text-center text-xs text-muted-foreground font-normal mt-6">
           On submit: redirect to tenant onboarding or dashboard by role
         </p>
       </div>

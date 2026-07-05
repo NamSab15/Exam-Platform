@@ -14,21 +14,21 @@ export const metadata: Metadata = {
 
 const btnPrimary = [
   "bg-primary text-white rounded-md py-2 px-4",
-  "font-medium text-body-md tracking-[0.01em]",
+  "font-medium text-sm tracking-[0.01em]",
   "transition-colors hover:bg-primary/90",
   "border-none outline-none cursor-pointer",
 ].join(" ");
 
 const btnSecondary = [
   "bg-transparent text-foreground border border-[#d5c1cc] rounded-md py-2 px-4",
-  "font-medium text-body-md tracking-[0.01em]",
+  "font-medium text-sm tracking-[0.01em]",
   "transition-colors hover:bg-muted hover:border-primary",
   "cursor-pointer outline-none",
 ].join(" ");
 
 const inputBase = [
   "border border-[#d5c1cc] rounded-md py-2 px-3",
-  "text-body-md outline-none bg-card text-foreground",
+  "text-sm outline-none bg-card text-foreground",
   "transition-all focus-visible:ring-1 focus-visible:ring-primary focus-visible:border-primary focus-visible:outline-none",
 ].join(" ");
 
@@ -171,7 +171,7 @@ export default function UsersPage() {
                         <td className="p-4">
                           <span
                             className={[
-                              "text-label-sm px-2.5 py-0.5 rounded-full border font-medium inline-flex items-center gap-1",
+                              "text-xs px-2.5 py-0.5 rounded-full border font-medium inline-flex items-center gap-1",
                               isActive
                                 ? "bg-success/10 text-success border-success/20 font-semibold"
                                 : "bg-destructive/10 text-destructive border-destructive/20",
@@ -186,16 +186,16 @@ export default function UsersPage() {
                           </span>
                         </td>
                         <td className="p-4 text-right">
-                          <button className="text-primary hover:underline transition-colors text-label-sm font-medium">
+                          <button className="text-primary hover:underline transition-colors text-xs font-medium">
                             Edit
                           </button>
                           <span className="text-muted-foreground/30 mx-1">·</span>
                           {isActive ? (
-                            <button className="text-destructive hover:underline transition-colors text-label-sm font-medium">
+                            <button className="text-destructive hover:underline transition-colors text-xs font-medium">
                               Deactivate
                             </button>
                           ) : (
-                            <button className="text-success hover:underline transition-colors text-label-sm font-medium">
+                            <button className="text-success hover:underline transition-colors text-xs font-medium">
                               Reactivate
                             </button>
                           )}
@@ -217,13 +217,13 @@ export default function UsersPage() {
             </div>
           </section>
 
-          <p className="text-muted-foreground text-label-sm px-1">
+          <p className="text-muted-foreground text-xs px-1">
             Deactivated users keep their data &amp; audit history — never deleted.
           </p>
 
           {/* ── Bulk import panel ────────────────────────────── */}
           <section className="mt-4 mb-8">
-            <h2 className="font-heading text-foreground text-headline-md font-semibold mb-4">
+            <h2 className="font-heading text-foreground text-2xl font-semibold mb-4">
               Bulk import panel
             </h2>
 
@@ -234,29 +234,29 @@ export default function UsersPage() {
                   <span className="material-symbols-outlined text-muted-foreground text-4xl mb-2">
                     upload_file
                   </span>
-                  <p className="text-foreground font-medium text-body-md">
+                  <p className="text-foreground font-medium text-sm">
                     Drag CSV file here
                   </p>
-                  <p className="text-muted-foreground text-label-sm mt-1">or click to browse</p>
+                  <p className="text-xs text-muted-foreground mt-1">or click to browse</p>
                 </div>
 
                 {/* Instructions */}
                 <div className="flex flex-col justify-center">
-                  <h3 className="font-heading text-foreground text-body-md font-semibold mb-2">
+                  <h3 className="font-heading text-foreground text-sm font-semibold mb-2">
                     Required columns
                   </h3>
                   <div className="flex gap-2 flex-wrap mb-4">
                     {["name", "email", "role"].map((col) => (
                       <span
                         key={col}
-                        className="bg-muted border border-[#d5c1cc] rounded px-2 py-1 font-mono text-label-sm text-muted-foreground"
+                        className="bg-muted border border-[#d5c1cc] rounded px-2 py-1 font-mono text-xs text-muted-foreground"
                       >
                         {col}
                       </span>
                     ))}
                   </div>
                   <a
-                    className="text-primary hover:underline text-body-md font-medium flex items-center gap-1 w-fit"
+                    className="text-primary hover:underline text-sm font-medium flex items-center gap-1 w-fit"
                     href="#"
                   >
                     <span className="material-symbols-outlined text-[16px]">
@@ -269,10 +269,10 @@ export default function UsersPage() {
 
               {/* CSV preview */}
               <div className="bg-muted border border-[#d5c1cc] rounded-md overflow-hidden mb-6">
-                <div className="p-3 border-b border-[#d5c1cc] bg-card text-body-md font-medium text-foreground">
+                <div className="p-3 border-b border-[#d5c1cc] bg-card text-sm font-medium text-foreground">
                   Preview before confirming
                 </div>
-                <div className="p-4 font-mono text-label-sm flex flex-col gap-2 overflow-x-auto whitespace-nowrap">
+                <div className="p-4 font-mono text-xs flex flex-col gap-2 overflow-x-auto whitespace-nowrap">
                   {csvPreviewRows.map((row) =>
                     row.error ? (
                       <div
@@ -311,7 +311,7 @@ export default function UsersPage() {
 
               {/* Footer actions */}
               <div className="flex flex-col sm:flex-row justify-between items-center gap-4 border-t border-[#d5c1cc] pt-6">
-                <p className="text-destructive text-body-md font-medium flex items-center gap-2">
+                <p className="text-destructive text-sm font-medium flex items-center gap-2">
                   <span className="material-symbols-outlined text-[18px]">
                     error
                   </span>
