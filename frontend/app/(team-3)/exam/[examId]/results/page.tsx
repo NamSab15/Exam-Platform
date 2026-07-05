@@ -57,7 +57,7 @@ export default function ResultsPage({ params }: { params: { examId: string } }) 
                 <span className="text-sm font-sans text-[#51434c] uppercase tracking-wide mt-1">Overall Score</span>
               </div>
             </div>
-            
+
             <div className="text-center">
               <h2 className="text-xl font-bold font-sans text-[#21191e] flex items-center justify-center gap-2">
                 <Award className="text-[#01ac9f] w-6 h-6" />
@@ -87,7 +87,7 @@ export default function ResultsPage({ params }: { params: { examId: string } }) 
             <Zap className="w-5 h-5 text-[#ff6200]" />
             Section Breakdown
           </h3>
-          
+
           <div className="space-y-6">
             {sections.map((section, idx) => (
               <div key={idx}>
@@ -96,8 +96,8 @@ export default function ResultsPage({ params }: { params: { examId: string } }) 
                   <span className="font-mono font-bold text-[#51434c]">{section.score}%</span>
                 </div>
                 <div className="w-full bg-[#f9eaf0] rounded-full h-3">
-                  <div 
-                    className="bg-[#6c1d5f] h-3 rounded-full" 
+                  <div
+                    className="bg-[#6c1d5f] h-3 rounded-full"
                     style={{ width: `${section.score}%` }}
                   ></div>
                 </div>
