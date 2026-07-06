@@ -1,10 +1,10 @@
 /**
- * Root Page — Demo Presentation Flow
- * Route: /
+ * Demo / Presentation Page
+ * Route: /demo
  *
- * Renders the complete Accounts & Setup flow starting from the
- * Sign In screen. Clicking the primary action button on each
- * screen automatically advances to the next screen.
+ * Wires all existing Team 1 (Accounts & Setup) screens into
+ * a single navigable presentation. No screens are rebuilt —
+ * each is imported and rendered as-is.
  */
 
 "use client";
@@ -13,19 +13,19 @@ import { useState } from "react";
 import dynamic from "next/dynamic";
 
 // Import all existing screen components
-import LoginPage from "./(team-1)/login/page";
-import ResetPasswordPage from "./(team-1)/reset-password/page";
-import OnboardingStep1 from "./(team-1)/onboarding/step-1/page";
-import OnboardingStep2 from "./(team-1)/onboarding/step-2/page";
-import OnboardingStep3 from "./(team-1)/onboarding/step-3/page";
-import OnboardingStep4 from "./(team-1)/onboarding/step-4/page";
-import OnboardingStep5 from "./(team-1)/onboarding/step-5/page";
-import Team1Layout from "./(team-1)/layout";
+import LoginPage from "../login/page";
+import ResetPasswordPage from "../reset-password/page";
+import OnboardingStep1 from "../onboarding/step-1/page";
+import OnboardingStep2 from "../onboarding/step-2/page";
+import OnboardingStep3 from "../onboarding/step-3/page";
+import OnboardingStep4 from "../onboarding/step-4/page";
+import OnboardingStep5 from "../onboarding/step-5/page";
 
-// Users and Org Settings pages are server/dynamic components — dynamic
-// imports avoid "metadata in client component" build errors.
-const UsersPage = dynamic(() => import("./(team-1)/users/page"), { ssr: false });
-const OrgSettingsPage = dynamic(() => import("./(team-1)/org-settings/page"), { ssr: false });
+// These pages use useEffect / localStorage — dynamic import avoids
+// the "metadata in client component" build error.
+const OrgSettingsPage = dynamic(() => import("../org-settings/page"), { ssr: false });
+const UsersPage = dynamic(() => import("../users/page"), { ssr: false });
+import Team1Layout from "../layout";
 
 /* ── Screen registry ────────────────────────────────────────── */
 
@@ -42,7 +42,7 @@ type Screen =
 
 /* ── Page component ─────────────────────────────────────────── */
 
-export default function Home() {
+export default function DemoPage() {
   const [screen, setScreen] = useState<Screen>("login");
 
   return (

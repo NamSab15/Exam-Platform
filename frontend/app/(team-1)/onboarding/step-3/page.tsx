@@ -13,21 +13,22 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import OnboardingStepper from "../OnboardingStepper";
+import AppNavbar from "@/components/AppNavbar";
+import BottomNav from "@/components/BottomNav";
 
 /* ── Shared style constants ─────────────────────────────────────
    Every colour / radius / spacing references the design-project
    tokens defined in globals.css. */
 
 const inputBase = [
-  "w-full bg-background border border-border rounded-md",
+  "w-full bg-card border border-[#d5c1cc] rounded-md",
   "text-[16px] leading-[24px] text-foreground",
   "py-2 px-3 transition-all duration-200",
-  "outline-none focus:border-primary",
-  "focus-visible:ring-2 focus-visible:ring-primary/20",
+  "outline-none focus:border-primary focus:ring-1 focus:ring-primary",
 ].join(" ");
 
 const btnPrimary = [
-  "bg-primary text-primary-foreground rounded-md font-medium",
+  "bg-primary text-white rounded-md font-medium",
   "text-[14px] leading-[16px] tracking-[0.01em]",
   "px-4 py-2 hover:bg-primary/80 transition-colors duration-200",
   "border-none outline-none cursor-pointer",
@@ -35,10 +36,10 @@ const btnPrimary = [
 ].join(" ");
 
 const btnSecondary = [
-  "bg-background text-muted-foreground border border-border rounded-md font-medium",
+  "bg-transparent text-foreground border border-[#d5c1cc] rounded-md font-medium",
   "text-[14px] leading-[16px] tracking-[0.01em]",
   "px-6 py-2 hover:bg-muted transition-colors duration-200",
-  "cursor-pointer",
+  "cursor-pointer outline-none",
 ].join(" ");
 
 /* ── Timezone options ───────────────────────────────────────── */
@@ -143,8 +144,10 @@ export default function OnboardingStep3Page({ onNext }: { onNext?: () => void } 
   }
 
   return (
-    <main className="min-h-screen bg-background flex justify-center py-8 md:py-12 px-4 md:px-12 text-foreground">
-      <div className="w-full max-w-[800px] flex flex-col">
+    <>
+      <AppNavbar />
+      <main className="min-h-screen bg-background flex justify-center pt-24 pb-8 md:pt-28 md:pb-12 px-4 md:px-12 text-foreground">
+        <div className="w-full max-w-[800px] flex flex-col">
         {/* ── Header ───────────────────────────────────────── */}
         <header className="mb-8">
           <h1 className="font-semibold text-[32px] leading-[40px] tracking-[-0.02em] text-foreground mb-1">
@@ -341,5 +344,7 @@ export default function OnboardingStep3Page({ onNext }: { onNext?: () => void } 
         </div>
       </div>
     </main>
+    <BottomNav />
+  </>
   );
 }
