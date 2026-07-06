@@ -22,9 +22,10 @@ import OnboardingStep4 from "./(team-1)/onboarding/step-4/page";
 import OnboardingStep5 from "./(team-1)/onboarding/step-5/page";
 import Team1Layout from "./(team-1)/layout";
 
-// Users page is a server component that exports `metadata` — dynamic
-// import avoids the "metadata in client component" build error.
+// Users and Org Settings pages are server/dynamic components — dynamic
+// imports avoid "metadata in client component" build errors.
 const UsersPage = dynamic(() => import("./(team-1)/users/page"), { ssr: false });
+const OrgSettingsPage = dynamic(() => import("./(team-1)/org-settings/page"), { ssr: false });
 
 /* ── Screen registry ────────────────────────────────────────── */
 
@@ -36,6 +37,7 @@ type Screen =
   | "onboarding-3"
   | "onboarding-4"
   | "onboarding-5"
+  | "org-settings"
   | "users";
 
 /* ── Page component ─────────────────────────────────────────── */
@@ -64,8 +66,9 @@ export default function Home() {
         <OnboardingStep4 onNext={() => setScreen("onboarding-5")} />
       )}
       {screen === "onboarding-5" && (
-        <OnboardingStep5 onNext={() => setScreen("users")} />
+        <OnboardingStep5 onNext={() => setScreen("org-settings")} />
       )}
+      {screen === "org-settings" && <OrgSettingsPage />}
       {screen === "users" && <UsersPage />}
     </Team1Layout>
   );
