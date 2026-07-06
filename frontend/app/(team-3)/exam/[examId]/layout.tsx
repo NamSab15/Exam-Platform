@@ -2,7 +2,7 @@ import React from "react";
 import { ExamProvider } from "@/lib/(team-3)/ExamContext";
 import { ExamTimer } from "@/components/(team-3)/ExamTimer";
 import { AccessibilityControls } from "@/components/(team-3)/AccessibilityControls";
-import { Shield } from "lucide-react";
+import Image from "next/image";
 
 export default async function ExamLayout({
   children,
@@ -19,9 +19,13 @@ export default async function ExamLayout({
         {/* Top Navigation Bar */}
         <header className="flex-none h-16 bg-white border-b border-[#d5c1cc] flex items-center justify-between px-6 shadow-sm z-10">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded bg-[#6c1d5f] flex items-center justify-center text-white">
-              <Shield className="w-5 h-5" />
-            </div>
+            <Image
+              src="/Logo-Purple.png"
+              alt="Xebia Logo"
+              width={32}
+              height={32}
+              className="w-8 h-8 object-contain"
+            />
             <div>
               <h1 className="font-sans font-bold text-lg text-[#21191e] tracking-tight leading-none">
                 Xebia Assessment
