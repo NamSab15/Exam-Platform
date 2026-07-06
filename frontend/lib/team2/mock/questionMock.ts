@@ -1,4 +1,4 @@
-import { Question } from '../types/question';
+import { Question } from '@/types/team2/question';
 
 export const DEFAULT_QUESTIONS: Question[] = [
   {

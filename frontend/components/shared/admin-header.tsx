@@ -1,7 +1,6 @@
 'use client'
 
 import React from "react"
-import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { Search, Bell, HelpCircle, Clock } from "lucide-react"
 import { cn } from "@/lib/utils"
@@ -15,80 +14,65 @@ interface AdminHeaderProps {
 
 export function AdminHeader({
   onSearchChange,
-  searchValue = "",
+  searchValue,
   timerCount,
 }: AdminHeaderProps) {
   const pathname = usePathname()
+  const [localSearch, setLocalSearch] = React.useState("")
 
-  const isEditor = pathname === "/question-editor"
   const isCandidate = pathname === "/candidate-preview"
   const hasSidebar = !isCandidate
 
-  const navTabs = [
-    { name: "Question Bank", href: "/question-bank", active: pathname === "/question-bank" },
-    { name: "Editor", href: "/question-editor", active: pathname === "/question-editor" },
-    { name: "Exam Setup", href: "/exam-setup", active: pathname === "/exam-setup" },
-  ]
+  // Fallback to local state if no onSearchChange prop is passed
+  const value = onSearchChange ? (searchValue ?? "") : localSearch
 
   return (
     <header className="sticky top-0 z-10 flex h-16 w-full items-center gap-4 border-b border-border bg-white px-4 sm:px-6 lg:px-8 dark:bg-zinc-950">
       {/* Left Brand */}
       <div className={cn("flex min-w-0 items-center gap-4 sm:gap-6", hasSidebar && "pl-10 lg:pl-0")}>
         <div className="flex min-w-0 items-center gap-2">
-          <div
-            className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-primary font-heading text-sm font-extrabold text-white select-none"
-            aria-hidden="true"
-          >
-            X
+          <div className="flex h-7 w-auto shrink-0 items-center select-none" aria-hidden="true">
+            <Image
+              src="/logo.png"
+              alt="Xebia Logo"
+              width={34}
+              height={28}
+              priority
+              className="h-full w-auto object-contain"
+            />
           </div>
           <span className="hidden truncate font-heading text-base font-bold text-primary select-none sm:block lg:text-lg">
             Xebia Exam Platform
           </span>
         </div>
-
-        {isEditor && (
-          <nav className="hidden items-center gap-4 self-stretch md:flex lg:gap-6" aria-label="Section navigation">
-            {navTabs.map((tab) => (
-              <Link
-                key={tab.name}
-                href={tab.href}
-                className={cn(
-                  "flex h-16 items-center border-b-2 px-1 text-sm font-semibold transition-colors select-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50",
-                  tab.active
-                    ? "border-primary text-primary"
-                    : "border-transparent text-muted-foreground hover:text-foreground"
-                )}
-                aria-current={tab.active ? "page" : undefined}
-              >
-                {tab.name}
-              </Link>
-            ))}
-          </nav>
-        )}
       </div>
 
       {/* Middle Search */}
       <div className="mx-auto hidden min-w-0 flex-1 sm:block sm:max-w-lg lg:max-w-xl xl:max-w-2xl">
-        {!isEditor && (
-          <div className="relative">
-            <Search
-              className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground"
-              aria-hidden="true"
-            />
-            <input
-              type="search"
-              placeholder={
-                isCandidate
-                  ? "Search questions..."
-                  : "Search questions, creators, or topics..."
+        <div className="relative">
+          <Search
+            className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground"
+            aria-hidden="true"
+          />
+          <input
+            type="search"
+            placeholder={
+              isCandidate
+                ? "Search questions..."
+                : "Search questions, creators, or topics..."
+            }
+            value={value}
+            onChange={(e) => {
+              if (onSearchChange) {
+                onSearchChange(e.target.value)
+              } else {
+                setLocalSearch(e.target.value)
               }
-              value={searchValue}
-              onChange={(e) => onSearchChange?.(e.target.value)}
-              aria-label="Search questions"
-              className="h-10 w-full rounded-full border border-border bg-zinc-50 pl-11 pr-4 text-sm transition-colors focus-visible:border-primary focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary dark:bg-zinc-900"
-            />
-          </div>
-        )}
+            }}
+            aria-label="Search questions"
+            className="h-10 w-full rounded-full border border-border bg-zinc-50 pl-11 pr-4 text-sm transition-colors focus-visible:border-primary focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary dark:bg-zinc-900"
+          />
+        </div>
       </div>
 
       {/* Right Controls */}
@@ -111,12 +95,10 @@ export function AdminHeader({
           aria-label="Notifications"
         >
           <Bell className="h-5 w-5" />
-          {!isEditor && (
-            <span
-              className="absolute right-2 top-2 h-2 w-2 rounded-full bg-rose-500 ring-2 ring-white dark:ring-zinc-950"
-              aria-hidden="true"
-            />
-          )}
+          <span
+            className="absolute right-2 top-2 h-2 w-2 rounded-full bg-rose-500 ring-2 ring-white dark:ring-zinc-950"
+            aria-hidden="true"
+          />
         </button>
 
         <button
