@@ -1,8 +1,9 @@
 import logging
 import sys
-from typing import Any
+
 import structlog
-from structlog.types import EventDict, Processor
+from structlog.types import Processor
+
 
 def configure_logging(service_name: str, version: str, json_logs: bool = True) -> None:
     # Shared processors across structlog and standard logging

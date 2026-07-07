@@ -1,5 +1,6 @@
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
+
 class BaseXebiaSettings(BaseSettings):
     ENV: str = "local"
     LOG_LEVEL: str = "INFO"
