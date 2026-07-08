@@ -17,9 +17,14 @@ async def run_migrations() -> None:
         print("DATABASE_URL is not set. Skipping migrations.", file=sys.stderr)
         sys.exit(1)
 
+    # asyncpg expects postgresql:// or postgres://
+    dsn = DATABASE_URL
+    if dsn.startswith("postgresql+asyncpg://"):
+        dsn = dsn.replace("postgresql+asyncpg://", "postgresql://", 1)
+
     print("Connecting to database to run migrations...")
     try:
-        conn = await asyncpg.connect(DATABASE_URL)
+        conn = await asyncpg.connect(dsn)
     except Exception as e:
         print(f"Failed to connect to database: {e}", file=sys.stderr)
         sys.exit(1)
@@ -53,7 +58,9 @@ async def run_migrations() -> None:
             # Execute the migration in a transaction
             async with conn.transaction():
                 await conn.execute(sql)
-                await conn.execute("INSERT INTO schema_migrations (version) VALUES ($1);", filename)
+                await conn.execute(
+                    "INSERT INTO schema_migrations (version) VALUES ($1);", filename
+                )
             print(f"Successfully applied {filename}.")
             applied_count += 1
 
