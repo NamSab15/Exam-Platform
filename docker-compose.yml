@@ -28,6 +28,51 @@ services:
       db:
         condition: service_healthy
 
+  accounts:
+    image: registry.gitlab.com/xebia-exam-platform/group-a/team-1:stable
+    container_name: xebia_accounts
+    ports:
+      - "8001:8000"
+    environment:
+      ENV: production
+      LOG_LEVEL: INFO
+      DATABASE_URL: postgresql+asyncpg://postgres:postgres@db:5432/xebia_exam_db
+    depends_on:
+      db:
+        condition: service_healthy
+      migrations:
+        condition: service_completed_successfully
+
+  questions:
+    image: registry.gitlab.com/xebia-exam-platform/group-a/team-2:stable
+    container_name: xebia_questions
+    ports:
+      - "8002:8000"
+    environment:
+      ENV: production
+      LOG_LEVEL: INFO
+      DATABASE_URL: postgresql+asyncpg://postgres:postgres@db:5432/xebia_exam_db
+    depends_on:
+      db:
+        condition: service_healthy
+      migrations:
+        condition: service_completed_successfully
+
+  exams:
+    image: registry.gitlab.com/xebia-exam-platform/group-a/team-3:stable
+    container_name: xebia_exams
+    ports:
+      - "8003:8000"
+    environment:
+      ENV: production
+      LOG_LEVEL: INFO
+      DATABASE_URL: postgresql+asyncpg://postgres:postgres@db:5432/xebia_exam_db
+    depends_on:
+      db:
+        condition: service_healthy
+      migrations:
+        condition: service_completed_successfully
+
   proctoring:
     image: registry.gitlab.com/xebia-exam-platform/group-a/team-4:stable
     container_name: xebia_proctoring
