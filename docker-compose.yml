@@ -23,7 +23,7 @@ services:
     environment:
       DATABASE_URL: postgresql+asyncpg://postgres:postgres@db:5432/xebia_exam_db
     volumes:
-      - ./shared/infra/db:/shared/infra/db
+      - ./infra/db:/shared/infra/db
     depends_on:
       db:
         condition: service_healthy
