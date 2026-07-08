@@ -17,9 +17,7 @@ services:
       retries: 5
 
   migrations:
-    build:
-      context: .
-      dockerfile: team-4/Dockerfile
+    image: registry.gitlab.com/xebia-exam-platform/group-a/team-4:stable
     container_name: xebia_migrations
     command: python /shared/infra/db/migrate.py
     environment:
@@ -31,9 +29,7 @@ services:
         condition: service_healthy
 
   proctoring:
-    build:
-      context: .
-      dockerfile: team-4/Dockerfile
+    image: registry.gitlab.com/xebia-exam-platform/group-a/team-4:stable
     container_name: xebia_proctoring
     ports:
       - "8004:8000"
