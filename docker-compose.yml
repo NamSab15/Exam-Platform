@@ -1,0 +1,51 @@
+services:
+  db:
+    image: postgres:17-alpine
+    container_name: xebia_db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: xebia_exam_db
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d xebia_exam_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  migrations:
+    build:
+      context: .
+      dockerfile: team-4/Dockerfile
+    container_name: xebia_migrations
+    command: python /shared/infra/db/migrate.py
+    environment:
+      DATABASE_URL: postgresql+asyncpg://postgres:postgres@db:5432/xebia_exam_db
+    volumes:
+      - ./shared/infra/db:/shared/infra/db
+    depends_on:
+      db:
+        condition: service_healthy
+
+  proctoring:
+    build:
+      context: .
+      dockerfile: team-4/Dockerfile
+    container_name: xebia_proctoring
+    ports:
+      - "8004:8000"
+    environment:
+      ENV: production
+      LOG_LEVEL: INFO
+      DATABASE_URL: postgresql+asyncpg://postgres:postgres@db:5432/xebia_exam_db
+    depends_on:
+      db:
+        condition: service_healthy
+      migrations:
+        condition: service_completed_successfully
+
+volumes:
+  postgres_data:
