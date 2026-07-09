@@ -37,6 +37,12 @@ __pycache__/
 *.py[cod]
 *$py.class
 .venv/
+venv/
 .pytest_cache/
 .ruff_cache/
 .pyright/
+
+# Temp / debug scripts (not for source control)
+debug_test.py
+drop_0002.py
+reset_migration.py

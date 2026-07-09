@@ -9,6 +9,7 @@ from app.models.result import Result
 from app.models.submission import Submission
 from app.schemas.autosave import AutosavePayload
 from app.services.scoring import ScoringService
+from app.services.lock_service import LockService
 
 
 class SessionService:
@@ -20,11 +21,12 @@ class SessionService:
     def __init__(self, db: AsyncSession, tenant_id: str):
         self.db = db
         self.tenant_id = tenant_id
+        self._lock = LockService(db, tenant_id)
 
     async def start_exam_timer(self, session_id: uuid.UUID) -> ExamSession:
         """
         Starts the exam timer for a session by updating start_time and marking it in_progress.
-        Enforces tenant isolation.
+        Enforces tenant isolation and locks the exam configuration.
         """
         result = await self.db.execute(
             select(ExamSession).where(
@@ -40,6 +42,9 @@ class SessionService:
 
         session.status = ExamSessionStatus.IN_PROGRESS
         session.start_time = datetime.now(timezone.utc)
+
+        # Lock the exam configuration because a candidate has started the exam (FR-045)
+        await self._lock.lock_exam(session.exam_assignment_id)
 
         await self.db.commit()
         await self.db.refresh(session)
