@@ -39,6 +39,19 @@ trigger-frontend:
       changes:
         - frontend/**/*
 
+trigger-backend:
+  stage: triggers
+  trigger:
+    include: backend/Team3/.gitlab-ci.yml
+    strategy: depend
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+      changes:
+        - backend/Team3/**/*
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      changes:
+        - backend/Team3/**/*
+
 trigger-terraform:
   stage: triggers
   trigger:

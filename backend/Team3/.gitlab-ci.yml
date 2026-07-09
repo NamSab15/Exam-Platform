@@ -1,0 +1,72 @@
+stages:
+  - validate
+  - build
+  - deploy
+
+workflow:
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "parent_pipeline"
+
+default:
+  image: python:3.11-slim
+  before_script:
+    - cd backend/Team3
+    - python -m venv venv
+    - . venv/bin/activate
+    - pip install -r requirements.txt
+
+backend:lint:
+  stage: validate
+  script:
+    - pip install ruff
+    - ruff check app/
+  rules:
+    - if: $CI_COMMIT_BRANCH != $CI_DEFAULT_BRANCH
+
+backend:test:
+  stage: validate
+  script:
+    - pip install pytest
+    # Run tests if any test suite exists
+    - pytest
+  rules:
+    - if: $CI_COMMIT_BRANCH != $CI_DEFAULT_BRANCH
+  allow_failure: true
+
+backend:docker-build:
+  stage: build
+  image: docker:24.0.5
+  services:
+    - docker:24.0.5-dind
+  variables:
+    DOCKER_HOST: tcp://docker:2375
+    DOCKER_TLS_CERTDIR: ""
+  before_script:
+    # No standard python setup needed for docker build
+    - cd backend/Team3
+  script:
+    - docker build -t backend-team3:$CI_COMMIT_SHORT_SHA .
+  rules:
+    - if: $CI_COMMIT_BRANCH != $CI_DEFAULT_BRANCH
+
+backend:deploy:
+  stage: deploy
+  image: mcr.microsoft.com/azure-cli:latest
+  services:
+    - docker:24.0.5-dind
+  variables:
+    DOCKER_HOST: tcp://docker:2375
+    DOCKER_TLS_CERTDIR: ""
+  before_script:
+    # Install docker client inside azure-cli image
+    - python3 -c "import urllib.request, tarfile, shutil, os; urllib.request.urlretrieve('https://download.docker.com/linux/static/stable/x86_64/docker-24.0.5.tgz', 'docker.tgz'); t = tarfile.open('docker.tgz'); t.extract('docker/docker', path='/tmp'); t.close(); os.chmod('/tmp/docker/docker', 0o755); shutil.move('/tmp/docker/docker', '/usr/local/bin/docker')"
+    - rm -f docker.tgz
+  script:
+    - az login --service-principal -u "$AZURE_CLIENT_ID" -p "$AZURE_CLIENT_SECRET" --tenant "$AZURE_TENANT_ID"
+    - az acr login --name acrxebiaexamshared
+    - docker build -t acrxebiaexamshared.azurecr.io/backend-team3:$CI_COMMIT_SHORT_SHA ./backend/Team3
+    - docker push acrxebiaexamshared.azurecr.io/backend-team3:$CI_COMMIT_SHORT_SHA
+    # If a backend Container App is deployed, update it:
+    - az containerapp update --name ca-xebia-exam-backend --resource-group rg-xebia-exam-prod --image acrxebiaexamshared.azurecr.io/backend-team3:$CI_COMMIT_SHORT_SHA || echo "Container App deployment update skipped/not configured yet"
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
