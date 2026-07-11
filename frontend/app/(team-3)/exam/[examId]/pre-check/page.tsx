@@ -18,7 +18,6 @@ import {
   RefreshCw,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { TrustScorePanel } from "@/components/(team-3)/TrustScorePanel";
 
 /* ─────────────────────────────────────────────────────────────────────────── */
 /*  Types                                                                       */
@@ -60,20 +59,10 @@ By proceeding, you consent to:
 • Your microphone being active to detect audio anomalies.
 • Your screen activity being recorded or monitored.
 • AI-powered analysis of your video and audio feeds to detect violations.
-• A "Trust Score" being computed in real time based on your behaviour during the exam.
 
 These recordings may be reviewed by human proctors and stored securely in accordance with the data protection policy.
 
-4. TRUST SCORE
-The Trust Score is a real-time confidence metric (0–100) calculated by the AI proctoring engine based on:
-• Face visibility and identity consistency.
-• Eye gaze direction and focus.
-• Audio background noise and speech detection.
-• Tab switching, window changes, and copy/paste events.
-
-A low Trust Score may trigger a human proctor review. Repeated violations may result in exam termination.
-
-5. TECHNICAL REQUIREMENTS
+4. TECHNICAL REQUIREMENTS
 You are responsible for ensuring your device meets the minimum technical requirements:
 • A working webcam with at least 720p resolution.
 • A microphone that can detect ambient audio.
@@ -81,16 +70,16 @@ You are responsible for ensuring your device meets the minimum technical require
 • A supported browser (Chrome 90+, Edge 90+, Firefox 85+).
 • Fullscreen mode must remain active for the duration of the exam.
 
-6. DATA PROTECTION
-All collected data (video, audio, screen captures, Trust Score logs) is processed in accordance with applicable data protection law. Data is retained for a period of 90 days from exam completion unless required longer for dispute resolution.
+5. DATA PROTECTION
+All collected data (video, audio, screen captures, activity logs) is processed in accordance with applicable data protection law. Data is retained for a period of 90 days from exam completion unless required longer for dispute resolution.
 
-7. DISCLAIMER
+6. DISCLAIMER
 The Platform is provided "as is". Xebia is not liable for technical failures beyond its control, including but not limited to power outages, internet disconnections, or browser crashes. In such events, you should contact the exam administrator immediately.
 
-8. AGREEMENT
+7. AGREEMENT
 By clicking "I Agree" and proceeding to the next step, you confirm that:
 • You have read and understood these Terms and Conditions in full.
-• You consent to AI proctoring, webcam/audio monitoring, and Trust Score computation.
+• You consent to AI proctoring, webcam/audio monitoring, and screen activity tracking.
 • You agree to uphold exam integrity throughout the session.`;
 
 /* ─────────────────────────────────────────────────────────────────────────── */
@@ -373,7 +362,7 @@ export default function PreCheckPage({
                   />
                   <span className="text-sm text-[#21191e] font-medium">
                     I have read and agree to the Terms & Conditions, and I consent to AI proctoring
-                    and trust score monitoring during this examination.
+                    during this examination.
                   </span>
                 </label>
 
@@ -406,35 +395,6 @@ export default function PreCheckPage({
               </div>
 
               <div className="px-8 py-6 space-y-6">
-                {/* Trust Score explanation */}
-                <div className="bg-gradient-to-br from-[#6c1d5f]/5 to-[#6c1d5f]/10 rounded-xl p-5 border border-[#6c1d5f]/20">
-                  <h3 className="font-bold text-[#21191e] mb-3 flex items-center gap-2">
-                    <Shield className="w-5 h-5 text-[#6c1d5f]" /> What is the Trust Score?
-                  </h3>
-                  <p className="text-sm text-[#51434c] mb-4 leading-relaxed">
-                    The <strong>Trust Score</strong> is a real-time confidence metric (0–100) computed by our AI
-                    proctoring engine throughout your exam. It reflects the likelihood that you are taking the exam
-                    independently and without violations.
-                  </p>
-                  <div className="flex items-center justify-center my-2">
-                    <TrustScorePanel score={92} size="sm" animated={false} />
-                  </div>
-                  <div className="grid grid-cols-3 gap-3 mt-4 text-center text-xs">
-                    <div className="bg-red-50 rounded-lg p-2 border border-red-100">
-                      <div className="font-bold text-red-500 text-base">0–49</div>
-                      <div className="text-[#51434c]">Low — Review triggered</div>
-                    </div>
-                    <div className="bg-amber-50 rounded-lg p-2 border border-amber-100">
-                      <div className="font-bold text-amber-500 text-base">50–79</div>
-                      <div className="text-[#51434c]">Medium — Being watched</div>
-                    </div>
-                    <div className="bg-green-50 rounded-lg p-2 border border-green-100">
-                      <div className="font-bold text-green-600 text-base">80–100</div>
-                      <div className="text-[#51434c]">High — Excellent</div>
-                    </div>
-                  </div>
-                </div>
-
                 {/* What is monitored */}
                 <div>
                   <h3 className="font-semibold text-[#21191e] mb-3">What will be monitored:</h3>
@@ -443,7 +403,7 @@ export default function PreCheckPage({
                       { icon: <Camera className="w-4 h-4 text-[#6c1d5f] shrink-0 mt-0.5" />, text: "Webcam — continuous video capture for face detection and gaze tracking" },
                       { icon: <Mic className="w-4 h-4 text-[#6c1d5f] shrink-0 mt-0.5" />, text: "Microphone — audio monitoring for voice or noise anomalies" },
                       { icon: <Monitor className="w-4 h-4 text-[#6c1d5f] shrink-0 mt-0.5" />, text: "Screen — tab switches, window changes, and copy/paste events" },
-                      { icon: <Shield className="w-4 h-4 text-[#6c1d5f] shrink-0 mt-0.5" />, text: "AI Analysis — real-time behavior classification for the Trust Score" },
+                      { icon: <Shield className="w-4 h-4 text-[#6c1d5f] shrink-0 mt-0.5" />, text: "AI Analysis — real-time verification of exam environment security" },
                     ].map((item, i) => (
                       <li key={i} className="flex items-start gap-3 text-sm text-[#51434c]">
                         {item.icon}
@@ -484,8 +444,7 @@ export default function PreCheckPage({
                       className="w-4 h-4 mt-0.5 accent-[#6c1d5f]"
                     />
                     <span className="text-sm text-[#21191e] font-medium">
-                      I consent to webcam, microphone, and screen monitoring, and to AI proctoring with
-                      Trust Score computation for the duration of this exam.
+                      I consent to webcam, microphone, and screen monitoring, and to AI proctoring for the duration of this exam.
                     </span>
                   </label>
                 </div>
