@@ -1,0 +1,7 @@
+from fastapi import APIRouter
+
+from exams.api.v1.endpoints import health, sessions
+
+router = APIRouter()
+router.include_router(health.router, tags=["Health"])
+router.include_router(sessions.router, prefix="/sessions", tags=["Sessions"])

@@ -88,5 +88,23 @@ services:
       migrations:
         condition: service_completed_successfully
 
+  # TODO: Notification Service
+  # A shared notification service (email, in-app alerts, webhook dispatching) is
+  # planned for a future milestone. It will be implemented as a separate microservice
+  # and registered here once the service contract and GitLab repo are established.
+  # notifications:
+  #   image: registry.gitlab.com/xebia-exam-platform/group-a/notifications:stable
+  #   container_name: xebia_notifications
+  #   ports:
+  #     - "8005:8000"
+  #   environment:
+  #     ENV: production
+  #     DATABASE_URL: postgresql+asyncpg://postgres:postgres@db:5432/xebia_exam_db
+  #   depends_on:
+  #     db:
+  #       condition: service_healthy
+  #     migrations:
+  #       condition: service_completed_successfully
+
 volumes:
   postgres_data:

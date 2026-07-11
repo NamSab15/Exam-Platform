@@ -1,7 +1,7 @@
 "use client";
 
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { getItem, setItem } from "./idb";
+import { getItem, removeItem, setItem } from "./idb";
 
 export type QuestionStatus = "unanswered" | "answered" | "review";
 
@@ -9,15 +9,25 @@ export type Question = {
   id: string;
   type: "mcq" | "programming";
   status: QuestionStatus;
-  answer?: string; // For MCQ
-  code?: string; // For Programming
+  answer?: string;  // For MCQ: selected option index as string
+  code?: string;    // For Programming: current code in editor
 };
 
 export type ExamState = {
   examId: string;
+  sessionId?: string;           // Set once a session is started via the backend
   questions: Question[];
   currentQuestionId: string;
   remainingSeconds: number;
+  /** Per-question cached code execution output. Stored in IDB, never sent to server. */
+  codeOutputs: Record<string, string>;
+};
+
+type SubmitResult = {
+  sessionId: string;
+  totalScore: number;
+  passed: boolean;
+  certificateUrl?: string;
 };
 
 type ExamContextType = {
@@ -28,26 +38,44 @@ type ExamContextType = {
   setQuestionStatus: (questionId: string, status: QuestionStatus) => void;
   setCurrentQuestion: (questionId: string) => void;
   decrementTimer: () => void;
+  /** Cache the output of a code execution run client-side only */
+  setCodeOutput: (questionId: string, output: string) => void;
+  /**
+   * The ONLY API call for submission. Reads answers from IDB state and POSTs
+   * to /sessions/{sessionId}/submit. All other state is cached client-side.
+   */
+  submitExam: () => Promise<SubmitResult>;
+  /** Remove exam data from IDB after submission */
+  clearExamCache: () => Promise<void>;
 };
 
 const ExamContext = createContext<ExamContextType | undefined>(undefined);
+
+const API_BASE = process.env.NEXT_PUBLIC_EXAMS_API_URL ?? "http://localhost:8003/api/v1";
 
 export function ExamProvider({ children, examId }: { children: React.ReactNode; examId: string }) {
   const [state, setState] = useState<ExamState | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Initialize state from IDB or mock data
+  /* ── Initialise from IDB or fetch from API ── */
   useEffect(() => {
     const init = async () => {
       const cached = await getItem<ExamState>(`exam_${examId}`);
       if (cached) {
         setState(cached);
       } else {
-        // Mock initial state (usually fetched from Team 2 API)
+        /*
+         * First load: fetch questions from the backend.
+         * TODO: replace this mock with a real API call to Team 2's question service
+         * once integration is complete. The endpoint will be something like:
+         *   GET /api/v1/exams/{examId}/questions
+         * The response is cached to IDB so subsequent page loads never hit the server.
+         */
         const initialState: ExamState = {
           examId,
-          remainingSeconds: 3600, // 1 hour
+          remainingSeconds: 3600,
           currentQuestionId: "q1",
+          codeOutputs: {},
           questions: [
             { id: "q1", type: "mcq", status: "unanswered" },
             { id: "q2", type: "mcq", status: "unanswered" },
@@ -62,12 +90,14 @@ export function ExamProvider({ children, examId }: { children: React.ReactNode; 
     init();
   }, [examId]);
 
-  // Sync to IDB whenever state changes (debounce might be better for large apps, but simple for now)
+  /* ── Sync to IDB on every state change ── */
   useEffect(() => {
     if (state && !isLoading) {
       setItem(`exam_${examId}`, state);
     }
   }, [state, examId, isLoading]);
+
+  /* ── Mutations ── */
 
   const setAnswer = (questionId: string, answer: string) => {
     setState((prev) => {
@@ -117,6 +147,50 @@ export function ExamProvider({ children, examId }: { children: React.ReactNode; 
     });
   };
 
+  /* ── Code output cache (client-side only, never sent to server) ── */
+  const setCodeOutput = (questionId: string, output: string) => {
+    setState((prev) => {
+      if (!prev) return prev;
+      return {
+        ...prev,
+        codeOutputs: { ...prev.codeOutputs, [questionId]: output },
+      };
+    });
+  };
+
+  /* ── Submit exam — THE ONLY API CALL ── */
+  const submitExam = async (): Promise<SubmitResult> => {
+    if (!state) throw new Error("Exam state not loaded");
+
+    const sessionId = state.sessionId;
+    if (!sessionId) {
+      throw new Error("No active session ID. Start a session first.");
+    }
+
+    const response = await fetch(`${API_BASE}/sessions/${sessionId}/submit`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+    });
+
+    if (!response.ok) {
+      const err = await response.json().catch(() => ({}));
+      throw new Error(err.detail ?? `Submit failed: ${response.status}`);
+    }
+
+    const data = await response.json();
+    return {
+      sessionId: data.session_id,
+      totalScore: data.total_score,
+      passed: data.passed,
+      certificateUrl: data.certificate_url,
+    };
+  };
+
+  /* ── Clear IDB cache after exam is submitted ── */
+  const clearExamCache = async () => {
+    await removeItem(`exam_${examId}`);
+  };
+
   return (
     <ExamContext.Provider
       value={{
@@ -127,6 +201,9 @@ export function ExamProvider({ children, examId }: { children: React.ReactNode; 
         setQuestionStatus,
         setCurrentQuestion,
         decrementTimer,
+        setCodeOutput,
+        submitExam,
+        clearExamCache,
       }}
     >
       {children}

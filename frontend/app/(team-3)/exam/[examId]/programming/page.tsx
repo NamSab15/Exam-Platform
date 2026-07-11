@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useExam } from "@/lib/(team-3)/ExamContext";
 import { QuestionNavigator } from "@/components/(team-3)/QuestionNavigator";
@@ -9,8 +9,7 @@ import { CodeEditor } from "@/components/(team-3)/CodeEditor";
 
 export default function ProgrammingExamPage() {
   const router = useRouter();
-  const { state, isLoading, setCode, setQuestionStatus, setCurrentQuestion } = useExam();
-  const [output, setOutput] = useState<string | undefined>(undefined);
+  const { state, isLoading, setCode, setQuestionStatus, setCurrentQuestion, setCodeOutput } = useExam();
 
   useEffect(() => {
     if (!state) return;
@@ -45,7 +44,14 @@ export default function ProgrammingExamPage() {
   };
 
   const handleRunCode = () => {
-    setOutput("Running...\n\nHello World!\nTime: 12ms\nMemory: 4.2MB\n\nExecution successful.");
+    if (!currentQ) return;
+    // TODO: replace mock output with a real Judge0 API call via the backend
+    // POST /api/v1/execution with { source_code, language_id }
+    // The result string is cached in IDB via setCodeOutput — no server load on re-visits.
+    setCodeOutput(
+      currentQ.id,
+      "Running...\n\nHello World!\nTime: 12ms\nMemory: 4.2MB\n\nExecution successful."
+    );
   };
 
   if (!currentQ || currentQ.type === "mcq") {
@@ -113,7 +119,7 @@ export default function ProgrammingExamPage() {
             onChange={(val) => setCode(currentQ.id, val)}
             language="javascript"
             onRun={handleRunCode}
-            output={output}
+            output={state.codeOutputs[currentQ.id]}
           />
         </div>
       </div>

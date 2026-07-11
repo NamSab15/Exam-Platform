@@ -1,55 +1,57 @@
-# ==========================================
-# Stage 1: Build dependencies in a virtual env
-# ==========================================
-FROM python:3.11-slim AS builder
+# Stage 1: Build the virtual environment
+FROM python:3.12-slim AS builder
 
-WORKDIR /build
-
-# Install system compilation dependencies if required
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    build-essential \
-    libpq-dev \
-    && rm -rf /var/lib/apt/lists/*
-
-# Create and isolate virtual environment
-RUN python -m venv /opt/venv
-ENV PATH="/opt/venv/bin:$PATH"
-
-# Install python requirements
-COPY requirements.txt .
-RUN pip install --no-cache-dir --upgrade pip && \
-    pip install --no-cache-dir -r requirements.txt
-
-
-# ==========================================
-# Stage 2: Runtime image containing application code
-# ==========================================
-FROM python:3.11-slim AS runner
+COPY --from=ghcr.io/astral-sh/uv:0.9.16 /uv /usr/local/bin/uv
 
 WORKDIR /app
 
-# Enable bytecode suppression and output flushing
-ENV PYTHONDONTWRITEBYTECODE=1 \
-    PYTHONUNBUFFERED=1 \
-    PATH="/opt/venv/bin:$PATH"
+ENV UV_COMPILE_BYTECODE=1
 
-# Copy virtual environment package binaries from builder stage
-COPY --from=builder /opt/venv /opt/venv
+# Copy shared package first so uv can find it
+COPY shared/packages/core /shared/packages/core
 
-# Copy application source code
-COPY app/ ./app/
+# Copy service dependency files
+COPY team-3/pyproject.toml team-3/uv.lock ./
 
-# Create a non-root system user and group for security
-RUN groupadd -g 10001 appgroup && \
-    useradd -u 10001 -g appgroup -d /app -s /sbin/nologin appuser && \
-    chown -R appuser:appgroup /app
+ARG CI_JOB_TOKEN
 
-# Expose port and run as non-root user
-EXPOSE 8000
+# Install git and configure credentials using the passed token
+RUN apt-get update && apt-get install -y git --no-install-recommends && \
+    if [ -n "$CI_JOB_TOKEN" ]; then \
+      git config --global credential.helper store && \
+      echo "https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.com" > ~/.git-credentials && \
+      chmod 600 ~/.git-credentials; \
+    fi && \
+    rm -rf /var/lib/apt/lists/*
+
+# Install dependencies (frozen/no-dev)
+RUN uv sync --frozen --no-dev --no-install-project
+
+# Copy service source code
+COPY team-3/src/ ./src/
+
+# Sync again to install the project itself
+RUN uv sync --frozen --no-dev && \
+    rm -f ~/.git-credentials && \
+    git config --global --unset credential.helper
+
+# Stage 2: Final runtime image
+FROM python:3.12-slim
+
+RUN groupadd -r appgroup && useradd -r -g appgroup appuser
+
+WORKDIR /app
+
+COPY --from=builder --chown=appuser:appgroup /app/.venv /app/.venv
+COPY --from=builder --chown=appuser:appgroup /app/src /app/src
+COPY --from=builder --chown=appuser:appgroup /shared/packages/core /shared/packages/core
+
+ENV PATH="/app/.venv/bin:$PATH"
+ENV PYTHONPATH="/app/src"
+ENV PYTHONUNBUFFERED=1
+
 USER appuser
 
-# Healthcheck configuration (optional but recommended for production orchestrators)
-HEALTHCHECK --interval=30s --timeout=5s --start-period=5s --retries=3 \
-  CMD curl -f http://localhost:8000/health || exit 1
+EXPOSE 8000
 
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["uvicorn", "exams.main:app", "--host", "0.0.0.0", "--port", "8000"]

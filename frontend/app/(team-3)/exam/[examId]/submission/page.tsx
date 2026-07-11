@@ -4,12 +4,16 @@ import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useExam } from "@/lib/(team-3)/ExamContext";
 import { Button } from "@/components/ui/button";
-import { AlertTriangle, CheckCircle2, Circle, HelpCircle, Lock } from "lucide-react";
+import { AlertTriangle, CheckCircle2, Circle, HelpCircle, Lock, Loader2 } from "lucide-react";
 
 export default function SubmissionPage() {
   const router = useRouter();
-  const { state, isLoading } = useExam();
+  const { state, isLoading, submitExam, clearExamCache } = useExam();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [resultScore, setResultScore] = useState<number | null>(null);
+  const [passed, setPassed] = useState<boolean | null>(null);
 
   if (isLoading || !state) {
     return <div className="flex items-center justify-center w-full h-screen">Loading...</div>;
@@ -19,9 +23,22 @@ export default function SubmissionPage() {
   const unanswered = state.questions.filter((q) => q.status === "unanswered").length;
   const review = state.questions.filter((q) => q.status === "review").length;
 
-  const handleSubmit = () => {
-    // In a real app, make API call here to lock the exam
-    setIsSubmitted(true);
+  const handleSubmit = async () => {
+    setIsSubmitting(true);
+    setSubmitError(null);
+    try {
+      const result = await submitExam();
+      setResultScore(result.totalScore);
+      setPassed(result.passed);
+      setIsSubmitted(true);
+      await clearExamCache();
+    } catch (err) {
+      setSubmitError(
+        err instanceof Error ? err.message : "Submission failed. Please try again."
+      );
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleViewResults = () => {
@@ -35,7 +52,17 @@ export default function SubmissionPage() {
           <div className="w-16 h-16 bg-[#01ac9f]/10 rounded-full flex items-center justify-center mx-auto mb-6">
             <Lock className="w-8 h-8 text-[#01ac9f]" />
           </div>
-          <h1 className="text-3xl font-bold font-sans text-[#21191e] mb-4">Exam Submitted</h1>
+          <h1 className="text-3xl font-bold font-sans text-[#21191e] mb-2">Exam Submitted</h1>
+          {resultScore !== null && (
+            <div className="my-4 flex flex-col items-center gap-1">
+              <span className={`text-5xl font-black tabular-nums ${passed ? "text-[#01ac9f]" : "text-[#ff6200]"}`}>
+                {resultScore.toFixed(1)}%
+              </span>
+              <span className={`text-sm font-semibold uppercase tracking-wider ${passed ? "text-[#01ac9f]" : "text-[#ff6200]"}`}>
+                {passed ? "✓ Passed" : "✗ Not Passed"}
+              </span>
+            </div>
+          )}
           <p className="text-[#51434c] font-sans mb-8">
             Your assessment has been successfully submitted and locked. You can no longer make any changes.
           </p>
@@ -88,19 +115,34 @@ export default function SubmissionPage() {
           </div>
         )}
 
+        {submitError && (
+          <div className="flex items-start gap-3 p-4 bg-red-50 border border-red-200 rounded-md mb-4">
+            <AlertTriangle className="w-5 h-5 text-red-500 shrink-0 mt-0.5" />
+            <p className="text-sm text-red-700">
+              <strong>Error:</strong> {submitError}
+            </p>
+          </div>
+        )}
+
         <div className="flex justify-between items-center pt-6 border-t border-[#eddfe5]">
           <Button 
             variant="outline" 
             onClick={() => router.back()}
+            disabled={isSubmitting}
             className="border-[#6c1d5f] text-[#6c1d5f] hover:bg-[#f9eaf0]"
           >
             Return to Exam
           </Button>
           <Button 
-            onClick={handleSubmit} 
-            className="bg-[#ff6200] hover:bg-[#e65800] text-white font-semibold"
+            onClick={handleSubmit}
+            disabled={isSubmitting}
+            className="bg-[#ff6200] hover:bg-[#e65800] text-white font-semibold gap-2"
           >
-            Submit Exam
+            {isSubmitting ? (
+              <><Loader2 className="w-4 h-4 animate-spin" /> Submitting...</>
+            ) : (
+              "Submit Exam"
+            )}
           </Button>
         </div>
       </div>
