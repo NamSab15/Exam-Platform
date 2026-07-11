@@ -46,3 +46,6 @@ venv/
 debug_test.py
 drop_0002.py
 reset_migration.py
+
+# Backend (SOA isolated repo)
+backend/
