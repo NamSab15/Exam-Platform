@@ -409,7 +409,7 @@ export default function PreCheckPage({
                 {/* Trust Score explanation */}
                 <div className="bg-gradient-to-br from-[#6c1d5f]/5 to-[#6c1d5f]/10 rounded-xl p-5 border border-[#6c1d5f]/20">
                   <h3 className="font-bold text-[#21191e] mb-3 flex items-center gap-2">
-                    <span className="text-lg">🛡️</span> What is the Trust Score?
+                    <Shield className="w-5 h-5 text-[#6c1d5f]" /> What is the Trust Score?
                   </h3>
                   <p className="text-sm text-[#51434c] mb-4 leading-relaxed">
                     The <strong>Trust Score</strong> is a real-time confidence metric (0–100) computed by our AI
@@ -438,15 +438,15 @@ export default function PreCheckPage({
                 {/* What is monitored */}
                 <div>
                   <h3 className="font-semibold text-[#21191e] mb-3">What will be monitored:</h3>
-                  <ul className="space-y-2">
+                  <ul className="space-y-3">
                     {[
-                      { icon: "📷", text: "Webcam — continuous video capture for face detection and gaze tracking" },
-                      { icon: "🎤", text: "Microphone — audio monitoring for voice or noise anomalies" },
-                      { icon: "🖥️", text: "Screen — tab switches, window changes, and copy/paste events" },
-                      { icon: "👁️", text: "AI Analysis — real-time behavior classification for the Trust Score" },
+                      { icon: <Camera className="w-4 h-4 text-[#6c1d5f] shrink-0 mt-0.5" />, text: "Webcam — continuous video capture for face detection and gaze tracking" },
+                      { icon: <Mic className="w-4 h-4 text-[#6c1d5f] shrink-0 mt-0.5" />, text: "Microphone — audio monitoring for voice or noise anomalies" },
+                      { icon: <Monitor className="w-4 h-4 text-[#6c1d5f] shrink-0 mt-0.5" />, text: "Screen — tab switches, window changes, and copy/paste events" },
+                      { icon: <Shield className="w-4 h-4 text-[#6c1d5f] shrink-0 mt-0.5" />, text: "AI Analysis — real-time behavior classification for the Trust Score" },
                     ].map((item, i) => (
                       <li key={i} className="flex items-start gap-3 text-sm text-[#51434c]">
-                        <span className="text-base shrink-0">{item.icon}</span>
+                        {item.icon}
                         <span>{item.text}</span>
                       </li>
                     ))}
@@ -637,9 +637,9 @@ export default function PreCheckPage({
                 <Button
                   disabled={!allRequiredPassed}
                   onClick={handleStartExam}
-                  className="bg-[#ff6200] hover:bg-[#e65800] text-white font-semibold gap-2 px-8 shadow-lg shadow-[#ff6200]/30 disabled:opacity-50"
+                  className="bg-[#ff6200] hover:bg-[#e65800] text-white font-semibold px-8 shadow-lg shadow-[#ff6200]/30 disabled:opacity-50"
                 >
-                  🚀 Start Exam
+                  Start Exam
                 </Button>
               </div>
             </div>
